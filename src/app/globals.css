@@ -41,7 +41,6 @@
     @apply mx-auto min-h-dvh max-w-screen-sm text-gray-950 rounded-[40px] drop-shadow-lg;
     background-image: linear-gradient(to right, var(--color-white-50), var(--color-white-0));
     opacity: 0.8;
-    padding: 1rem; /* 패딩 임시 설정 */
     font-family: 'Pretendard', sans-serif;
   }
 }
