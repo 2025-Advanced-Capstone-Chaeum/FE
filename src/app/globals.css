@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #8863E4; /* 보라색 */
+    --color-secondary: #03174D; /* 글자색 */
+    --color-accent: #FF0303; /* 빨간색 */
+    --color-background: #E2E3FC; /* 연보라색 */
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-gray: #A39FB9;
+    --color-white-0: rgba(255, 255, 255, 0.1); /* 흰색 10% 투명도 */
+    --color-white-50: rgba(255, 255, 255, 0.5); /* 흰색 50% 투명도 */
+    --font-myfont: "Pretendard", sans-serif;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-background);
+  }
+
+  body {
+    @apply mx-auto min-h-dvh max-w-[390px] sm:max-w-[480px] md:max-w-[640px] 
+           text-gray-950 rounded-[40px] drop-shadow-lg;
+    background-image: linear-gradient(
+      to right,
+      var(--color-white-50),
+      var(--color-white-0)
+    );
+    opacity: 0.8;
+    font-family: "Pretendard", sans-serif;
+  }
+}
+
+.bg-white-gradient {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8));
+}
