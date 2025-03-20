@@ -38,10 +38,15 @@
   }
 
   body {
-    @apply mx-auto min-h-dvh max-w-screen-sm text-gray-950 rounded-[40px] drop-shadow-lg;
-    background-image: linear-gradient(to right, var(--color-white-50), var(--color-white-0));
+    @apply mx-auto min-h-dvh max-w-[390px] sm:max-w-[480px] md:max-w-[640px] 
+           text-gray-950 rounded-[40px] drop-shadow-lg;
+    background-image: linear-gradient(
+      to right,
+      var(--color-white-50),
+      var(--color-white-0)
+    );
     opacity: 0.8;
-    font-family: 'Pretendard', sans-serif;
+    font-family: "Pretendard", sans-serif;
   }
 }
 
