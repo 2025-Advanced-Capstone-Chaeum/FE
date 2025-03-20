@@ -6,7 +6,7 @@
     --color-accent: #FF0303; /* 빨간색 */
     --color-background: #E2E3FC; /* 연보라색 */
     --color-white: #FFFFFF;
-    --color-black: #000000;
+  --color-black: #000000;
     --color-gray: #A39FB9;
     --color-white-0: rgba(255, 255, 255, 0.1); /* 흰색 10% 투명도 */
     --color-white-50: rgba(255, 255, 255, 0.5); /* 흰색 50% 투명도 */
