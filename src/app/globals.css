@@ -8,9 +8,9 @@
     --color-white: #FFFFFF;
   --color-black: #000000;
     --color-gray: #A39FB9;
-  --color-white-0: rgba(255, 255, 255, 0.1); /* 흰색 10% 투명도 */
-  --color-white-50: rgba(255, 255, 255, 0.5); /* 흰색 50% 투명도 */
-  --font-myfont: "Pretendard", sans-serif;
+    --color-white-0: rgba(255, 255, 255, 0.1); /* 흰색 10% 투명도 */
+    --color-white-50: rgba(255, 255, 255, 0.5); /* 흰색 50% 투명도 */
+    --font-myfont: "Pretendard", sans-serif;
 }
 
 @font-face {
@@ -48,4 +48,8 @@
     opacity: 0.8;
     font-family: "Pretendard", sans-serif;
   }
+}
+
+.bg-white-gradient {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8));
 }
