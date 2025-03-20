@@ -26,7 +26,7 @@ const NavigationBar = () => {
         <Image src="/assets/icons/home.svg" alt="Home" width={25} height={26} />
       </div>
       <div className="flex w-full">
-        <div className="flex w-[45%] pl-10 pt-2.5 justify-between">
+        <div className="flex w-[45%] pl-8 pt-2.5 justify-between">
         {navItems.slice(0, 2).map((item) => (
             <div
               key={item.id}
@@ -45,7 +45,7 @@ const NavigationBar = () => {
           ))}
         </div>
         <div className="flex w-full justify-end">
-          <div className="flex w-1/2 pr-10 pt-2.5 justify-between">
+          <div className="flex w-1/2 pr-8 pt-2.5 justify-between">
           {navItems.slice(2, 4).map((item) => (
               <div
                 key={item.id}

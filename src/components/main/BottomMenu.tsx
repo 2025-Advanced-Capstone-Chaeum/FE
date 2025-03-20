@@ -9,7 +9,7 @@ const BottomMenu = () => {
       src: "/assets/icons/feed.svg",
       alt: "Feed",
       label: "사료주기",
-      width: 45,
+      width: 50,
       height: 45,
     },
     {
@@ -17,7 +17,7 @@ const BottomMenu = () => {
       src: "/assets/icons/play.svg",
       alt: "Play",
       label: "놀아주기",
-      width: 45,
+      width: 44,
       height: 45,
     },
     {
@@ -31,7 +31,7 @@ const BottomMenu = () => {
   ];
 
   return (
-    <div className="flex bottom-10 p-5 sm:p-12 md:p-20 justify-between">
+    <div className="flex bottom-10 py-4 px-8 sm:p-13 md:py-15 md:px-22 justify-between">
       {menuItems.map((item) => (
         <Button
           variant="soft"
@@ -45,7 +45,7 @@ const BottomMenu = () => {
             width={item.width}
             height={item.height}
           />
-          <div className={`flex flex-col ${item.id !== 3 ? "pt-[7px]" : "pt-0"}`}>
+          <div className={`flex flex-col ${item.id === 2 ? "pt-1.5" : "pt-0"}`}>
             <span className="font-semibold text-xs text-secondary">
               {item.label}
             </span>
