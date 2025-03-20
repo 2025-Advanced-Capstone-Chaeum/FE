@@ -43,10 +43,10 @@ export default function LoginButtons() {
         )}>
         <Image
           src={kakaoLogo}
-          width={35}
-          height={30}
+          width={25}
+          height={35}
           alt="카카오"
-          className="absolute left-4"
+          className="absolute left-3"
         />
         <span className="text-lg font-medium">카카오 로그인</span>
       </Button>
@@ -56,13 +56,12 @@ export default function LoginButtons() {
           loginButtonStyles,
           "bg-green-500 hover:bg-green-600 text-white"
         )}>
-        <SiNaver size={30} className="absolute left-4" />
+        <SiNaver size={40} className="absolute left-4" />
         <span className="text-lg font-medium">네이버 로그인</span>
       </Button>
     </div>
   );
 }
-
 
 const buttonWrapperStyle =
   "absolute bottom-24 flex flex-col space-y-4 transition-opacity duration-1000 opacity-100";
