@@ -1,8 +1,9 @@
 import Image from "next/image";
-import logo from "../../../public/assets/image/Chaeum.png";
+import logo from "../../../public/assets/images/Chaeum.png";
 import { Metadata } from "next";
 import LoginButtons from "./loginButton";
 import Paw from "@/components/ui/paw/paw";
+import { centerImageStyles, mainStyles } from "@/styles/styles";
 
 export const metadata: Metadata = {
   title: "randing - Chaeum",
@@ -11,21 +12,19 @@ export const metadata: Metadata = {
 
 export default function Randing() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative">
+    <main className={mainStyles}>
       {/* 발자국 이미지 */}
       <div className="absolute top-0 left-[-150] transform -rotate-30">
         <Paw />
       </div>
 
       {/* Chaeum Logo */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className={centerImageStyles}>
         <Image src={logo} alt="Chaeum logo" width={250} height={300} />
       </div>
 
       {/* Copyright */}
-      <div
-        style={{ fontWeight: 600 }}
-        className="absolute bottom-8 inset-x-0 text-center text-gray-500 text-base">
+      <div style={{ fontWeight: 600 }} className={textStyle}>
         © Copyright Chaeum Team
       </div>
 
@@ -34,3 +33,5 @@ export default function Randing() {
     </main>
   );
 }
+const textStyle =
+  "absolute bottom-8 inset-x-0 text-center text-gray-500 text-base";

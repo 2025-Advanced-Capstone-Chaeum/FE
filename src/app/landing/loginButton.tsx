@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { baseButtonStyles } from "@/styles/styles";
+import { loginButtonStyles } from "@/styles/styles";
 import clsx from "clsx";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SiNaver } from "react-icons/si";
-import kakaoLogo from "../../../public/assets/image/카카오.png";
+import kakaoLogo from "../../../public/assets/images/카카오.png";
 
 export default function LoginButtons() {
   const [showButtons, setShowButtons] = useState(false);
@@ -35,10 +35,10 @@ export default function LoginButtons() {
   }
 
   return (
-    <div className="absolute bottom-24 flex flex-col space-y-4 transition-opacity duration-1000 opacity-100">
+    <div className={buttonWrapperStyle}>
       <Button
         className={clsx(
-          baseButtonStyles,
+          loginButtonStyles,
           "bg-yellow-300 hover:bg-yellow-600 text-black"
         )}>
         <Image
@@ -53,7 +53,7 @@ export default function LoginButtons() {
 
       <Button
         className={clsx(
-          baseButtonStyles,
+          loginButtonStyles,
           "bg-green-500 hover:bg-green-600 text-white"
         )}>
         <SiNaver size={30} className="absolute left-4" />
@@ -62,3 +62,7 @@ export default function LoginButtons() {
     </div>
   );
 }
+
+
+const buttonWrapperStyle =
+  "absolute bottom-24 flex flex-col space-y-4 transition-opacity duration-1000 opacity-100";
