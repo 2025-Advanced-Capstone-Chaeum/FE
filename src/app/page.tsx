@@ -30,7 +30,7 @@ export default function Home() {
         © Copyright Chaeum Team
       </div>
 
-      {/* 카카오&네이버 로그인버튼튼 */}
+      {/* 카카오&네이버 로그인버튼 */}
       <LoginButtons />
     </main>
   );

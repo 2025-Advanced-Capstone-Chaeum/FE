@@ -17,7 +17,7 @@ export default function LoginButtons() {
     }, 4000);
 
     // JWT 체크 (기존 로그인 여부)
-    const token = localStorage.getItem("jwt");
+    const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
       return;
@@ -32,7 +32,6 @@ export default function LoginButtons() {
   if (!showButtons && isAuthenticated) {
     return (
       <div>
-        <div>웰컴페이지</div>
         <div>메인페이지</div>
       </div>
     );
