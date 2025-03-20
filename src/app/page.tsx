@@ -12,7 +12,7 @@ export default function Home() {
       <div className="flex justify-center py-25 sm:py-15 md:py-10">
         <Image
           src={"/assets/images/cat.svg"}
-          alt="cat"
+          alt="Cat"
           width={180}
           height={180}
         />

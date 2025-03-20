@@ -39,23 +39,33 @@ const TopMenu = () => {
   ];
 
   return (
-    <div className="flex p-7 sm:p-10 md:p-15 justify-between">
-      {menuItems.map((item) => (
-        <div className="flex flex-col items-center gap-2" key={item.id}>
-          <Button variant="ghost" size="sm">
-            <Image
-              src={item.src}
-              alt={item.alt}
-              width={item.width}
-              height={item.height}
-            />
-          </Button>
-          <span className="font-semibold text-xs text-secondary">
-            {item.label}
-          </span>
-        </div>
-      ))}
-    </div>
+    <>
+    <div className="flex justify-end pt-6 pr-5">
+      <Image
+        src={"/assets/icons/info.svg"}
+        alt="Inform"
+        width={20}
+        height={20}
+      />
+      </div>
+      <div className="flex pt-3 px-7 sm:pt-3 sm:px-10 md:pt-3 md:px-15 justify-between">
+        {menuItems.map((item) => (
+          <div className="flex flex-col items-center gap-2" key={item.id}>
+            <Button variant="ghost" size="sm">
+              <Image
+                src={item.src}
+                alt={item.alt}
+                width={item.width}
+                height={item.height}
+              />
+            </Button>
+            <span className="font-semibold text-xs text-secondary">
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
