@@ -31,7 +31,7 @@ const BottomMenu = () => {
   ];
 
   return (
-    <div className="flex p-5 sm:p-12 md:p-20 justify-between">
+    <div className="flex bottom-10 p-5 sm:p-12 md:p-20 justify-between">
       {menuItems.map((item) => (
         <Button
           variant="soft"
