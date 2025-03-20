@@ -9,29 +9,29 @@ const BottomMenu = () => {
       src: "/assets/icons/feed.svg",
       alt: "Feed",
       label: "사료주기",
-      width: 50,
-      height: 50,
+      width: 45,
+      height: 45,
     },
     {
       id: 2,
       src: "/assets/icons/play.svg",
       alt: "Play",
       label: "놀아주기",
-      width: 50,
-      height: 50,
+      width: 45,
+      height: 45,
     },
     {
       id: 3,
       src: "/assets/icons/stroke.svg",
       alt: "Stroke",
       label: "쓰다듬기",
-      width: 55,
-      height: 50,
+      width: 50,
+      height: 45,
     },
   ];
 
   return (
-    <div className="flex p-4 sm:p-6 md:p-8 justify-between">
+    <div className="flex p-5 sm:p-12 md:p-20 justify-between">
       {menuItems.map((item) => (
         <Button
           variant="soft"
@@ -46,11 +46,11 @@ const BottomMenu = () => {
             height={item.height}
           />
           <div className={`flex flex-col ${item.id !== 3 ? "pt-[7px]" : "pt-0"}`}>
-            <span className="font-semibold text-sm text-secondary">
+            <span className="font-semibold text-xs text-secondary">
               {item.label}
             </span>
 
-            <span className="font-semibold text-sm text-accent">0/3</span>
+            <span className="font-semibold text-xs text-accent">0/3</span>
           </div>
         </Button>
       ))}
