@@ -32,10 +32,10 @@ jobs:
 
       - name: Log Issue Parser
         run: |
-          echo "Parent Key: ${{ steps.issue-parser.outputs.issueparser_parentKey }}"
-          echo "Ticket Number: ${{ steps.issue-parser.outputs.__ticket_number }}"
-          echo "Parsed JSON: ${{ steps.issue-parser.outputs.jsonString }}"
-
+          printf "Parent Key: %s\n" "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
+          printf "Ticket Number: %s\n" "${{ steps.issue-parser.outputs.__ticket_number }}"
+          printf "Parsed JSON: %s\n" "${{ steps.issue-parser.outputs.jsonString }}"
+          
       - name: Debug Assignee
         run: |
           echo "GitHub Assignee: ${{ github.event.issue.assignee.login }}"
