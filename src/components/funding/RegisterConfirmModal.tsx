@@ -1,7 +1,14 @@
 import React from "react";
 import { Button } from "../ui/button";
+import useFundingStore from "@/store/fundingStore";
 
 const RegisterConfirmModal = () => {
+  const { reset } = useFundingStore();
+
+  const handleRegisterClick = () => {
+    reset();
+  }
+
   return (
     <div className="flex justify-center items-center fixed bottom-25 w-[85%] h-45 bg-white rounded-2xl drop-shadow-2xl">
       <div className="flex flex-col gap-2">
@@ -13,7 +20,7 @@ const RegisterConfirmModal = () => {
           <span>등록할 수 없습니다.</span>
         </div>
         <div className="flex justify-center items-center">
-          <Button className="text-md">확인</Button>
+          <Button className="text-md" onClick={handleRegisterClick}>확인</Button>
         </div>
       </div>
     </div>

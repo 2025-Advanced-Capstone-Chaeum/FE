@@ -20,7 +20,6 @@ const FundingPage = () => {
     setPurchaseLink,
     setAddress,
     setContent,
-    reset,
   } = useFundingStore();
   const [isRegister, setIsRegister] = useState(false);
 
@@ -44,8 +43,6 @@ const FundingPage = () => {
     }
 
     setIsRegister(true);
-    console.log({ title, imageUrl, purchaseLink, address, content });
-    reset();
   };
 
   return (
