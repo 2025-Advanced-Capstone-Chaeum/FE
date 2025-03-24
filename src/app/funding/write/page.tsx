@@ -1,11 +1,12 @@
 "use client";
 
+import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useFundingStore from "@/store/fundingStore";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const FundingPage = () => {
   const {
@@ -21,6 +22,7 @@ const FundingPage = () => {
     setContent,
     reset,
   } = useFundingStore();
+  const [isRegister, setIsRegister] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -41,6 +43,7 @@ const FundingPage = () => {
       return;
     }
 
+    setIsRegister(true);
     console.log({ title, imageUrl, purchaseLink, address, content });
     reset();
   };
@@ -127,6 +130,7 @@ const FundingPage = () => {
             마음 나눠받기
           </span>
         </Button>
+        {isRegister && <RegisterConfirmModal />}
       </div>
     </>
   );
