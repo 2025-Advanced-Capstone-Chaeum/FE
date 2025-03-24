@@ -20,6 +20,7 @@ const FundingPage = () => {
     setPurchaseLink,
     setAddress,
     setContent,
+    reset,
   } = useFundingStore();
   const [isRegister, setIsRegister] = useState(false);
 
@@ -30,6 +31,11 @@ const FundingPage = () => {
     }
 
     setIsRegister(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsRegister(false);
+    reset();
   };
 
   return (
@@ -77,7 +83,7 @@ const FundingPage = () => {
             마음 나눠받기
           </span>
         </Button>
-        {isRegister && <RegisterConfirmModal />}
+        {isRegister && <RegisterConfirmModal onClose={handleCloseModal} />}
       </div>
     </>
   );
