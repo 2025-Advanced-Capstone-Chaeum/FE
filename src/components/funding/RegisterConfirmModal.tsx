@@ -1,12 +1,14 @@
 import React from "react";
 import { Button } from "../ui/button";
-import useFundingStore from "@/store/fundingStore";
 
-const RegisterConfirmModal = () => {
-  const { reset } = useFundingStore();
+interface RegisterConfirmModalProps {
+  onClose: () => void;
+}
+
+const RegisterConfirmModal: React.FC<RegisterConfirmModalProps> = ({ onClose }) => {
 
   const handleRegisterClick = () => {
-    reset();
+    onClose();
   }
 
   return (
