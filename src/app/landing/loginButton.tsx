@@ -4,25 +4,19 @@ import { Button } from "@/components/ui/button";
 import { loginButtonStyles } from "@/styles/styles";
 import clsx from "clsx";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SiNaver } from "react-icons/si";
 import kakaoLogo from "../../../public/assets/images/카카오.png";
 
 export default function LoginButtons() {
   const [showButtons, setShowButtons] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     // 4초 후 실행 로직
     const timer = setTimeout(() => {
-      if (token) {
-        setIsAuthenticated(true);
-        router.push("/");
-      } else {
+      if (!token) {
         setShowButtons(true);
       }
     }, 4000);
