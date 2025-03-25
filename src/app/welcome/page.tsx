@@ -20,7 +20,6 @@ const WelcomePage = () => {
   }, []);
 
   return (
-    // eslint-disable-next-line no-floating-promises
     <main
       className={mainStyles}
       onClick={() => {
