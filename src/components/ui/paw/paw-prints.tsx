@@ -28,25 +28,36 @@ const pawPositions = [
 
 export default function PawPrints() {
   const [visiblePaws, setVisiblePaws] = useState<number[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // 각 발자국이 나타나는 간격 (밀리초)
-    const interval = 200;
-
-    // 모든 발자국이 나타났는지 확인
-    if (visiblePaws.length >= pawPositions.length) {
+    // 이미 모든 발자국이 표시되었다면 더 이상 진행하지 않음
+    if (currentIndex >= pawPositions.length) {
       return;
     }
 
+    // 발자국 나타나는 간격 (밀리초)
+    const appearInterval = 200;
+
     // 다음 발자국을 나타나게 하는 타이머
     const timer = setTimeout(() => {
-      // 다음 발자국 인덱스 추가
-      const nextPawIndex = visiblePaws.length;
-      setVisiblePaws((prev) => [...prev, nextPawIndex]);
-    }, interval);
+      // 현재 인덱스의 발자국 추가
+      setVisiblePaws((prev) => [...prev, currentIndex]);
+      setCurrentIndex((prev) => prev + 1);
+
+      // 발자국이 사라지는 타이머 설정 (360ms 후)
+      setTimeout(() => {
+        setVisiblePaws((prev) => {
+          // 첫 번째 발자국 제거 (가장 먼저 나타난 발자국)
+          const newPaws = [...prev];
+          newPaws.shift();
+          return newPaws;
+        });
+      }, 720);
+    }, appearInterval);
 
     return () => clearTimeout(timer);
-  }, [visiblePaws]);
+  }, [currentIndex]);
 
   return (
     <div className="relative w-full h-full">
@@ -54,7 +65,7 @@ export default function PawPrints() {
         <div
           key={index}
           className={cn(
-            "absolute w-10 h-10 opacity-0 transition-opacity duration-300",
+            "absolute w-10 h-10 opacity-0 transition-opacity duration-500 ease-in-out",
             visiblePaws.includes(index) && "opacity-100"
           )}
           style={{
@@ -63,7 +74,7 @@ export default function PawPrints() {
             transform: `rotate(${pos.rotate}deg)`,
           }}>
           <Image
-            src={발자국}
+            src={발자국 || "/placeholder.svg"}
             alt="발자국"
             width={40}
             height={40}
