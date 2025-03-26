@@ -1,9 +1,11 @@
 import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Badge, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import Image from "next/image";
-import 공부 from "../../../../../public/assets/images/study.png";
-import 프로필 from "../../../../../public/assets/icons/profile.svg";
+import 공부 from "@assets/images/study.png";
+import 프로필 from "@assets/icons/profile.svg";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
 export const generateMetadata = () => {
   return {
     title: "공부해서 사회에 보답하겠습니다.",
