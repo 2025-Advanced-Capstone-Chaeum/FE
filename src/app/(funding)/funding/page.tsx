@@ -91,7 +91,7 @@ const FundingListPage = () => {
       </div>
 
       {/* Projects grid */}
-      <div className="relative top-[12vh] mt-[10px] grid grid-cols-2 gap-3  ">
+      <div className="relative top-[12vh] mt-[10px] grid grid-cols-2 gap-3 max-h-[80vh] overflow-y-auto scrollbar-none">
         {" "}
         {transformedCampaigns.map((feed) => (
           <div key={feed.title} className="flex flex-col">
