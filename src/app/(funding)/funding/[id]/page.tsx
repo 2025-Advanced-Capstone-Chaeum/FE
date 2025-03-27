@@ -1,10 +1,11 @@
 import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
-import 공부 from "../../../../../public/assets/images/study.png";
-import 프로필 from "../../../../../public/assets/icons/profile.svg";
+import 공부 from "@assets/images/study.png";
+import 프로필 from "@assets/icons/profile.svg";
 import { Badge } from "@/components/ui/badge";
+import NavigateToWriteFundingButton from "@/components/funding/navigateToWriteFundingButton";
+import { Button } from "@/components/ui/button";
 
 export const generateMetadata = () => {
   return {

@@ -3,6 +3,7 @@ import FilterButtons from "@/components/funding/filterButtons";
 import CampaignCard from "@/components/funding/campaignCard";
 import { transformedCampaigns } from "@/utils/fundingPage";
 import { Button } from "@/components/ui/button";
+import NavigateToWriteFundingButton from "@/components/funding/navigateToWriteFundingButton";
 
 export default function FundingListPage() {
   return (
@@ -18,10 +19,7 @@ export default function FundingListPage() {
         ))}
       </div>
       <div className="fixed left-[59vw] top-[85vh] ">
-        <Button className="bg-primary text-white text-base font-semibold rounded-2xl">
-          {" "}
-          등록하기
-        </Button>
+        <NavigateToWriteFundingButton />
       </div>
     </div>
   );
