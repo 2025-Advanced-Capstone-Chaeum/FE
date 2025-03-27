@@ -5,23 +5,15 @@ import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useFundingStore from "@/store/fundingStore";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const FundingPage = () => {
-  const {
-    title,
-    imageUrl,
-    purchaseLink,
-    address,
-    content,
-    setTitle,
-    setPurchaseLink,
-    setAddress,
-    setContent,
-    reset,
-  } = useFundingStore();
+const FundingWritePage = () => {
+  const [title, setTitle] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [purchaseLink, setPurchaseLink] = useState("");
+  const [address, setAddress] = useState("");
+  const [content, setContent] = useState("");
   const [isRegister, setIsRegister] = useState(false);
 
   const handleSubmit = () => {
@@ -35,7 +27,15 @@ const FundingPage = () => {
 
   const handleCloseModal = () => {
     setIsRegister(false);
-    reset();
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setImageUrl("");
+    setPurchaseLink("");
+    setAddress("");
+    setContent("");
   };
 
   return (
@@ -57,7 +57,7 @@ const FundingPage = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <ImageUpload />
+        <ImageUpload setImageUrl={setImageUrl} />
         <Input
           type="text"
           size="sm"
@@ -89,4 +89,4 @@ const FundingPage = () => {
   );
 };
 
-export default FundingPage;
+export default FundingWritePage;

@@ -1,10 +1,13 @@
-import useFundingStore from "@/store/fundingStore";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../ui/input";
 
-const ImageUpload = () => {
-  const { imageUrl, setImageUrl } = useFundingStore();
+interface ImageUploadProps {
+  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl }) => {
+  const [imageUrl, setLocalImageUrl] = useState("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -12,6 +15,7 @@ const ImageUpload = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
+          setLocalImageUrl(reader.result);
           setImageUrl(reader.result);
         }
       };
