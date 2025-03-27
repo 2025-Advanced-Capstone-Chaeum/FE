@@ -9,15 +9,40 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const FundingWritePage = () => {
-  const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [purchaseLink, setPurchaseLink] = useState("");
-  const [address, setAddress] = useState("");
-  const [content, setContent] = useState("");
+  const [formData, setFormData] = useState<{
+    title: string;
+    imageUrl: string;
+    purchaseLink: string;
+    address: string;
+    content: string;
+    isRegister: boolean;
+  }>({
+    title: "",
+    imageUrl: "",
+    purchaseLink: "",
+    address: "",
+    content: "",
+    isRegister: false,
+  });
+
   const [isRegister, setIsRegister] = useState(false);
 
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = () => {
-    if (!title || !imageUrl || !purchaseLink || !address || !content) {
+    if (
+      !formData.title ||
+      !formData.imageUrl ||
+      !formData.purchaseLink ||
+      !formData.address ||
+      !formData.content
+    ) {
       alert("모든 입력칸을 채워주세요!");
       return;
     }
@@ -31,11 +56,14 @@ const FundingWritePage = () => {
   };
 
   const resetForm = () => {
-    setTitle("");
-    setImageUrl("");
-    setPurchaseLink("");
-    setAddress("");
-    setContent("");
+    setFormData({
+      title: "",
+      imageUrl: "",
+      purchaseLink: "",
+      address: "",
+      content: "",
+      isRegister: false,
+    });
   };
 
   return (
@@ -54,29 +82,37 @@ const FundingWritePage = () => {
           type="text"
           size="lg"
           placeholder="제목을 입력해주세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          value={formData.title}
+          onChange={handleFormChange}
         />
-        <ImageUpload setImageUrl={setImageUrl} />
+        <ImageUpload
+          setImageUrl={(url: string) =>
+            setFormData((prev) => ({ ...prev, imageUrl: url }))
+          }
+        />
         <Input
           type="text"
           size="sm"
           placeholder="물품 구매 링크"
-          value={purchaseLink}
-          onChange={(e) => setPurchaseLink(e.target.value)}
+          name="purchaseLink"
+          value={formData.purchaseLink}
+          onChange={handleFormChange}
         />
         <Input
           type="text"
           size="sm"
           placeholder="주소지 입력"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          name="address"
+          value={formData.address}
+          onChange={handleFormChange}
         />
         <Textarea
           placeholder="내용"
           className="bg-white rounded-xl text-sm w-[85%] h-50"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          name="content"
+          value={formData.content}
+          onChange={handleFormChange}
         />
         <Button variant="soft" size="xl" onClick={handleSubmit}>
           <span className="text-secondary font-semibold text-[17px]">
