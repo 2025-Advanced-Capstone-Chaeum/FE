@@ -13,6 +13,7 @@ export default function FundingListPage() {
       {/* Projects grid */}
       <div className="relative top-[6vh] mt-[10px] grid grid-cols-2 gap-3 max-h-[80vh] overflow-y-auto scrollbar-none">
         {" "}
+
         {transformedCampaigns.map((campaign) => (
           <CampaignCard key={campaign.id} campaign={campaign} />
         ))}
@@ -23,3 +24,4 @@ export default function FundingListPage() {
     </div>
   );
 }
+

@@ -18,6 +18,10 @@ export default function RootLayout({
         {children}
         <NavigationBarWrapper />
       </body>
+      <body>
+        {children}
+        <NavigationBarWrapper />
+      </body>
     </html>
   );
 }
