@@ -17,10 +17,12 @@ export default function FundingListPage() {
           <CampaignCard key={campaign.id} campaign={campaign} />
         ))}
       </div>
-      <Button className="relative left-73 top-[87%] absolute text-white text-base font-semibold rounded-2xl">
-        {" "}
-        등록하기
-      </Button>
+      <div className="fixed left-[59vw] top-[85vh] ">
+        <Button className="bg-primary text-white text-base font-semibold rounded-2xl">
+          {" "}
+          등록하기
+        </Button>
+      </div>
     </div>
   );
 }
