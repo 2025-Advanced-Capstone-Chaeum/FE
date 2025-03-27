@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 
 interface ImageUploadProps {
-  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
+  setImageUrl: (url: string) => void;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl }) => {
