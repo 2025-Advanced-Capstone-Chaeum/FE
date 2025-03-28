@@ -99,7 +99,7 @@ export default function FundingDetailCard() {
           </div>
 
           <div className="flex items-center justify-center">
-            <Button className="w-80 py-6 text-lg bg-primary text-white rounded-xl">
+            <Button className="w-80 py-6 text-lg rounded-xl">
               마음 나누기
             </Button>
           </div>
