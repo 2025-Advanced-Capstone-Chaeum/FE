@@ -1,7 +1,7 @@
-import FilterButtons from "@/components/funding/filterButtons";
-import CampaignCard from "@/components/funding/campaignCard";
+import FilterButtons from "@/components/funding/FilterButtons";
+import CampaignCard from "@/components/funding/CampaignCard";
 import { transformedCampaigns } from "@/utils/fundingPage";
-import NavigateToWriteButton from "@/components/funding/navigateToWriteButton";
+import NavigateToWriteButton from "@/components/funding/NavigateToWriteButton";
 
 export default function FundingListPage() {
   return (
@@ -21,4 +21,3 @@ export default function FundingListPage() {
     </div>
   );
 }
-
