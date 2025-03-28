@@ -5,7 +5,6 @@ import 공부 from "@assets/images/study.png";
 import 프로필 from "@assets/icons/profile.svg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import BackButton from "@/components/backButton";
 
 export const generateMetadata = () => {
