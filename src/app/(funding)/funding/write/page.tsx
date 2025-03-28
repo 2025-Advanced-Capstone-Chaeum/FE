@@ -2,6 +2,7 @@
 
 import ImageUpload from "@/components/funding/ImageUpload";
 import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
+import BackButton from "@/components/ui/BackButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,15 +71,7 @@ const FundingWritePage = () => {
 
   return (
     <>
-      <div className="pl-6 pt-8 pb-3">
-        <Image
-          src={"/assets/icons/back.svg"}
-          alt="Back"
-          width={30}
-          height={30}
-          className="cursor-pointer"
-        />
-      </div>
+    {/* Back button 추가 */}
       <div className="flex flex-col p-2 justify-center items-center gap-5">
         <Input
           type="text"
