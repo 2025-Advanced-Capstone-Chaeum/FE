@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import NavigationBarWrapper from '@/components/NavigationBarWrapper';
+import NavigationBarWrapper from "@/components/NavigationBarWrapper";
 
 export const metadata: Metadata = {
-  title: '채움',
-  description: '채움 애플리케이션입니다!',
-}
+  title: "채움",
+  description: "채움 애플리케이션입니다!",
+};
 
 export default function RootLayout({
   children,
@@ -14,10 +14,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
-        {children}
-        <NavigationBarWrapper />
-      </body>
       <body>
         {children}
         <NavigationBarWrapper />
