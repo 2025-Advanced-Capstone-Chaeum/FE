@@ -1,8 +1,7 @@
 import Image from "next/image";
-import logo from "@assets/images/Chaeum.png";
 import { Metadata } from "next";
 import LoginButtons from "./loginButton";
-import Paw from "@/components/ui/paw/paw";
+import Paw from "@/components/ui/paw/Paw";
 import { centerImageStyles, mainStyles } from "@/styles/styles";
 
 export const metadata: Metadata = {
@@ -20,7 +19,12 @@ export default function Randing() {
 
       {/* Chaeum Logo */}
       <div className={centerImageStyles}>
-        <Image src={logo} alt="Chaeum logo" width={250} height={300} />
+        <Image
+          src={"/assets/images/chaeum.png"}
+          alt="Chaeum logo"
+          width={250}
+          height={300}
+        />
       </div>
 
       {/* Copyright */}
@@ -28,7 +32,7 @@ export default function Randing() {
         © Copyright Chaeum Team
       </div>
 
-      {/* 카카오&네이버 로그인버튼 */}
+      {/* kakao-logo&네이버 로그인버튼 */}
       <LoginButtons />
     </main>
   );
