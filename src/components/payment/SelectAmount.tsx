@@ -17,7 +17,7 @@ const SelectAmount = () => {
   const handleAmountClick = (id: number) => setIsActiveAmount(id);
 
   return (
-    <div className="px-12 sm:pt-3 sm:px-22 md:pt-5 md:px-42">
+    <div className="px-10">
       <span className="text-sm">기부 금액 선택</span>
       {[0, 2, 4].map((start) => (
         <div key={start} className="flex justify-center items-center gap-2">
@@ -30,7 +30,7 @@ const SelectAmount = () => {
             >
               <Button
                 variant="soft"
-                className="w-[150px] py-5 my-1.5"
+                className="w-38 sm:w-49 md:w-70 py-5 my-1.5"
                 onClick={() => handleAmountClick(item.id)}
               >
                 {item.label}

@@ -5,7 +5,7 @@ const SelectPayMethod = () => {
   return (
     <div className="flex flex-col px-10 gap-5">
       <span className="flex text-sm">충전 수단 선택</span>
-      <div className="flex w-full justify-between px-5">
+      <div className="flex w-full justify-between px-5 sm:px-15 md:px-35">
         <Image
           src={"/assets/images/kakao-pay.png"}
           alt="KakaoPay"
