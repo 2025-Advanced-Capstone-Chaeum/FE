@@ -2,11 +2,9 @@
 
 import ImageUpload from "@/components/funding/ImageUpload";
 import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
-import BackButton from "@/components/ui/BackButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
 import React, { useState } from "react";
 
 const FundingWritePage = () => {
