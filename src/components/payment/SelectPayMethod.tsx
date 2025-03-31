@@ -17,12 +17,12 @@ const SelectPayMethod = () => {
         <Image
           src={"/assets/images/kakao-pay.png"}
           alt="KakaoPay"
-          className={`cursor-pointer ${activePayMethod === 1 ? 'opacity-50' : 'opacity-100'}`}
+          className={`h-11 cursor-pointer ${activePayMethod === 1 ? 'opacity-50' : 'opacity-100'}`}
           width={120}
           height={40}
           onClick={() => handlePayMethodClick(1)}
         />
-        <div className="flex justify-center items-center w-33 h-13 bg-white rounded-3xl">
+        <div className="flex justify-center items-center w-33 h-11 bg-white rounded-3xl">
           <Image
             src={"/assets/images/toss-pay.png"}
             alt="TossPay"
