@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import PointContainer from "@/components/payment/PointContainer";
 import SelectAmount from "@/components/payment/SelectAmount";
 import SelectPayMethod from "@/components/payment/SelectPayMethod";
@@ -6,7 +7,9 @@ import React from "react";
 
 const PaymentPage = () => {
   return (
-    <div className="flex flex-col gap-11 py-13">
+    <>
+    <BackButton />
+    <div className="flex flex-col gap-11">
       <span className="flex justify-center items-center text-2xl font-semibold">마음 나누기</span>
       <SelectAmount />
       <PointContainer />
@@ -17,6 +20,7 @@ const PaymentPage = () => {
         </Button>
       </div>
     </div>
+    </>
   );
 };
 

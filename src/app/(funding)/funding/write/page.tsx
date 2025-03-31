@@ -1,5 +1,6 @@
 "use client";
 
+import BackButton from "@/components/BackButton";
 import ImageUpload from "@/components/funding/ImageUpload";
 import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
 import { Button } from "@/components/ui/button";
@@ -69,7 +70,7 @@ const FundingWritePage = () => {
 
   return (
     <>
-    {/* Back button 추가 */}
+      <BackButton />
       <div className="flex flex-col p-2 justify-center items-center gap-5">
         <Input
           type="text"
