@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { rewardList } from "@/lib/donationReward";
 
-const NotifyPage = () => {
+export default function NotifyPage () {
   const [showBomb, setShowBomb] = useState(true); // 1초 후 숨길 상태
   const router = useRouter();
   useEffect(() => {
@@ -59,4 +59,3 @@ const NotifyPage = () => {
   );
 };
 
-export default NotifyPage;

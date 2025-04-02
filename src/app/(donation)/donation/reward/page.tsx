@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const RewardPage = () => {
+export default function RewardPage() {
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +26,4 @@ const RewardPage = () => {
         alt="랜덤박스"></Image>
     </div>
   );
-};
-
-export default RewardPage;
+}
