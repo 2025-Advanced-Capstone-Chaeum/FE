@@ -10,6 +10,7 @@ const NavigationBarWrapper = () => {
     "/welcome",
     "/funding/register",
     "/donation/reward",
+    "/donation/reward/notify",
   ];
   const shouldHideFooter = hidePaths.includes(pathname);
 
