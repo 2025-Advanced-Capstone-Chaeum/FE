@@ -23,7 +23,7 @@ const DonationCompletePage = () => {
           />
           <span>공부해서 사회에 보답하겠습니다.</span>
         </div>
-        <Button variant="soft" className="w-[77%] text-md p-6 rounded-xl">확인</Button>
+        <Button variant="soft" className="w-[77%] text-md p-6.5 mt-6 rounded-xl">확인</Button>
       </div>
     </>
   );
