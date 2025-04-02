@@ -7,7 +7,7 @@ const DonationCompletePage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col h-[75vh] justify-center items-center text-secondary gap-8">
+      <div className="flex flex-col h-[80vh] justify-center items-center text-secondary gap-8">
         <Image src="/assets/images/heart.png" alt="Heart" width={80} height={80} className="opacity-90"/>
         <div className="flex flex-col items-center text-lg">
           <span>당신의 소중한 마음이</span>
