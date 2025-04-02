@@ -19,7 +19,7 @@ const DonationLoadingPage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col h-[80vh] justify-center items-center gap-8">
+      <div className="flex flex-col h-[75vh] justify-center items-center gap-8">
         <Image
           src="/assets/images/load.gif"
           alt="Loading"
