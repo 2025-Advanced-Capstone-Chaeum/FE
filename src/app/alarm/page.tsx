@@ -1,6 +1,7 @@
 import { alarmList } from "@/lib/alarmMessage";
-import TextAlarm from "@/components/alarm/TextAlarm";
-import RequestAlarm from "@/components/alarm/RequestAlarm";
+import TextAlarm from "@/components/alarm/RequestAlarm";
+import RequestAlarm from "@/components/alarm/TextAlarm";
+import BackButton from "@/components/BackButton";
 
 export default function AlarmPage() {
   const sortedAlarmList = alarmList.sort(
@@ -8,16 +9,19 @@ export default function AlarmPage() {
   );
 
   return (
-    <div className="flex justify-center items-center h-screen pt-20">
-      <div className="h-full overflow-y-auto px-6 pb-6 space-y-6">
-        {sortedAlarmList.map((alarmData) => {
-          if (alarmData.type === "requestAlarm") {
-            return <TextAlarm key={alarmData.id} data={alarmData} />;
-          } else {
-            return <RequestAlarm key={alarmData.id} data={alarmData} />;
-          }
-        })}
+    <>
+      <BackButton />
+      <div className="flex justify-center items-center h-screen pt-10">
+        <div className="h-full overflow-y-auto pl-8 pr-6 pb-6 space-y-6">
+          {sortedAlarmList.map((alarmData) => {
+            if (alarmData.type === "requestAlarm") {
+              return <TextAlarm key={alarmData.id} data={alarmData} />;
+            } else {
+              return <RequestAlarm key={alarmData.id} data={alarmData} />;
+            }
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
