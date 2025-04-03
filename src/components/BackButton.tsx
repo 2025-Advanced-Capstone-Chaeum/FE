@@ -20,7 +20,7 @@ const BackButton: React.FC<BackButtonProps> = ({ children }) => {
           height={30}
         />
       </button>
-      <span>{children}</span>
+        <span className="text-secondary font-semibold text-lg opacity-80">{children}</span>
     </div>
   );
 };
