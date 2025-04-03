@@ -11,8 +11,8 @@ export default function AlarmPage() {
   return (
     <>
       <BackButton />
-      <div className="flex justify-center items-center h-screen pt-10">
-        <div className="h-full overflow-y-auto pl-8 pr-6 pb-6 space-y-6">
+      <div className="flex justify-center items-center pt-10">
+        <div className="h-full overflow-y-scroll pl-8 pr-6 space-y-6 scrollbar-none">
           {sortedAlarmList.map((alarmData) => {
             if (alarmData.type === "requestAlarm") {
               return <TextAlarm key={alarmData.id} data={alarmData} />;
