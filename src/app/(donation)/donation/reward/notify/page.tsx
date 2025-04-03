@@ -12,6 +12,31 @@ export default function NotifyPage() {
   const router = useRouter();
   const { showToast } = useToast();
 
+  const handleNotifyClick = () => {
+    router.push("/");
+
+    setTimeout(() => {
+      showToast(
+        "success",
+        "기부 혜택이 주어졌습니다. 마음을 나눠주셔서 감사합니다!",
+        {
+          position: "top-center",
+          closeButton: false,
+          autoClose: 3000, // 3초 후 자동 닫힘
+          hideProgressBar: true,
+          icon: (
+            <Image
+              height={30}
+              width={30}
+              alt="알람종"
+              src="/assets/icons/alarm.svg"
+            />
+          ),
+        }
+      );
+    }, 500); // 0.5초 후 실행
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowBomb(false);
@@ -23,27 +48,7 @@ export default function NotifyPage() {
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-start"
-      onClick={() => {
-        router.push("/");
-        showToast(
-          "success",
-          "기부 혜택이 주어졌습니다. 마음을 나눠주셔서 감사합니다!",
-          {
-            position: "top-center",
-            closeButton: false,
-            autoClose: 3000, // 3초 후 자동 닫힘
-            hideProgressBar: true,
-            icon: (
-              <Image
-                height={30}
-                width={30}
-                alt="알람종"
-                src="/assets/icons/alarm.svg"
-              />
-            ),
-          }
-        );
-      }}>
+      onClick={handleNotifyClick}>
       <div className="relative top-30 text-xl text-primary">기부 혜택</div>
       {rewardList.map((reward) => {
         return (
