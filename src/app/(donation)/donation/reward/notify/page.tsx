@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ConfirmButton from "@/components/donation/ConfirmButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { rewardList } from "@/lib/donationReward";
+import ConfirmButton from "@/components/ConfirmButton";
 
 export default function NotifyPage () {
   const [showBomb, setShowBomb] = useState(true); // 1초 후 숨길 상태
@@ -29,7 +29,7 @@ export default function NotifyPage () {
         return (
           <div key={reward.id} className="relative top-50">
             <div className="grid grid-cols-3 gap-10 py-5">
-              <Image height={50} width={50} src={reward.src} alt={reward.alt} />
+              <Image height={reward.height} width={reward.width} src={reward.src} alt={reward.alt} />
               <h1 className="flex items-center text-secondary">
                 {reward.label}
               </h1>
@@ -51,7 +51,7 @@ export default function NotifyPage () {
             height={700}
             width={500}
             src="/assets/images/bomb.gif"
-            alt="폭죽죽"
+            alt="폭죽"
           />
         )}
       </div>
