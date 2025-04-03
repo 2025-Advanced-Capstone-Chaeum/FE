@@ -15,7 +15,7 @@ export default function NotifyPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowBomb(false);
-    }, 900); // 1초 후 사라짐
+    }, 900); // 0.9초 후 사라짐
 
     return () => clearTimeout(timer); // 컴포넌트가 언마운트되면 타이머 제거
   }, []);
@@ -70,7 +70,7 @@ export default function NotifyPage() {
         <ConfirmButton />
       </div>
       <div className="fixed ">
-        {/* 1초 동안만 폭죽 GIF 표시 */}
+        {/* 0.9초 동안만 폭죽 GIF 표시 */}
         {showBomb && (
           <Image
             height={700}
