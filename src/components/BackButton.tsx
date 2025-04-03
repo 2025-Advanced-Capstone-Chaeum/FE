@@ -20,11 +20,7 @@ const BackButton: React.FC<BackButtonProps> = ({ children }) => {
           height={30}
         />
       </button>
-<<<<<<< HEAD
         <span className="text-secondary font-semibold text-lg opacity-80">{children}</span>
-=======
-      <span>{children}</span>
->>>>>>> 3ff5ee2 (feat: 뒤로가기 버튼에 children 추가)
     </div>
   );
 };
