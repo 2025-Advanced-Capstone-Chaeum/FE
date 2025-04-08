@@ -30,7 +30,7 @@ export default function DonationHistorypage() {
           </button>
         </div>
         {/* Donation List */}
-        <div className="flex-1 overflow-auto py-4">
+        <div className="flex-1 max-h-[79vh] overflow-y-scroll scrollbar-none py-4">
           <div className="space-y-7">
             {myDonationList.map((myDonation) => (
               <MyDonationList donation={myDonation} key={myDonation.id} />
