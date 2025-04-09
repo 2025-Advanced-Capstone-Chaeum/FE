@@ -15,8 +15,15 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 
 const DateSearchModal = () => {
-  const [startDate, setStartDate] = useState("2025-04-09T19:46");
-  const [endDate, setEndDate] = useState("2025-04-09T19:46");
+  const getTodayDateTime = () => { // 현재 날짜 시간 계산
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    const localDate = new Date(now.getTime() - offset * 60 * 1000); // 타임존 보정
+    return localDate.toISOString().slice(0, 16); // 'YYYY-MM-DDTHH:mm'
+  };
+
+  const [startDate, setStartDate] = useState(getTodayDateTime());
+  const [endDate, setEndDate] = useState(getTodayDateTime());
   return (
     <Dialog>
       <DialogTrigger asChild>
