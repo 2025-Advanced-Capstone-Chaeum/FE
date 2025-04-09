@@ -82,7 +82,7 @@ const ReviewWritePage = () => {
           />
           <Button
             size="none"
-            className="text-white py-2"
+            className="text-white py-2.5"
             onClick={handleSubmit}
           >
             작성 완료
