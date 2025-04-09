@@ -15,7 +15,8 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 
 const DateSearchModal = () => {
-  const getTodayDateTime = () => { // 현재 날짜 시간 계산
+  const getTodayDateTime = () => {
+    // 현재 날짜 시간 계산
     const now = new Date();
     const offset = now.getTimezoneOffset();
     const localDate = new Date(now.getTime() - offset * 60 * 1000); // 타임존 보정
@@ -84,7 +85,7 @@ const DateSearchModal = () => {
               </Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button className="h-[5vh] text-secondary text-base rounded-2xl py-3 ">
+              <Button className="h-[5vh] text-white text-base rounded-2xl py-3 ">
                 선택완료
               </Button>
             </DialogClose>

@@ -11,8 +11,7 @@ import MyDonationList from "@/components/profile/MyDonationList";
 export default function DonatorProfilePage() {
   return (
     <>
-      <div className="flex justify-between pr-6">
-        <BackButton />{" "}
+      <div className="flex pl-6">
         <Link href={"/profile/recipient"}>
           <Button
             variant="ghost"
@@ -23,7 +22,6 @@ export default function DonatorProfilePage() {
       </div>
       <div className="flex flex-col px-4 max-h-[90vh] overflow-y-scroll scrollbar-none">
         <div className="flex flex-col justify-center items-center p-5">
-          {" "}
           <Image
             height={100}
             width={130}
@@ -45,7 +43,7 @@ export default function DonatorProfilePage() {
         </div>
         <div className="mx-4 ">
           <div className="flex justify-between items-center pb-6">
-            <h1 className="text-lg font-bold">전체 기부내역</h1>
+            <h1 className="text-lg font-semibold opacity-90">전체 기부내역</h1>
             <Link href={"/profile/donationhistory"}>
               <Image
                 height={20}
