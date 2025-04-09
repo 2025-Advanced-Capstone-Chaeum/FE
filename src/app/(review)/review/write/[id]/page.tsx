@@ -49,7 +49,7 @@ const ReviewWritePage = () => {
   return (
     <>
       <BackButton>후기 작성</BackButton>
-      <div className="flex justify-center py-5">
+      <div className="justify-center px-25 sm:px-35 md:px-55 py-1">
         <ReviewCard reviewData={cardData} />
       </div>
 
