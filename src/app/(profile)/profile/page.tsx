@@ -43,7 +43,7 @@ export default function DonatorProfilePage() {
         </div>
         <div className="mx-4 ">
           <div className="flex justify-between items-center pb-6">
-            <h1 className="text-lg font-semibold opacity-90">전체 기부내역</h1>
+            <h1 className="text-lg font-semibold opacity-80">전체 기부내역</h1>
             <Link href={"/profile/donationhistory"}>
               <Image
                 height={20}
