@@ -15,47 +15,54 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 
 const DateSearchModal = () => {
-  const [startDate, setStartDate] = useState("2025.01.01");
-  const [endDate, setEndDate] = useState("2025.03.12");
+  const [startDate, setStartDate] = useState("2025-04-09T19:46");
+  const [endDate, setEndDate] = useState("2025-04-09T19:46");
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="flex items-center gap-1 bg-white text-sm text-gray rounded-lg px-2 py-1.5 shadow-sm"
+          className="flex items-center gap-1 bg-white text-sm text-gray rounded-lg px-2 py-1.5  "
           variant="ghost">
           기간 검색 <ChevronDown className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] top-[80%] bg-white">
+      <DialogContent className="sm:max-w-[425px] !h-[35vh] rounded-3xl top-[78%] bg-white border border-transparent">
         <DialogHeader>
-          <DialogTitle>기간 선택</DialogTitle>
+          <DialogTitle className="flex justify-start text-secondary text-xl font-regular opacity-75">
+            기간 선택
+          </DialogTitle>
           <DialogDescription />
         </DialogHeader>
         <div className="grid gap-4 py-2">
           <div className="flex justify-between items-center">
-            <Label htmlFor="name" className="text-right">
+            <Label
+              htmlFor="startDate"
+              className="text-right text-base text-secondary opacity-80 ">
               시작일
             </Label>
             <div className="flex items-center">
               <Input
                 type="datetime-local"
+                name="startDate"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="mt-0.5 text-sm p-2"
+                className="mt-0.5 text-base text-secondary p-2 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
               />
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Label htmlFor="username" className="text-right">
+            <Label
+              htmlFor="endDate"
+              className="text-right text-secondary text-base opacity-80">
               종료일
             </Label>
             <div className="flex items-center">
               <Input
                 type="datetime-local"
-                name="date"
+                name="endDate"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="mt-0.5 text-sm p-2"
+                className="mt-0.5 text-base text-secondary p-2 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
               />
             </div>{" "}
           </div>
@@ -63,12 +70,16 @@ const DateSearchModal = () => {
         <DialogFooter>
           <div className="grid grid-cols-2 gap-4">
             <DialogClose asChild>
-              <Button variant="gray" className="rounded-md py-3">
+              <Button
+                variant="gray"
+                className="h-[5vh] text-secondary text-base rounded-2xl py-3">
                 닫기
               </Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button className="rounded-md py-3 text-black ">선택완료</Button>
+              <Button className="h-[5vh] text-secondary text-base rounded-2xl py-3 ">
+                선택완료
+              </Button>
             </DialogClose>
           </div>
         </DialogFooter>
