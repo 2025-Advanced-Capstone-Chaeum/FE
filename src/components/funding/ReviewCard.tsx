@@ -21,7 +21,7 @@ const ReviewCard = ({ reviewData }: { reviewData: reviewDataProps }) => {
           height={100}
           className="w-full h-auto rounded-lg object-cover"
         />
-        <p className="text-sm text-secondary mt-4 text-left">
+        <p className="text-xs text-secondary mt-4 text-left">
           {reviewData.title.length > 13
             ? reviewData.title.slice(0, 13) + ".."
             : reviewData.title}
