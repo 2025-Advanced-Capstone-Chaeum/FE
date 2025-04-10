@@ -5,9 +5,10 @@ import { Input } from "../ui/input";
 interface ImageUploadProps {
   setImageUrl: (url: string) => void;
   type?: "primary" | "soft";
+  text?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary" }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary", text }) => {
   const [imageUrl, setLocalImageUrl] = useState("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +27,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary"
 
   return (
     <div className="flex items-center gap-8">
-      <span className="text-sm text-secondary opacity-80">사진 첨부</span>
+      <span className="text-sm text-secondary opacity-80">{text}</span>
       {imageUrl ? (
         <div className="w-45 h-30 overflow-hidden">
           <Image
