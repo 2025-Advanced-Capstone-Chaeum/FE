@@ -1,6 +1,7 @@
 "use client"
 
 import ImageUpload from "@/components/funding/ImageUpload";
+import RecipientConfirmModal from "@/components/profile/recipient/RecipientConfirmModal";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@radix-ui/react-label";
@@ -9,10 +10,12 @@ import React, { useState } from "react";
 const RecipientRegisterPage = () => {
   const [selectedDocument, setSelectedDocument] = useState("");
   const [image, setImage] = useState("");
+  const [activeModal, setActiveModal] = useState(false);
 
   const handleSubmit = () => {
     if (selectedDocument && image) {
       console.log(`선택된 서류: ${selectedDocument}, 첨부 이미지 URL: ${image}`);
+      setActiveModal(true);
     } else if (!selectedDocument) {
       alert("서류를 선택해주세요.");
     } else if (!image) {
@@ -20,7 +23,12 @@ const RecipientRegisterPage = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setActiveModal(false);
+  }
+
   return (
+    <>
     <div className="flex flex-col h-screen items-center gap-11 py-25 text-secondary">
       <span className="text-[26px]">수혜자 등록</span>
       <div className="flex flex-col w-[80%] h-[50vh] rounded-2xl bg-white gap-8 p-12 text-sm">
@@ -52,6 +60,8 @@ const RecipientRegisterPage = () => {
         등록하기
       </Button>
     </div>
+    {activeModal && <RecipientConfirmModal onClose={handleCloseModal} />}
+  </>
   );
 };
 
