@@ -29,7 +29,6 @@ export default function FriendCatPage() {
       <BackButton />
       <div className="flex flex-col py-6 space-y-6">
         <h1 className="flex justify-center text-secondary text-2xl font-semibold opacity-80 ">
-          {" "}
           김민상님의 고양이
         </h1>
         <ProgressBar now={35} />
