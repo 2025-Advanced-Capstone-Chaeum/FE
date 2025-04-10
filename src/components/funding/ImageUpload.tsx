@@ -27,7 +27,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary"
 
   return (
     <div className="flex items-center gap-8">
-      <span className="text-sm text-secondary opacity-80">{text}</span>
+      {text && (
+        <span className="text-sm text-secondary opacity-80">{text}</span>
+      )}
       {imageUrl ? (
         <div className="w-45 h-30 overflow-hidden">
           <Image
