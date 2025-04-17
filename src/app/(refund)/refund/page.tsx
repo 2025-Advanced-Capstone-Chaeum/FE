@@ -20,7 +20,7 @@ const RefundCalculatePage = () => {
       <BackButton />
       <div className="flex flex-col px-17 h-[78vh] justify-center gap-15 text-secondary">
         <div className="flex flex-col gap-4">
-          <div className="text-2xl">세금 공제 계산기</div>
+          <div className="text-2xl font-semibold">세금 공제 계산기</div>
           <div className="flex flex-col gap-1">
             <div className="text-xs">
               본인의 기부금에 대한 세액공제를 받을 수 있습니다.
