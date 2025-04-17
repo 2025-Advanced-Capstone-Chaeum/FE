@@ -51,7 +51,7 @@ export default function AttendancePage() {
 
   return (
     <div className="w-full flex flex-col rounded-xl overflow-hidden">
-      <div className="pb-4 text-center">
+      <div className=" text-center">
         <BackButton />
         <h1 className="text-secondary text-xl font-bold opacity-70 flex justify-center gap-2">
           출석 체크
@@ -65,7 +65,7 @@ export default function AttendancePage() {
       </div>
 
       <div className="w-full max-h-full space-y-6 p-12">
-        <div className="w-full mx-auto bg-white p-6 mt-6 rounded-xl shadow-sm">
+        <div className="w-full mx-auto bg-white p-6 rounded-xl shadow-sm">
           <CalendarHeader
             currentDate={currentDate}
             onPrev={() => changeMonth(-1)}
@@ -77,7 +77,7 @@ export default function AttendancePage() {
         <div className="p-4 flex justify-center">
           <Button
             onClick={handleAttendance}
-            className="w-full h-full max-h-1/2 py-3 mt-6 text-white rounded-full shadow-md">
+            className="w-full h-full max-h-1/2 py-3 mb-3 text-white rounded-full shadow-md">
             출석 포인트 받기!
           </Button>
         </div>
