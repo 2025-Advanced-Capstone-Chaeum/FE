@@ -26,7 +26,6 @@ const page = () => {
     });
   };
 
-  // Check if a specific item is clicked
   const isItemClicked = (index: number) => {
     return clickedItems.includes(index);
   };
