@@ -32,12 +32,10 @@ const page = () => {
 
   return (
     <div className="text-secondary">
-      <BackButton />
-      <h1 className="flex justify-center pb-12 text-md opacity-80 font-bold text-xl">
-        서비스 소개
-      </h1>
+      <BackButton> 서비스 소개</BackButton>
 
-      <div className="flex flex-col gap-6">
+
+      <div className="flex flex-col mt-20 gap-6">
         {questionList.map((set, index) => {
           return (
             <div className="flex justify-center" key={index}>

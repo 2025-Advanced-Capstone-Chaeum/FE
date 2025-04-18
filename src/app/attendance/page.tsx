@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import BackButton from "@/components/BackButton";
 import { getSavedAttendance, saveAttendance } from "@/lib/attendance";
 import { generateCalendarDays } from "@/utils/dateUtils";
@@ -14,13 +13,9 @@ export default function AttendancePage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [attendanceRecords, setAttendanceRecords] = useState<
     { date: string }[]
-  >([]);
+  >(getSavedAttendance());
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  useEffect(() => {
-    const saved = getSavedAttendance();
-    if (saved) setAttendanceRecords(saved);
-  }, []);
 
   useEffect(() => {
     saveAttendance(attendanceRecords);
@@ -52,20 +47,11 @@ export default function AttendancePage() {
   return (
     <div className="w-full flex flex-col rounded-xl overflow-hidden">
       <div className="text-center mb-6 sm:mb-4">
-        <BackButton />
-        <h1 className="text-secondary text-xl font-bold opacity-70 flex justify-center gap-2">
-          출석 체크
-          <Image
-            height={30}
-            width={30}
-            alt="출석체크"
-            src="/assets/icons/attendance.svg"
-          />
-        </h1>
+        <BackButton>출석 체크</BackButton>
       </div>
 
-      <div className="w-full max-h-full space-y-24 mt-12 md:space-y-6 px-12 mt-0">
-        <div className="w-full mx-auto bg-white p-6 sm:p-5 md:p-4 rounded-xl shadow-sm">
+      <div className="w-full max-h-full space-y-24 md:space-y-6 px-12 mt-21 md:mt-3">
+      <div className="w-full mx-auto bg-white p-6 sm:p-5 md:p-3 rounded-xl shadow-sm">
           <CalendarHeader
             currentDate={currentDate}
             onPrev={() => changeMonth(-1)}
@@ -77,8 +63,8 @@ export default function AttendancePage() {
         <div className="px-2 flex justify-center">
           <Button
             onClick={handleAttendance}
-            className="w-full py-5 mt-6 sm:py-4 md:py-3 mb-6 mt-0 sm:mb-3 text-white rounded-full shadow-md">
-            출석 포인트 받기!
+            className="w-full py-5 mt-6 text-white text-lg rounded-full shadow-md h-15 md:py-3 mb-6 mt-0 ">
+            출석 혜택 받기!
           </Button>
         </div>
 
