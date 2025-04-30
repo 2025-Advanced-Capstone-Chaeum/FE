@@ -1,19 +1,29 @@
-"use client"
+"use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
+import Dropdown from "@/components/ui/Dropdown";
 
 const RefundCalculatePage = () => {
+  const annualIncomeOptions = ["1", "2", "3"];
+  const donorTypeOptions = ["개인", "사업자"];
   const router = useRouter();
+
+  const [donationAmount, setDonationAmount] = useState("");
+  const [incomeBracket, setIncomeBracket] = useState<string | null>(null);
+  const [donorType, setDonorType] = useState<string | null>(null);
+  const isCalculateButtonDisabled = !donationAmount || !incomeBracket || !donorType;
+
+  const handleCalculate = () => {
+    if (!isCalculateButtonDisabled) {
+      router.push("/refund/result");
+    } else {
+      alert("모든 항목을 선택해주세요.");
+    }
+  };
 
   return (
     <>
@@ -29,69 +39,29 @@ const RefundCalculatePage = () => {
           </div>
         </div>
         <div className="flex flex-col w-full gap-2">
-          <span>올해 총 기부 금액</span>
+          <span>올해 총 소득금액</span>
           <div className="relative flex items-center">
-            <Input className="w-full"/>
+            <Input className="w-full" 
+            value={donationAmount}
+            onChange={(e) => setDonationAmount(e.target.value)}/>
             <span className="absolute right-2 text-sm text-muted-foreground">
               원
             </span>
           </div>
         </div>
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full relative gap-2">
           <span>소득 구간</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="soft" size="none" className="flex justify-between px-4 py-2 rounded-lg">
-                연간 소득 구간을 선택하세요
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-4 w-4 opacity-50"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuItem>1</DropdownMenuItem>
-              <DropdownMenuItem>2</DropdownMenuItem>
-              <DropdownMenuItem>3</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Dropdown options={annualIncomeOptions}  onSelect={(value) => setIncomeBracket(value)}>
+            연간 소득 구간을 선택하세요
+          </Dropdown>
         </div>
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full relative gap-2">
           <span>기부자 유형</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="soft" size="none" className="flex justify-between px-4 py-2 rounded-lg">
-                기부자 유형을 선택하세요
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-4 w-4 opacity-50"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuItem>1</DropdownMenuItem>
-              <DropdownMenuItem>2</DropdownMenuItem>
-              <DropdownMenuItem>3</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Dropdown options={donorTypeOptions} onSelect={(value) => setDonorType(value)}>
+            기부자 유형을 선택하세요
+          </Dropdown>
         </div>
-        <Button onClick={() => router.push("/refund/result")}>계산하기</Button>
+        <Button onClick={handleCalculate} disabled={isCalculateButtonDisabled}>계산하기</Button>
       </div>
     </>
   );

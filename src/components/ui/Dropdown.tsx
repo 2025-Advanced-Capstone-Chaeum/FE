@@ -6,9 +6,10 @@ import { Button } from "./button";
 interface DropdownProps {
     options: string[];
     children?: React.ReactNode;
+    onSelect: (value: string) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, children, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
 
@@ -19,6 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, children }) => {
   const handleOptionClick = (option: string) => {
     setSelectedValue(option);
     setIsOpen(false);
+    onSelect(option);
   };
 
   return (
