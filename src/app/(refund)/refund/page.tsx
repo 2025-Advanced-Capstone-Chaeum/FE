@@ -6,22 +6,41 @@ import React, { useState } from "react";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
 import Dropdown from "@/components/ui/Dropdown";
+import { getDeductionRate } from "@/utils/taxUtils";
 
 const RefundCalculatePage = () => {
-  const annualIncomeOptions = ["1", "2", "3"];
   const donorTypeOptions = ["개인", "사업자"];
   const router = useRouter();
 
   const [donationAmount, setDonationAmount] = useState("");
-  const [incomeBracket, setIncomeBracket] = useState<string | null>(null);
-  const [donorType, setDonorType] = useState<string | null>(null);
-  const isCalculateButtonDisabled = !donationAmount || !incomeBracket || !donorType;
+  const [donorType, setDonorType] = useState("");
+  const isCalculateButtonDisabled = !donorType || !donationAmount;
+
+  const handleDonationAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDonationAmount(e.target.value);
+  };
+
+  const handleDonorTypeSelect = (value: string) => {
+    setDonorType(value);
+  };
 
   const handleCalculate = () => {
-    if (!isCalculateButtonDisabled) {
-      router.push("/refund/result");
+    const donation = parseInt(donationAmount);
+    const deductionRateOrNull = getDeductionRate(donorType, isNaN(donation) ? 0 : donation);
+    let deductRate = 0;
+  
+    if (deductionRateOrNull !== null) {
+      deductRate = deductionRateOrNull / 100;
     } else {
-      alert("모든 항목을 선택해주세요.");
+      console.error("공제율을 가져오는데 실패했습니다.");
+      return;
+    }
+  
+    if (!isCalculateButtonDisabled && !isNaN(donation)) {
+      const calculatedDeduction = donation * deductRate;
+      router.push(`/refund/result?deduction=${Math.round(calculatedDeduction)}`);
+    } else {
+      alert("기부 금액, 기부자 유형을 입력/선택해주세요.");
     }
   };
 
@@ -35,33 +54,34 @@ const RefundCalculatePage = () => {
             <div className="text-xs">
               본인의 기부금에 대한 세액공제를 받을 수 있습니다.
             </div>
-            <div className="text-xs">예산 환급액을 간단히 계산해보세요!</div>
+            <div className="text-xs">예상 환급액을 간단히 계산해보세요!</div>
           </div>
         </div>
         <div className="flex flex-col w-full gap-2">
-          <span>올해 총 소득금액</span>
+          <span>올해 총 기부 금액</span>
           <div className="relative flex items-center">
-            <Input className="w-full" 
-            value={donationAmount}
-            onChange={(e) => setDonationAmount(e.target.value)}/>
+            <Input
+              className="w-full"
+              value={donationAmount}
+              onChange={handleDonationAmountChange}
+            />
             <span className="absolute right-2 text-sm text-muted-foreground">
               원
             </span>
           </div>
         </div>
         <div className="flex flex-col w-full relative gap-2">
-          <span>소득 구간</span>
-          <Dropdown options={annualIncomeOptions}  onSelect={(value) => setIncomeBracket(value)}>
-            연간 소득 구간을 선택하세요
-          </Dropdown>
-        </div>
-        <div className="flex flex-col w-full relative gap-2">
           <span>기부자 유형</span>
-          <Dropdown options={donorTypeOptions} onSelect={(value) => setDonorType(value)}>
+          <Dropdown
+            options={donorTypeOptions}
+            onSelect={handleDonorTypeSelect}
+          >
             기부자 유형을 선택하세요
           </Dropdown>
         </div>
-        <Button onClick={handleCalculate} disabled={isCalculateButtonDisabled}>계산하기</Button>
+        <Button onClick={handleCalculate} disabled={isCalculateButtonDisabled}>
+          계산하기
+        </Button>
       </div>
     </>
   );

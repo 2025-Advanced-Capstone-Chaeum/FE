@@ -2,9 +2,13 @@
 
 import BackButton from "@/components/BackButton";
 import ConfirmButton from "@/components/ConfirmButton";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 const RefundResultPage = () => {
+  const params = useSearchParams();
+  const deduction = params.get("deduction");
+
   return (
     <>
       <BackButton />
@@ -16,7 +20,7 @@ const RefundResultPage = () => {
           </span>
         </div>
         <div className="flex w-full h-17 justify-center items-center bg-white font-semibold text-4xl rounded-2xl">
-          1,200,000
+          {deduction}
         </div>
         <div className="border border-white" />
         <div className="flex flex-col px-6 text-xs">
