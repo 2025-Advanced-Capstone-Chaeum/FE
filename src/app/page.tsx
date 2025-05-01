@@ -6,13 +6,13 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)]">
+    <div className="flex flex-col h-screen">
       <TopMenu />
       <div className="flex flex-col justify-between flex-grow pb-[8rem]">
-        <div className="flex flex-col py-6">
+        <div className="flex flex-col py-5">
           <ProgressBar now={35} />
         </div>
-        <div className="flex justify-center py-12 sm:py-15 md:py-12">
+        <div className="flex justify-center">
           <Image
             src={"/assets/images/cat.svg"}
             alt="Cat"
