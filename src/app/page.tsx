@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)]">
       <TopMenu />
       <div className="flex flex-col justify-between flex-grow pb-[8rem]">
         <div className="flex flex-col py-6">
