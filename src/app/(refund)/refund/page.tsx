@@ -79,7 +79,7 @@ const RefundCalculatePage = () => {
             기부자 유형을 선택하세요
           </Dropdown>
         </div>
-        <Button onClick={handleCalculate} disabled={isCalculateButtonDisabled}>
+        <Button className="py-5 mt-6" onClick={handleCalculate} disabled={isCalculateButtonDisabled}>
           계산하기
         </Button>
       </div>
