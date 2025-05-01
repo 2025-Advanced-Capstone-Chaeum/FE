@@ -11,11 +11,15 @@ import AttendanceModal from "@/components/AttendanceModal";
 
 export default function AttendancePage() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [attendanceRecords, setAttendanceRecords] = useState<
-    { date: string }[]
-  >(getSavedAttendance());
+  const [attendanceRecords, setAttendanceRecords] = useState<{ date: string }[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
+  useEffect(() => {
+    const saved = getSavedAttendance();
+    if (saved) {
+      setAttendanceRecords(saved);
+    }
+  }, []);
 
   useEffect(() => {
     saveAttendance(attendanceRecords);
