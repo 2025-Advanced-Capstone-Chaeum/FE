@@ -8,6 +8,7 @@ import { myDonationList } from "@/lib/myDonationList";
 import MyDonationList from "@/components/profile/MyDonationList";
 
 export default function DonatorProfilePage() {
+
   return (
     <>
       <div className="flex pl-6">
