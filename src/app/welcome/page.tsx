@@ -1,8 +1,10 @@
+"use client";
+
 import ClientWelcome from "@/components/welcome/ClientWelcome";
 import axiosInstance from "@/lib/axios";
 import { useEffect } from "react";
 
-export default async function WelcomePage() {
+export default function WelcomePage() {
   const fetchMemberInfo = async () => {
     const response = await axiosInstance.get("/api/v1/member", {
       withCredentials: true, // HttpOnly 쿠키를 전송하려면 필수
