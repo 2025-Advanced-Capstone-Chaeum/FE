@@ -4,14 +4,14 @@ import ReviewCard from "@/components/funding/ReviewCard";
 
 export default function ReviewListPage() {
   return (
-    <div className="flex min-h-screen flex-col px-8 py-17 relative">
-      <div className="absolute top-[8vh] flex">
+    <div className="flex min-h-screen flex-col px-8 py-10 relative">
+      <div className="absolute top-[3vh] flex">
         <button className={StButton}>
           최신순 <ChevronDown className="h-4 w-4" />
         </button>
       </div>
       {/* Projects grid */}
-      <div className="relative top-[6vh] mt-[6px] grid grid-cols-2 gap-5 max-h-[66vh] overflow-y-scroll scrollbar-none">
+      <div className="relative top-[2vh] mt-[6px] grid grid-cols-2 gap-5 max-h-[calc(100vh-8vh-4rem)] overflow-y-scroll scrollbar-none">
         {reviewData.map((review) => (
           <ReviewCard key={review.id} reviewData={review} />
         ))}
