@@ -23,7 +23,6 @@ export default function WelcomePage() {
     };
 
     getUser();
-    console.log("원하는 데이터: ", getUser);
   }, []);
 
   return <ClientWelcome />;
