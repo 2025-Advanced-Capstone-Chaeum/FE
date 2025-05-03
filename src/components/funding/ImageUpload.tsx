@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
+import imageCompression from 'browser-image-compression';
 
 interface ImageUploadProps {
   setImageUrl: (url: string) => void;
@@ -9,19 +10,36 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary", text }) => {
-  const [imageUrl, setLocalImageUrl] = useState("");
+  const [localImageUrl, setLocalImageUrl] = useState("");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setLocalImageUrl(reader.result);
-          setImageUrl(reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 1, // 최대 파일 크기 (MB)
+          maxWidthOrHeight: 1920, // 최대 너비 또는 높이
+        });
+        console.log('압축된 이미지 파일:', compressedFile);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === "string") {
+            setLocalImageUrl(reader.result);
+            setImageUrl(reader.result);
+          }
+        };
+        reader.readAsDataURL(compressedFile);
+
+        // 또는 압축된 파일을 서버에 업로드하고 URL을 받아서 전달하는 방식
+        // const imageUrlFromServer = await uploadImageToServer(compressedFile);
+        // if (imageUrlFromServer) {
+        //   setImageUrl(imageUrlFromServer);
+        // }
+
+      } catch (error) {
+        console.error('이미지 압축 실패:', error);
+      }
     }
   };
 
@@ -30,10 +48,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary"
       {text && (
         <span className="text-sm text-secondary opacity-80">{text}</span>
       )}
-      {imageUrl ? (
+      {localImageUrl ? (
         <div className="w-45 h-30 overflow-hidden">
           <Image
-            src={imageUrl}
+            src={localImageUrl}
             alt="Uploaded Image"
             width={180}
             height={120}
@@ -76,6 +94,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setImageUrl, type = "primary"
             size="xs"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/*"
           />
         </label>
       )}

@@ -6,26 +6,23 @@ import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useFunding } from "@/hooks/useCreateFunding";
+import { FundingData } from "@/lib/api/funding";
 import React, { useState } from "react";
 
 const FundingWritePage = () => {
-  const [formData, setFormData] = useState<{
-    title: string;
-    imageUrl: string;
-    purchaseLink: string;
-    address: string;
-    content: string;
-    isRegister: boolean;
-  }>({
+  const [formData, setFormData] = useState<FundingData>({
     title: "",
-    imageUrl: "",
-    purchaseLink: "",
-    address: "",
     content: "",
-    isRegister: false,
+    fundingImage: "https://bucket.s3.ap-northeast-2.amazonaw.com/funding/764c13ef-7301-22f2-a1d4-e7c8cw4.png",
+    itemLink: "",
+    address: "",
+    goalAmount: 0,
+    endDate: new Date().toISOString(),
   });
-
+  const { createFundingMutation } = useFunding();
   const [isRegister, setIsRegister] = useState(false);
+  
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -33,23 +30,36 @@ const FundingWritePage = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: name === "goalAmount" ? parseInt(value, 10) : value,
     }));
   };
 
   const handleSubmit = () => {
     if (
       !formData.title ||
-      !formData.imageUrl ||
-      !formData.purchaseLink ||
+      !formData.fundingImage ||
+      !formData.itemLink ||
       !formData.address ||
-      !formData.content
+      !formData.content ||
+      formData.goalAmount <= 0 ||
+      !formData.endDate
     ) {
       alert("모든 입력칸을 채워주세요!");
       return;
     }
-
-    setIsRegister(true);
+    createFundingMutation.mutate(formData, {
+      onSuccess: () => {
+        try {
+          setIsRegister(true);
+        } catch (error) {
+          console.error('펀딩 생성 데이터 갱신 중 오류 발생:', error);
+        }
+      },
+      onError: (error) => {
+        console.log(formData)
+        console.error('펀딩 생성 중 오류 발생:', error);
+      },
+    })
   };
 
   const handleCloseModal = () => {
@@ -60,18 +70,19 @@ const FundingWritePage = () => {
   const resetForm = () => {
     setFormData({
       title: "",
-      imageUrl: "",
-      purchaseLink: "",
-      address: "",
       content: "",
-      isRegister: false,
+      fundingImage: "",
+      itemLink: "",
+      address: "",
+      goalAmount: 0,
+      endDate: "",
     });
   };
 
   return (
     <div className="h-screen">
       <BackButton />
-      <div className="flex flex-col p-2 justify-center items-center gap-5 py-4">
+      <div className="flex flex-col w-full px-2 justify-center items-center gap-4 py-4">
         <Input
           type="text"
           size="lg"
@@ -82,7 +93,7 @@ const FundingWritePage = () => {
         />
         <ImageUpload
           setImageUrl={(url: string) =>
-            setFormData((prev) => ({ ...prev, imageUrl: url }))
+            setFormData((prev) => ({ ...prev, fundingImage: url }))
           }
           text="사진 첨부"
         />
@@ -90,8 +101,8 @@ const FundingWritePage = () => {
           type="text"
           size="sm"
           placeholder="물품 구매 링크"
-          name="purchaseLink"
-          value={formData.purchaseLink}
+          name="itemLink"
+          value={formData.itemLink}
           onChange={handleFormChange}
         />
         <Input
@@ -102,9 +113,38 @@ const FundingWritePage = () => {
           value={formData.address}
           onChange={handleFormChange}
         />
+        <div className="flex justify-center items-center gap-2 text-xs text-secondary opacity-80">
+          <div className="flex flex-col gap-1 w-40">
+            <span className="flex px-1">펀딩 마감일</span>
+            <div className="flex justify-center items-center">
+            <Input
+              type="date"
+              id="endDate"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleFormChange}
+              className="h-10"
+            />
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 w-37">
+            <span className="flex px-3">가격</span>
+            <div className="flex justify-center items-center">
+            <Input
+              type="number"
+              size="sm"
+              placeholder="가격"
+              name="goalAmount"
+              value={formData.goalAmount}
+              onChange={handleFormChange}
+              className="h-10"
+            />
+            </div>
+          </div>
+        </div>
         <Textarea
           placeholder="내용"
-          className="bg-white rounded-xl text-sm w-[85%] h-50 border-none"
+          className="bg-white rounded-xl text-sm w-[85%] h-40 border-none"
           name="content"
           value={formData.content}
           onChange={handleFormChange}
