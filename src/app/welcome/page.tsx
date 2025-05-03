@@ -1,48 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import cat from "@assets/images/cat.svg";
-import { centerImageStyles, mainStyles } from "@/styles/styles";
-import { useRouter } from "next/navigation";
+import ClientWelcome from "@/components/welcome/ClientWelcome";
+import axiosInstance from "@/lib/axios";
+import { userStore } from "@/store/userStore";
+import { useEffect } from "react";
 
-const WelcomePage = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const router = useRouter();
+export default function WelcomePage() {
+
+  const setUserData = userStore((state) => state.setUserData);
+  const fetchMemberInfo = async () => {
+    const response = await axiosInstance.get("/api/v1/member", {
+      withCredentials: true, // HttpOnly 쿠키를 전송하려면 필수
+    });
+    return response.data;
+  };
+
   useEffect(() => {
-    // 200ms마다 텍스트 표시 상태를 토글하는 인터벌 설정
-    const interval = setInterval(() => {
-      setIsVisible((prev) => !prev);
-    }, 700);
+    const getUser = async () => {
+      try {
+        const { data } = await fetchMemberInfo();
+        setUserData(data);
+      } catch (err) {
+        console.error("회원 정보 요청 실패:", err);
+      }
+    };
 
-    // 컴포넌트 언마운트 시 인터벌 정리
-    return () => clearInterval(interval);
+    getUser();
   }, []);
 
-  return (
-    <main
-      className={mainStyles}
-      onClick={() => {
-        router.prefetch("/");
-        router.push("/");
-      }}>
-      <div className={centerImageStyles}>
-        <Image
-          src={cat || "/placeholder.svg"}
-          alt="Cat"
-          width={180}
-          height={180}
-        />
-        <h2
-          className={`${textStyle} transition-opacity duration-100`}
-          style={{ opacity: isVisible ? 1 : 0 }}>
-          민상님, 반가워요!
-        </h2>
-      </div>
-    </main>
-  );
-};
-
-const textStyle = "text-sky-950 text-2xl font-semibold tracking-wide";
-
-export default WelcomePage;
+  return <ClientWelcome />;
+}
