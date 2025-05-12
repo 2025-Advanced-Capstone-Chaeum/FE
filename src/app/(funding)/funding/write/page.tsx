@@ -77,7 +77,7 @@ const FundingWritePage = () => {
       itemLink: "",
       address: "",
       goalAmount: 0,
-      endDate: "",
+      endDate: new Date().toISOString().slice(0, 10),
     });
   };
 
