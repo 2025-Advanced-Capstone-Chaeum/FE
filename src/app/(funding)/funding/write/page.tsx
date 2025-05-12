@@ -6,7 +6,6 @@ import RegisterConfirmModal from "@/components/funding/RegisterConfirmModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useFunding } from "@/hooks/useCreateFunding";
 import { FundingData } from "@/lib/api/funding";
 import React, { useState } from "react";
 
@@ -14,15 +13,13 @@ const FundingWritePage = () => {
   const [formData, setFormData] = useState<FundingData>({
     title: "",
     content: "",
-    fundingImage: "",
+    imageUrls: [],
     itemLink: "",
     address: "",
     goalAmount: 0,
-    endDate: new Date().toISOString(),
+    endDate: new Date().toISOString().slice(0, 10),
   });
-  const { createFundingMutation } = useFunding();
   const [isRegister, setIsRegister] = useState(false);
-
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,8 +33,7 @@ const FundingWritePage = () => {
           [name]: isNaN(parsedValue) ? 0 : parsedValue,
         };
       } else if (name === "endDate") {
-        const newEndDate = value + "T23:59:59";
-        return { ...prevData, [name]: newEndDate };
+        return { ...prevData, [name]: value };
       } else {
         return { ...prevData, [name]: value };
       }
@@ -47,14 +43,14 @@ const FundingWritePage = () => {
   const handleImageUploadSuccess = (imageUrl: string) => {
     setFormData((prevData) => ({
       ...prevData,
-      fundingImage: imageUrl,
+      imageUrls: [...prevData.imageUrls, imageUrl],
     }));
   };
 
   const handleSubmit = () => {
     if (
       !formData.title ||
-      !formData.fundingImage ||
+      !formData.imageUrls ||
       !formData.itemLink ||
       !formData.address ||
       !formData.content ||
@@ -64,19 +60,8 @@ const FundingWritePage = () => {
       alert("모든 입력칸을 채워주세요!");
       return;
     }
-    createFundingMutation.mutate(formData, {
-      onSuccess: () => {
-        try {
-          setIsRegister(true);
-        } catch (error) {
-          console.error('펀딩 생성 데이터 갱신 중 오류 발생:', error);
-        }
-      },
-      onError: (error) => {
-        console.log(formData)
-        console.error('펀딩 생성 중 오류 발생:', error);
-      },
-    })
+    
+    setIsRegister(true);
   };
 
   const handleCloseModal = () => {
@@ -88,7 +73,7 @@ const FundingWritePage = () => {
     setFormData({
       title: "",
       content: "",
-      fundingImage: "",
+      imageUrls: [],
       itemLink: "",
       address: "",
       goalAmount: 0,
@@ -132,28 +117,28 @@ const FundingWritePage = () => {
           <div className="flex flex-col gap-1 w-40">
             <span className="flex px-1">펀딩 마감일</span>
             <div className="flex justify-center items-center">
-            <Input
-              type="date"
-              id="endDate"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleFormChange}
-              className="h-10"
-            />
+              <Input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleFormChange}
+                className="h-10"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-1 w-37">
             <span className="flex px-3">가격</span>
             <div className="flex justify-center items-center">
-            <Input
-              type="number"
-              size="sm"
-              placeholder="가격"
-              name="goalAmount"
-              value={formData.goalAmount}
-              onChange={handleFormChange}
-              className="h-10"
-            />
+              <Input
+                type="number"
+                size="sm"
+                placeholder="가격"
+                name="goalAmount"
+                value={formData.goalAmount}
+                onChange={handleFormChange}
+                className="h-10"
+              />
             </div>
           </div>
         </div>
@@ -169,7 +154,7 @@ const FundingWritePage = () => {
             마음 나눠받기
           </span>
         </Button>
-        {isRegister && <RegisterConfirmModal onClose={handleCloseModal} />}
+        {isRegister && <RegisterConfirmModal onClose={handleCloseModal} formData={formData} />}
       </div>
     </div>
   );
