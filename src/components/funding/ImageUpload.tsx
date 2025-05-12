@@ -25,16 +25,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       const response = await axiosInstance.post(
         "/api/v1/file/funding",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer {$accessToken}`,
-          },
-        }
+        formData
       );
 
       if (response.status === 200) {
-        console.log(response.data);
         return response.data.data[0].fileUrl;
       } else {
         console.error("파일 업로드 실패:", response.statusText);
@@ -79,7 +73,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           {isUploading && (
             <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
               <span className="text-white animate-spin">⏳</span>{" "}
-              {/* 로딩 애니메이션 */}
             </div>
           )}
         </div>

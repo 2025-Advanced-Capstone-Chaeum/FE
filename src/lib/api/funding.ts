@@ -13,10 +13,6 @@ export interface FundingData {
 export const createFunding = async (
   fundingData: FundingData
 ): Promise<FundingData> => {
-  const response = await axiosInstance.post("/api/v1/funding", fundingData, {
-    headers: {
-      Authorization: `Bearer {$accessToken}`,
-    },
-  });
+  const response = await axiosInstance.post("/api/v1/funding", fundingData);
   return response.data;
 };

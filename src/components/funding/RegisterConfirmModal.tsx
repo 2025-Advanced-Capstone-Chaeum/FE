@@ -24,8 +24,6 @@ const RegisterConfirmModal: React.FC<RegisterConfirmModalProps> = ({
       endDate: formData.endDate + "T23:59:59",
     };
 
-    console.log("전송될 payload:", payload);
-
     createFundingMutation.mutate(payload, {
       onSuccess: () => {
         try {
