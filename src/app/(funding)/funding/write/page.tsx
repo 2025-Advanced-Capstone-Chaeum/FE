@@ -14,7 +14,7 @@ const FundingWritePage = () => {
   const [formData, setFormData] = useState<FundingData>({
     title: "",
     content: "",
-    fundingImage: "https://bucket.s3.ap-northeast-2.amazonaw.com/funding/764c13ef-7301-22f2-a1d4-e7c8cw4.png",
+    fundingImage: "",
     itemLink: "",
     address: "",
     goalAmount: 0,
@@ -22,15 +22,32 @@ const FundingWritePage = () => {
   });
   const { createFundingMutation } = useFunding();
   const [isRegister, setIsRegister] = useState(false);
-  
+
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    setFormData((prevData) => {
+      if (name === "goalAmount") {
+        const parsedValue = parseInt(value, 10);
+        return {
+          ...prevData,
+          [name]: isNaN(parsedValue) ? 0 : parsedValue,
+        };
+      } else if (name === "endDate") {
+        const newEndDate = value + "T23:59:59";
+        return { ...prevData, [name]: newEndDate };
+      } else {
+        return { ...prevData, [name]: value };
+      }
+    });
+  };
+
+  const handleImageUploadSuccess = (imageUrl: string) => {
     setFormData((prevData) => ({
       ...prevData,
-      [name]: name === "goalAmount" ? parseInt(value, 10) : value,
+      fundingImage: imageUrl,
     }));
   };
 
@@ -92,9 +109,7 @@ const FundingWritePage = () => {
           onChange={handleFormChange}
         />
         <ImageUpload
-          setImageUrl={(url: string) =>
-            setFormData((prev) => ({ ...prev, fundingImage: url }))
-          }
+          setImageUrl={handleImageUploadSuccess} // 콜백 함수 변경
           text="사진 첨부"
         />
         <Input
