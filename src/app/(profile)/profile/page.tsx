@@ -20,10 +20,31 @@ export default function DonatorProfilePage() {
   const timerIdRef = useRef<NodeJS.Timeout | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = React.useState<string>("");
-  const [name, setName] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [profileForm, setProfileForm] = useState<{
+    name: string;
+    selectedFile: File | null;
+  }>({
+    name: "",
+    selectedFile: null,
+  });
+  const [tempForm, setTempForm] = useState({
+    name: "",
+    preview: "",
+    file: null as File | null,
+  });
+  const handleOpenModal = () => {
+    setTempForm({
+      name: userData?.name || "",
+      preview:
+        userData?.profileImage && userData.profileImage !== "null"
+          ? userData.profileImage
+          : "/assets/icons/woman-profile.png",
+      file: null,
+    });
+    setIsOpen(true);
+  };
 
   const { mutate: UploadImage, isPending } = useMutation({
     mutationFn: async (file: File) => {
@@ -40,7 +61,7 @@ export default function DonatorProfilePage() {
       );
 
       console.log("이미지 업로드 성공:", uploadResponse.data);
-      const uploadname = name === "" ? name : userData?.name;
+      const uploadname = profileForm.name === "" ? name : userData?.name;
       const imageUrl = uploadResponse.data?.data?.[0]?.fileUrl;
       // 이후 imageUrl을 가지고 회원 정보 업데이트
       const patchResponse = await axiosInstance.patch(
@@ -71,35 +92,55 @@ export default function DonatorProfilePage() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (_: React.ChangeEvent<HTMLInputElement>) => {
-    const file = _.target.files?.[0];
-    if (file) {
-      // 1. 로컬 preview 설정
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setPreview(reader.result); // 따로 preview 상태에 저장
-          setUserData({
-            ...userData!,
-            name,
-            profileImage: reader.result,
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+  const handleTempNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempForm((prev) => ({ ...prev, name: e.target.value }));
+  };
 
-      // 2. 서버 업로드
-      setSelectedFile(file);
-    }
+  const handleTempFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        setTempForm((prev) => ({
+          ...prev,
+          preview: reader.result as string,
+          file,
+        }));
+      }
+    };
+    reader.readAsDataURL(file);
   };
-  const handleNameChange = (_: React.ChangeEvent<HTMLInputElement>) => {
-    setName(_.target.value);
-  };
+
   const handleConfirm = () => {
-    if (selectedFile) {
-      UploadImage(selectedFile);
+    if (tempForm.file) {
+      UploadImage(tempForm.file);
     }
+
+    setUserData({
+      ...userData!,
+      name: tempForm.name,
+      profileImage: tempForm.preview,
+    });
+
+    setProfileForm({
+      name: tempForm.name,
+      selectedFile: tempForm.file,
+    });
+
+    setPreview(tempForm.preview);
     setIsOpen(false);
+  };
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+
+  const resetForm = () => {
+    setProfileForm({
+      name: "",
+      selectedFile: null,
+    });
   };
 
   // Trailing Edge Debouncing
@@ -156,14 +197,14 @@ export default function DonatorProfilePage() {
             />
           </div>
           <h3 className="text-baseline text-secondary pt-2">
-            {name === "" ? userData.name : name}
+            {profileForm.name === "" ? userData.name : profileForm.name}
           </h3>
           <p className="text-sm text-secondary">{userData.email}</p>
         </div>
         <div className="flex justify-between m-2">
           <Button
             className="w-34 h-7 bg-gray-100 rounded-2xl text-black ml-5"
-            onClick={() => setIsOpen(true)}>
+            onClick={handleOpenModal}>
             프로필 편집
           </Button>
           <Button
@@ -213,12 +254,7 @@ export default function DonatorProfilePage() {
             className="w-[100px] h-[100px] cursor-pointer relative"
             onClick={handleImageClick}>
             <Image
-              src={
-                preview ||
-                (userData.profileImage && userData.profileImage !== "null"
-                  ? userData.profileImage
-                  : "/assets/icons/woman-profile.png")
-              }
+              src={tempForm.preview}
               alt="프로필"
               width={100}
               height={100}
@@ -236,7 +272,7 @@ export default function DonatorProfilePage() {
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            onChange={handleFileChange}
+            onChange={handleTempFileChange}
             style={{ display: "none" }}
           />
           <div className="relative ">
@@ -244,11 +280,8 @@ export default function DonatorProfilePage() {
               name="myname"
               type="text"
               placeholder="이름"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                debounce(2000);
-              }}
+              value={tempForm.name}
+              onChange={handleTempNameChange}
               className="text-center text-sm text-secondary m-1 bg-transparent border-none outline-none w-fit"
               style={{ color: "var(--color-secondary)" }}
             />
@@ -267,7 +300,7 @@ export default function DonatorProfilePage() {
             </Button>
             <Button
               className="w-34 h-7 bg-gray-100 rounded-2xl text-black "
-              onClick={() => setIsOpen(false)}>
+              onClick={handleCancel}>
               취소
             </Button>
           </div>
