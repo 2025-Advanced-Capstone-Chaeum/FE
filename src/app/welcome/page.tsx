@@ -1,7 +1,7 @@
 "use client";
 
 import ClientWelcome from "@/components/welcome/ClientWelcome";
-import axiosInstance from "@/lib/axios";
+import axiosInstance from "@/lib/api/axios";
 import { userStore } from "@/store/userStore";
 import { useEffect } from "react";
 

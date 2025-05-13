@@ -1,6 +1,5 @@
 "use client";
 
-import { FaCirclePlus } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -10,18 +9,19 @@ import { myDonationList } from "@/lib/myDonationList";
 import MyDonationList from "@/components/profile/MyDonationList";
 import { useRouter } from "next/navigation";
 import { userStore } from "@/store/userStore";
-import axiosInstance from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
+import { patchUserProfile, uploadProfileImage } from "@/lib/profile";
+import EditProfileModal from "@/components/profile/EditProfileModal";
 
 export default function DonatorProfilePage() {
   const userData = userStore((state) => state.userData);
   const setUserData = userStore((state) => state.setUserData);
   const router = useRouter();
   const timerIdRef = useRef<NodeJS.Timeout | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [preview, setPreview] = React.useState<string>("");
+  const [preview, setPreview] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
   const [profileForm, setProfileForm] = useState<{
     name: string;
     selectedFile: File | null;
@@ -29,11 +29,13 @@ export default function DonatorProfilePage() {
     name: "",
     selectedFile: null,
   });
+
   const [tempForm, setTempForm] = useState({
     name: "",
     preview: "",
     file: null as File | null,
   });
+
   const handleOpenModal = () => {
     setTempForm({
       name: userData?.name || "",
@@ -48,38 +50,14 @@ export default function DonatorProfilePage() {
 
   const { mutate: UploadImage, isPending } = useMutation({
     mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append("multipartFile", file); //
-      const uploadResponse = await axiosInstance.post(
-        "/api/v1/file/profile",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("이미지 업로드 성공:", uploadResponse.data);
-      const uploadname = profileForm.name === "" ? name : userData?.name;
-      const imageUrl = uploadResponse.data?.data?.[0]?.fileUrl;
-      // 이후 imageUrl을 가지고 회원 정보 업데이트
-      const patchResponse = await axiosInstance.patch(
-        "/api/v1/member",
-        {
-          name: uploadname,
-          profileImage: imageUrl,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("회원 정보 업데이트 성공:", patchResponse.data);
+      const imageUrl = await uploadProfileImage(file);
+      const uploadname = profileForm.name || userData?.name || "";
+      return await patchUserProfile({
+        name: uploadname,
+        profileImage: imageUrl,
+      });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       console.error("업로드 에러:", error);
       setErrorMessage("파일 업로드에 실패했습니다. 다시 시도 해주세요.");
     },
@@ -88,12 +66,9 @@ export default function DonatorProfilePage() {
     },
   });
 
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
-  };
-
   const handleTempNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempForm((prev) => ({ ...prev, name: e.target.value }));
+    debounce(2000); // debounce 사용
   };
 
   const handleTempFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,25 +107,20 @@ export default function DonatorProfilePage() {
     setPreview(tempForm.preview);
     setIsOpen(false);
   };
-  const handleCancel = () => {
-    setIsOpen(false);
-  };
 
-  const resetForm = () => {
+  const handleCancel = () => {
     setProfileForm({
       name: "",
       selectedFile: null,
     });
+    setIsOpen(false);
   };
 
-  // Trailing Edge Debouncing
   const debounce = (delay: number): void => {
     if (timerIdRef.current) {
-      // 할당되어 있는 timerId에 해당하는 타이머 제거
       clearTimeout(timerIdRef.current);
     }
     timerIdRef.current = setTimeout(() => {
-      // timerId에 새로운 타이머 할당
       console.log(`마지막 요청으로부터 ${delay}ms지났으므로 API요청 실행!`);
       timerIdRef.current = null;
     }, delay);
@@ -158,16 +128,16 @@ export default function DonatorProfilePage() {
 
   useEffect(() => {
     return () => {
-      // 페이지 이동 시 실행
       if (timerIdRef.current) {
-        // 메모리 누수 방지
         clearTimeout(timerIdRef.current);
       }
     };
-  }, []);
+  }, [setUserData]); // setUserData 의존성 추가
+
   if (!userData) {
     return <div>페이지 정보를 불러오는 중입니다.</div>;
   }
+
   return (
     <>
       <div className="flex pl-6">
@@ -243,69 +213,16 @@ export default function DonatorProfilePage() {
           </div>
         </div>
       </div>
-      <div
-        className={`absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}>
-        <div className="flex flex-col justify-center items-center bg-white rounded-2xl p-3 space-y-6 pt-6">
-          <div
-            className="w-[100px] h-[100px] cursor-pointer relative"
-            onClick={handleImageClick}>
-            <Image
-              src={tempForm.preview}
-              alt="프로필"
-              width={100}
-              height={100}
-              className="rounded-full object-cover w-full h-full"
-            />
-            <div
-              className="absolute bottom-1 right-8 bg-white rounded-full p-1 cursor-pointer transform translate-x-1/2 translate-y-1/2 z-50"
-              onClick={handleImageClick}>
-              <FaCirclePlus className="text-gray text-lg" />
-            </div>
-          </div>
-
-          <input
-            name="profileImage"
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleTempFileChange}
-            style={{ display: "none" }}
-          />
-          <div className="relative ">
-            <input
-              name="myname"
-              type="text"
-              placeholder="이름"
-              value={tempForm.name}
-              onChange={handleTempNameChange}
-              className="text-center text-sm text-secondary m-1 bg-transparent border-none outline-none w-fit"
-              style={{ color: "var(--color-secondary)" }}
-            />
-            <div className="absolute bottom-0 left-0 w-full h-[0.7px] bg-gray" />
-          </div>
-          {/* 에러 메시지 표시 */}
-          {errorMessage && (
-            <div className="text-red-500 text-sm">{errorMessage}</div>
-          )}
-          <div className="flex justify-end m-2 gap-3">
-            <Button
-              className="w-34 h-7 bg-gray-100 rounded-2xl text-black "
-              onClick={handleConfirm}
-              disabled={isPending}>
-              {isPending ? "업로드 중..." : "확인"}
-            </Button>
-            <Button
-              className="w-34 h-7 bg-gray-100 rounded-2xl text-black "
-              onClick={handleCancel}>
-              취소
-            </Button>
-          </div>
-        </div>
-      </div>
+      <EditProfileModal
+        isOpen={isOpen}
+        tempForm={tempForm}
+        isPending={isPending}
+        errorMessage={errorMessage}
+        onClose={handleCancel}
+        onConfirm={handleConfirm}
+        onNameChange={handleTempNameChange}
+        onFileChange={handleTempFileChange}
+      />
     </>
   );
 }
