@@ -121,7 +121,6 @@ export default function DonatorProfilePage() {
       clearTimeout(timerIdRef.current);
     }
     timerIdRef.current = setTimeout(() => {
-      console.log(`마지막 요청으로부터 ${delay}ms지났으므로 API요청 실행!`);
       timerIdRef.current = null;
     }, delay);
   };
