@@ -78,7 +78,7 @@ export default function DonatorProfilePage() {
 
   const handleTempNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempForm((prev) => ({ ...prev, name: e.target.value }));
-    debounce(2000); // debounce 사용
+    debounce(2000);
   };
 
   const handleTempFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,10 +159,10 @@ export default function DonatorProfilePage() {
 
       <div className="flex flex-col px-4 max-h-[90vh] overflow-y-scroll scrollbar-none">
         <div className="flex flex-col justify-center items-center p-2">
-          <div className="cursor-pointer">
+          <div className="w-[100px] h-[100px] relative">
             <Image
               width={100}
-              height={130}
+              height={100}
               src={
                 preview ||
                 (userData.profileImage && userData.profileImage !== "null"
@@ -170,7 +170,7 @@ export default function DonatorProfilePage() {
                   : "/assets/icons/woman-profile.png")
               }
               alt="프로필"
-              className="rounded-full object-cover"
+              className="rounded-full object-cover w-full h-full"
             />
           </div>
           <h3 className="text-baseline text-secondary pt-2">
