@@ -10,10 +10,7 @@ export default function WelcomePage() {
   const fetchMemberInfo = async () => {
     const response = await axiosInstance.get("/api/v1/member", {
       withCredentials: true, // HttpOnly 쿠키를 전송하려면 필수
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiZG9mbDg1NDlAbmF2ZXIuY29tIiwicm9sZSI6IkRPTk9SIiwiaWF0IjoxNzQ3MjE1Mjg4LCJleHAiOjE3NDcyMTg4ODh9.CxThGsWwn6TSx3LCuYdl9IoKGMaDB7wv4Zndm7ZFRRRqUUPtpoB193uil3DaAPAUy4nzpU9bBvneoEFKHYFRJQ",
-      },
+  
     });
     return response.data;
   };
