@@ -34,10 +34,22 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
-
+  if (errorMessage) {
+    return (
+      <div className="absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 ">
+        <div className="flex flex-col justify-center items-center bg-white rounded-2xl space-y-6 p-6 ">
+          <div className=" text-red-500 text-baseline ">{errorMessage}</div>
+          <Button
+            className="w-34 h-7 bg-gray-100 rounded-2xl text-black"
+            onClick={onClose}>
+            닫기
+          </Button>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div
-      className={`absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 `}>
+    <div className="absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 ">
       <div className="flex flex-col justify-center items-center bg-white rounded-2xl p-3 space-y-6 pt-6">
         <div
           className="w-[100px] h-[100px] cursor-pointer relative"
@@ -77,10 +89,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
           />
           <div className="absolute bottom-0 left-0 w-full h-[0.7px] bg-gray" />
         </div>
-
-        {errorMessage && (
-          <div className="text-red-500 text-sm">{errorMessage}</div>
-        )}
 
         <div className="flex justify-end m-2 gap-3">
           <Button
