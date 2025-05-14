@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axiosInstance from "@/lib/api/axios";
 import { useQuery } from "@tanstack/react-query";
+import { debounce } from "@/lib/debounce";
 
 const PointContainer = () => {
   const [usePoints, setUsePoints] = useState<number | "">("");
+  const timerIdRef = useRef<NodeJS.Timeout | null>(null);
+
   const fetchPoints = async () => {
     try {
       const { data } = await axiosInstance.get("/api/v1/member/point");
@@ -26,6 +29,13 @@ const PointContainer = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     setUsePoints(value === "" ? "" : parseInt(value));
+    debounce(
+      () => {
+        console.log("Debounced input:", e.target.value);
+      },
+      2000,
+      timerIdRef
+    );
   };
 
   const handleUseAllPoints = () => {

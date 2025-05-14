@@ -1,8 +1,14 @@
-  export const debounce = (delay: number ,timerIdRef:any): void => {
-    if (timerIdRef.current) {
-      clearTimeout(timerIdRef.current);
-    }
-    timerIdRef.current = setTimeout(() => {
-      timerIdRef.current = null;
-    }, delay);
-  };
+// debounce.ts
+export const debounce = (
+  callback: () => void,
+  delay: number,
+  timerIdRef: React.MutableRefObject<NodeJS.Timeout | null>
+) => {
+  if (timerIdRef.current) {
+    clearTimeout(timerIdRef.current);
+  }
+
+  timerIdRef.current = setTimeout(() => {
+    callback();
+  }, delay);
+};
