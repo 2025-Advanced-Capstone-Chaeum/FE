@@ -24,16 +24,16 @@ export default function DonatorProfilePage() {
 
   const [profileForm, setProfileForm] = useState<{
     name: string;
-    selectedFile: File | null;
+    selectedFile: File | "";
   }>({
     name: "",
-    selectedFile: null,
+    selectedFile: "",
   });
 
   const [tempForm, setTempForm] = useState({
     name: "",
     preview: "",
-    file: null as File | null,
+    file: "" as File | "",
   });
 
   const handleOpenModal = () => {
@@ -43,18 +43,28 @@ export default function DonatorProfilePage() {
         userData?.profileImage && userData.profileImage !== "null"
           ? userData.profileImage
           : "/assets/icons/woman-profile.png",
-      file: null,
+      file: "",
     });
     setIsOpen(true);
   };
 
   const { mutate: UploadImage, isPending } = useMutation({
-    mutationFn: async (file: File) => {
-      const imageUrl = await uploadProfileImage(file);
+    mutationFn: async (file: File | string) => {
       const uploadname = profileForm.name || userData?.name || "";
+
+      if (file instanceof File) {
+        // 새 이미지 업로드가 필요한 경우
+        const imageUrl = await uploadProfileImage(file);
+        return await patchUserProfile({
+          name: uploadname,
+          profileImage: imageUrl,
+        });
+      }
+
+      // 기존 이미지 URL만 사용하는 경우
       return await patchUserProfile({
         name: uploadname,
-        profileImage: imageUrl,
+        profileImage: userData?.profileImage, // 이 경우 file은 string
       });
     },
     onError: (error) => {
@@ -89,9 +99,7 @@ export default function DonatorProfilePage() {
   };
 
   const handleConfirm = () => {
-    if (tempForm.file) {
-      UploadImage(tempForm.file);
-    }
+    UploadImage(tempForm.file);
 
     setUserData({
       ...userData!,
@@ -111,7 +119,7 @@ export default function DonatorProfilePage() {
   const handleCancel = () => {
     setProfileForm({
       name: "",
-      selectedFile: null,
+      selectedFile: "",
     });
     setIsOpen(false);
   };
@@ -212,16 +220,17 @@ export default function DonatorProfilePage() {
           </div>
         </div>
       </div>
-      <EditProfileModal
-        isOpen={isOpen}
-        tempForm={tempForm}
-        isPending={isPending}
-        errorMessage={errorMessage}
-        onClose={handleCancel}
-        onConfirm={handleConfirm}
-        onNameChange={handleTempNameChange}
-        onFileChange={handleTempFileChange}
-      />
+      {isOpen && (
+        <EditProfileModal
+          tempForm={tempForm}
+          isPending={isPending}
+          errorMessage={errorMessage}
+          onClose={handleCancel}
+          onConfirm={handleConfirm}
+          onNameChange={handleTempNameChange}
+          onFileChange={handleTempFileChange}
+        />
+      )}
     </>
   );
 }

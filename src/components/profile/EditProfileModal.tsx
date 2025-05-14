@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 interface EditProfileModalProps {
-  isOpen: boolean;
   tempForm: {
     name: string;
     preview: string;
-    file: File | null;
+    file: File | "";
   };
   onClose: () => void;
   onConfirm: () => void;
@@ -22,7 +21,6 @@ interface EditProfileModalProps {
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({
-  isOpen,
   tempForm,
   isPending,
   errorMessage,
@@ -39,17 +37,13 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   return (
     <div
-      className={`absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 ${
-        isOpen
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      }`}>
+      className={`absolute inset-0 bg-black/30 z-50 flex items-center justify-center transition-opacity duration-300 `}>
       <div className="flex flex-col justify-center items-center bg-white rounded-2xl p-3 space-y-6 pt-6">
         <div
           className="w-[100px] h-[100px] cursor-pointer relative"
           onClick={handleImageClick}>
           <Image
-            src={tempForm.preview}
+            src={tempForm.preview || "/assets/icons/man-profile.png"}
             alt="프로필"
             width={100}
             height={100}
