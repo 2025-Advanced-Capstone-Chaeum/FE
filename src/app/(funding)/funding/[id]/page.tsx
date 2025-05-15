@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Avatar } from "@/components/ui/avatar";
 import { CheckCircle } from "lucide-react";
@@ -12,11 +12,31 @@ import { Button } from "@/components/ui/button";
 import BackButton from "@/components/BackButton";
 import { useFunding } from "@/hooks/useFunding";
 
+interface UserInfo {
+  state?: {
+    nickname?: string;
+    profileImage?: string;
+  };
+}
+
 export default function FundingDetailCard() {
   const { id } = useParams();
   const fundingId = Number(id);
   const { fundingQuery } = useFunding(fundingId);
   const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
+  const [parsedUserData, setParsedUserData] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user-info");
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setParsedUserData(parsed);
+      } catch (e) {
+        console.error("Error parsing user-info from localStorage:", e);
+      }
+    }
+  }, []);
 
   if (isLoading) {
     return <div>Loading funding details...</div>;
@@ -48,10 +68,26 @@ export default function FundingDetailCard() {
             <div className="flex items-center gap-2">
               <Avatar className="h-13 w-13 bg-[#d8e6ff]">
                 <div className="flex items-center justify-center h-full ">
-                  <Image width="50" height="50" src={프로필} alt="프로필" />
+                  {parsedUserData?.state?.profileImage ? (
+                    <Image
+                      width="50"
+                      height="50"
+                      src={parsedUserData.state.profileImage}
+                      alt="프로필"
+                    />
+                  ) : (
+                    <Image
+                      width="50"
+                      height="50"
+                      src={프로필}
+                      alt="기본 프로필"
+                    />
+                  )}
                 </div>
               </Avatar>
-              <span className="font-medium text-secondary">김**</span>{" "}
+              <span className="font-medium text-secondary">
+                {parsedUserData?.state?.nickname}
+              </span>{" "}
               {/* TODO: 작성자 정보 연결 */}
             </div>
             <div
