@@ -11,32 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import BackButton from "@/components/BackButton";
 import { useFunding } from "@/hooks/useFunding";
-
-interface UserInfo {
-  state?: {
-    nickname?: string;
-    profileImage?: string;
-  };
-}
+import { userStore } from "@/store/userStore";
 
 export default function FundingDetailCard() {
   const { id } = useParams();
   const fundingId = Number(id);
   const { fundingQuery } = useFunding(fundingId);
   const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
-  const [parsedUserData, setParsedUserData] = useState<UserInfo | null>(null);
-
-  useEffect(() => {
-    const userData = localStorage.getItem("user-info");
-    if (userData) {
-      try {
-        const parsed = JSON.parse(userData);
-        setParsedUserData(parsed);
-      } catch (e) {
-        console.error("Error parsing user-info from localStorage:", e);
-      }
-    }
-  }, []);
+  const userData = userStore((state) => state.userData);
 
   if (isLoading) {
     return <div>Loading funding details...</div>;
@@ -68,11 +50,11 @@ export default function FundingDetailCard() {
             <div className="flex items-center gap-2">
               <Avatar className="h-13 w-13 bg-[#d8e6ff]">
                 <div className="flex items-center justify-center h-full ">
-                  {parsedUserData?.state?.profileImage ? (
+                  {userData?.profileImage ? (
                     <Image
                       width="50"
                       height="50"
-                      src={parsedUserData.state.profileImage}
+                      src={userData.profileImage}
                       alt="프로필"
                     />
                   ) : (
@@ -86,7 +68,7 @@ export default function FundingDetailCard() {
                 </div>
               </Avatar>
               <span className="font-medium text-secondary">
-                {parsedUserData?.state?.nickname}
+                {userData?.name}
               </span>{" "}
               {/* TODO: 작성자 정보 연결 */}
             </div>
