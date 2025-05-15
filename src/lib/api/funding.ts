@@ -37,7 +37,7 @@ export interface CreateFundingData {
   endDate: string;
   itemLink?: string;
   address?: string;
-  fundingImages?: File[];
+  imageUrls?: string[];
 }
 
 export const createFunding = async (
