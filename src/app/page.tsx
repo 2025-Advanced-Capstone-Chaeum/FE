@@ -7,11 +7,13 @@ import NavigationBar from "@/components/ui/NavigationBar";
 import axiosInstance from "@/lib/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isLevelUp, setIsLevelUp] = useState(false);
+
   const fetchCatInfo = async () => {
     const { data } = await axiosInstance.get("/api/v1/cat");
-    console.log(data.data);
     return data.data;
   };
 
@@ -20,6 +22,15 @@ export default function Home() {
     queryFn: fetchCatInfo,
   });
 
+  // 페이지 진입 시 애니메이션 실행
+  useEffect(() => {
+    if (catInfo) {
+      setIsLevelUp(true);
+      const timeout = setTimeout(() => setIsLevelUp(false), 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [catInfo]);
+
   return (
     <div className="flex flex-col h-screen">
       <TopMenu />
@@ -27,14 +38,28 @@ export default function Home() {
         <div className="flex flex-col py-5">
           {catInfo && <ProgressBar catData={catInfo} />}
         </div>
-        <div className="flex justify-center">
-          <Image
-            src={"/assets/images/cat.svg"}
-            alt="Cat"
-            width={180}
-            height={180}
-          />
+
+        <div className="relative flex justify-center items-center">
+          <div className="relative flex justify-center items-center w-[220px] h-[220px]">
+            {isLevelUp && (
+              <div className="absolute w-full h-full rounded-full bg-white-50 opacity-50 animate-levelUpGlow z-0" />
+            )}
+            <Image
+              src="/assets/images/cat.svg"
+              alt="Cat"
+              width={180}
+              height={180}
+              className="relative z-10"
+            />
+
+            {isLevelUp && (
+              <div className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 text-yellow-400 font-bold text-xl animate-levelText animate-bounce">
+                LEVEL UP!
+              </div>
+            )}
+          </div>
         </div>
+
         <BottomMenu />
       </div>
       <NavigationBar />
