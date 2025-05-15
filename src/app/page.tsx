@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     if (catInfo) {
       setIsLevelUp(true);
-      const timeout = setTimeout(() => setIsLevelUp(false), 1500);
+      const timeout = setTimeout(() => setIsLevelUp(false), 2000);
       return () => clearTimeout(timeout);
     }
   }, [catInfo]);
