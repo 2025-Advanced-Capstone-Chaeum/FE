@@ -10,7 +10,7 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ catData }) => {
-  const widthPercent = `${catData.experiencePoint}%`;
+  const widthPercent = `${catData.levelUpPercentage}%`;
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -18,7 +18,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ catData }) => {
         <div
           className="flex w-[80%] h-4 bg-gray-200 rounded-full overflow-hidden"
           role="progressbar"
-          aria-valuenow={Number(catData.experiencePoint)}
+          aria-valuenow={Number(catData.levelUpPercentage)}
           aria-valuemin={Number(0)}
           aria-valuemax={Number(100)}>
           <div

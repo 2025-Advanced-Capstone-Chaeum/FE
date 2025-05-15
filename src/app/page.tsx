@@ -7,7 +7,6 @@ import NavigationBar from "@/components/ui/NavigationBar";
 import axiosInstance from "@/lib/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect } from "react";
 
 export default function Home() {
   const fetchCatInfo = async () => {
