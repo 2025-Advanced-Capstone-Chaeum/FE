@@ -11,7 +11,7 @@ export default function FundingListPage() {
   // const [statusFilter, setStatusFilter] = useState<"ONGOING" | "COMPLETED" | "FAILED" | undefined>(undefined);
   const { fundingListQuery } = useFunding(
     undefined,
-    { limit: 3 }
+    { limit: 8 }
   );
   const { data: FundingByConditionData, isLoading, isError } = fundingListQuery;
 
