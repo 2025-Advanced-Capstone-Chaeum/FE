@@ -60,10 +60,7 @@ export const fetchFundingByCondition = async (
   params.append("limit", String(limit));
 
   const response = await axiosInstance.get(
-    `/api/v1/funding/condition?${params.toString()}`,
-    {headers: {
-      authentication: `Barear eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoicXdlcmU0NTg1QG5hdmVyLmNvbSIsInJvbGUiOiJET05PUiIsImlhdCI6MTc0NzMxNzkzOSwiZXhwIjoxNzQ3MzIxNTM5fQ.g_RXwvy1PTGUbIYcVTiJvossHPXh8NIYlh5bfdf1vMHO4VzjpacosV3iKlnyu2oJv5yeKCINJA8_u8d-Gv5KoA`
-    }}
+    `/api/v1/funding/condition?${params.toString()}`
   );
   return response.data;
 };
@@ -75,10 +72,7 @@ export const fetchFunding = async (
     const response = await axiosInstance.get<{
       success: boolean;
       data: FundingData;
-    }>(`/api/v1/funding?fundingId=${fundingId}`,
-    {headers: {
-      authentication: `Barear eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoicXdlcmU0NTg1QG5hdmVyLmNvbSIsInJvbGUiOiJET05PUiIsImlhdCI6MTc0NzMxNzkzOSwiZXhwIjoxNzQ3MzIxNTM5fQ.g_RXwvy1PTGUbIYcVTiJvossHPXh8NIYlh5bfdf1vMHO4VzjpacosV3iKlnyu2oJv5yeKCINJA8_u8d-Gv5KoA`
-    }});
+    }>(`/api/v1/funding?fundingId=${fundingId}`);
     if (response.data.success && response.data.data) {
       return response.data.data;
     } else {
