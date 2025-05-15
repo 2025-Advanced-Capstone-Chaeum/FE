@@ -1,9 +1,38 @@
+"use client";
+
 import FilterButtons from "@/components/funding/FilterButton";
 import CampaignCard from "@/components/funding/CampaignCard";
-import { transformedCampaigns } from "@/utils/dateUtils";
 import NavigateToWriteButton from "@/components/funding/NavigateToWriteButton";
+import { useState } from "react";
+import { useFunding } from "@/hooks/useFunding";
+import { FundingData } from "@/lib/api/funding";
+
+// FundingData 인터페이스를 서버 응답 구조에 맞게 수정해야 할 수도 있습니다.
+interface ApiResponseData {
+  values: FundingData[];
+  hasPrevious: boolean;
+  hasNext: boolean;
+}
+
+interface FundingByConditionData {
+  success: boolean;
+  data: ApiResponseData | null;
+}
 
 export default function FundingListPage() {
+  const [statusFilter, setStatusFilter] = useState<"ONGOING" | "COMPLETED" | "FAILED" | undefined>(undefined);
+  const { fundingListQuery } = useFunding(
+    undefined,
+    { status: statusFilter, limit: 3 }
+  );
+  const { data: FundingByConditionData, isLoading, isError } = fundingListQuery;
+
+  // 서버 응답의 'values' 배열에서 펀딩 데이터를 추출합니다.
+  const campaigns: FundingData[] | undefined = FundingByConditionData?.data?.values;
+
+  if (isLoading) return <div>Loading campaigns...</div>;
+  if (isError) return <div>Error loading campaigns</div>;
+
   return (
     <div className="flex min-h-screen flex-col px-8 py-8 relative">
       {/* Filter dropdown */}
@@ -11,7 +40,7 @@ export default function FundingListPage() {
 
       {/* Projects grid */}
       <div className="relative top-[6vh] mt-[10px] grid grid-cols-2 gap-3 max-h-[66vh] overflow-y-scroll scrollbar-none">
-        {transformedCampaigns.map((campaign) => (
+        {campaigns?.map((campaign) => (
           <CampaignCard key={campaign.id} campaign={campaign} />
         ))}
       </div>
