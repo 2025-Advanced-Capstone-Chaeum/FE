@@ -1,5 +1,3 @@
-// import { donationCampaigns } from "@/lib/fundingSampleData";
-
 // 기부의 목표 날짜로부터 남은 날짜 계산
 export const getRemainingDays = (endDateString: string): string => {
   if (!endDateString) {
@@ -16,17 +14,6 @@ export const getRemainingDays = (endDateString: string): string => {
   if (diffDays <= 3) return "마감 임박";
   return `${diffDays}일 남음`;
 };
-
-// //data를 feed로 올리기위한 값으로 변경, ex) 목표달성 % or 마감기한
-// export const transformedCampaigns = donationCampaigns.map((campaign) => ({
-//   id: campaign.id,
-//   currentPercent: Math.floor(
-//     (campaign.currentAmount / campaign.targetAmount) * 100
-//   ),
-//   deadline: getRemainingDays(campaign.deadline),
-//   photo: campaign.photo,
-//   title: campaign.title,
-// }));
 
 export function timeAgo(date: Date): string {
   const now = new Date();
