@@ -19,7 +19,7 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
   return (
     <div className="flex flex-col">
       <div className="relative flex items-center justify-between mb-3">
-        <div className="relative text-primary text-baseline px-0.5 py-0.5 rounded-md">
+        <div className="relative text-primary font-semibold text-baseline px-0.5 py-0.5 rounded-md">
           {campaign.currentAmount}% 달성
         </div>
         {remainingDaysText && (
@@ -41,7 +41,7 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
           height={100}
           className="w-full h-auto rounded-lg object-cover"
         />
-        <p className="text-xs mt-2.5 text-left">
+        <p className="text-sm mt-2.5 text-left">
           {campaign.title.length > 17
             ? campaign.title.slice(0, 16) + ".."
             : campaign.title}
