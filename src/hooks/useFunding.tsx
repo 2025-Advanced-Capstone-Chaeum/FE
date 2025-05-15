@@ -1,5 +1,17 @@
-import { useMutation, useQuery, UseQueryResult, UseMutationResult } from "@tanstack/react-query";
-import { createFunding, fetchFunding, FundingData, CreateFundingData, fetchFundingByCondition, FundingByConditionData } from "@/lib/api/funding";
+import {
+  useMutation,
+  useQuery,
+  UseQueryResult,
+  UseMutationResult,
+} from "@tanstack/react-query";
+import {
+  createFunding,
+  fetchFunding,
+  FundingData,
+  CreateFundingData,
+  fetchFundingByCondition,
+  FundingByConditionData,
+} from "@/lib/api/funding";
 
 interface UseFundingListOptions {
   status?: "ONGOING" | "COMPLETED" | "FAILED";
@@ -10,7 +22,12 @@ interface UseFundingListOptions {
 
 interface UseFundingResult {
   fundingQuery: UseQueryResult<FundingData | null, Error>;
-  createFundingMutation: UseMutationResult<FundingData, Error, CreateFundingData, unknown>;
+  createFundingMutation: UseMutationResult<
+    FundingData,
+    Error,
+    CreateFundingData,
+    unknown
+  >;
   fundingListQuery: UseQueryResult<FundingByConditionData | undefined, Error>;
   refetchFunding: () => void;
 }
@@ -19,7 +36,6 @@ export const useFunding = (
   fundingId?: number,
   listOptions: UseFundingListOptions = {}
 ): UseFundingResult => {
-  
   const fundingQuery: UseQueryResult<FundingData | null, Error> = useQuery({
     queryKey: ["funding", fundingId],
     queryFn: async () => {
@@ -29,7 +45,12 @@ export const useFunding = (
     enabled: !!fundingId,
   });
 
-  const createFundingMutation: UseMutationResult<FundingData, Error, CreateFundingData, unknown> = useMutation({
+  const createFundingMutation: UseMutationResult<
+    FundingData,
+    Error,
+    CreateFundingData,
+    unknown
+  > = useMutation({
     mutationFn: (fundingData: CreateFundingData) => createFunding(fundingData),
     onSuccess: (data: FundingData) => {
       console.log("펀딩 생성 성공:", data);
@@ -39,9 +60,18 @@ export const useFunding = (
     },
   });
 
-  const fundingListQuery: UseQueryResult<FundingByConditionData | undefined, Error> = useQuery({
+  const fundingListQuery: UseQueryResult<
+    FundingByConditionData | undefined,
+    Error
+  > = useQuery({
     queryKey: ["fundingList", listOptions],
-    queryFn: () => fetchFundingByCondition(listOptions.status, listOptions.title, listOptions.cursor, listOptions.limit),
+    queryFn: () =>
+      fetchFundingByCondition(
+        listOptions.status,
+        listOptions.title,
+        listOptions.cursor,
+        listOptions.limit
+      ),
     enabled: true,
   });
 

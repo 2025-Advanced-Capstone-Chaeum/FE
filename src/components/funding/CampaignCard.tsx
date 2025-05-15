@@ -10,7 +10,7 @@ import { FundingData } from "@/lib/api/funding";
 
 const CampaignCard = ({ campaign }: { campaign: FundingData }) => {
   const { fundingQuery, refetchFunding } = useFunding(campaign.id ? Number(campaign.id) : undefined);
-  const { isLoading, isError, error, data: campaignDetail } = fundingQuery;
+  const { isLoading, isError, error } = fundingQuery;
 
   useEffect(() => {
     if (campaign.id) {
@@ -25,10 +25,6 @@ const CampaignCard = ({ campaign }: { campaign: FundingData }) => {
 
   if (isError) {
     console.error(`Campaign ID ${campaign.id} 상세 정보 로딩 실패:`, error);
-  }
-
-  if (campaignDetail) {
-    console.log(`Campaign ID ${campaign.id} 상세 정보 로딩 완료:`, campaignDetail);
   }
 
   return (

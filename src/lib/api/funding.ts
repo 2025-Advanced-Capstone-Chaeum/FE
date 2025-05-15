@@ -43,11 +43,7 @@ export interface CreateFundingData {
 export const createFunding = async (
   fundingData: CreateFundingData
 ): Promise<FundingData> => {
-  const response = await axiosInstance.post("/api/v1/funding", fundingData, {
-    headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoicXdlcmU0NTg1QG5hdmVyLmNvbSIsInJvbGUiOiJET05PUiIsImlhdCI6MTc0NzMwNzc5NiwiZXhwIjoxNzQ3MzExMzk2fQ.PDngbu49Vt8lLampjwVmRgp-PvLs7DQsZghVKGqOX2mwz1kwPJyWVc99fHypQDjnUHwSmp87HFI3G4QIu4-4EQ`,
-    },
-  });
+  const response = await axiosInstance.post("/api/v1/funding", fundingData);
   return response.data;
 };
 
@@ -64,26 +60,19 @@ export const fetchFundingByCondition = async (
   params.append("limit", String(limit));
 
   const response = await axiosInstance.get(
-    `/api/v1/funding/condition?${params.toString()}`,
-    {
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoicXdlcmU0NTg1QG5hdmVyLmNvbSIsInJvbGUiOiJET05PUiIsImlhdCI6MTc0NzMwNzc5NiwiZXhwIjoxNzQ3MzExMzk2fQ.PDngbu49Vt8lLampjwVmRgp-PvLs7DQsZghVKGqOX2mwz1kwPJyWVc99fHypQDjnUHwSmp87HFI3G4QIu4-4EQ`,
-      },
-    }
+    `/api/v1/funding/condition?${params.toString()}`
   );
   return response.data;
 };
 
-export const fetchFunding = async (fundingId: number): Promise<FundingData | null> => {
+export const fetchFunding = async (
+  fundingId: number
+): Promise<FundingData | null> => {
   try {
-    const response = await axiosInstance.get<{ success: boolean; data: FundingData }>(
-      `/api/v1/funding?fundingId=${fundingId}`,
-      {
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoicXdlcmU0NTg1QG5hdmVyLmNvbSIsInJvbGUiOiJET05PUiIsImlhdCI6MTc0NzMwNzc5NiwiZXhwIjoxNzQ3MzExMzk2fQ.PDngbu49Vt8lLampjwVmRgp-PvLs7DQsZghVKGqOX2mwz1kwPJyWVc99fHypQDjnUHwSmp87HFI3G4QIu4-4EQ`,
-      },
-    }
-    );
+    const response = await axiosInstance.get<{
+      success: boolean;
+      data: FundingData;
+    }>(`/api/v1/funding?fundingId=${fundingId}`);
     if (response.data.success && response.data.data) {
       return response.data.data;
     } else {
