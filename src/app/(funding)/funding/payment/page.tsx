@@ -26,7 +26,11 @@ const PaymentPage = () => {
   console.log("선택된 결제 수단:", selectedPaymentMethod);
 
   const handleDonateClick = async () => {
-    if (!selectedFundingId || selectedAmount === null || !selectedPaymentMethod) {
+    if (
+      !selectedFundingId ||
+      selectedAmount === null ||
+      !selectedPaymentMethod
+    ) {
       alert("결제 정보를 먼저 선택해주세요.");
       return;
     }
@@ -39,21 +43,26 @@ const PaymentPage = () => {
 
     await createDonationMutation.mutateAsync(donationData);
 
-    if (createDonationMutation.isSuccess && createDonationMutation.data?.data?.id) {
+    if (
+      createDonationMutation.isSuccess &&
+      createDonationMutation.data?.data?.id
+    ) {
       const generatedDonationId = createDonationMutation.data.data.id;
+
+      const initialMerchantUid = `donation_${new Date().getTime()}_${selectedFundingId}`;
+      const initialImportUid = "TEMP_" + new Date().getTime();
 
       const paymentCreateData = {
         donationId: generatedDonationId,
         amount: selectedAmount as number,
-        transactionId: "TEMP_" + new Date().getTime(), // 아임포트 transactionId는 결제 성공 후 받음
+        transactionId: initialImportUid, // 초기 transactionId를 importUid와 동일하게 설정
         paymentMethod: selectedPaymentMethod,
-        status: "PENDING", // 초기 상태
-        paymentGatewayInfoRequest: {
-          importUid: "TEMP_" + new Date().getTime(),
-          merchantUid: `donation_${new Date().getTime()}_${selectedFundingId}`,
-          gatewayProvider: selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-          failReason: "",
-        },
+        status: "PENDING",
+        merchantUid: initialMerchantUid,
+        gatewayProvider:
+          selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
+        failReason: "",
+        impUid: initialImportUid, // 초기 importUid 설정
       };
 
       await createPaymentMutation.mutateAsync(paymentCreateData);
@@ -66,40 +75,47 @@ const PaymentPage = () => {
           const portoneCode = process.env.NEXT_PUBLIC_PORTONE_CODE;
           if (portoneCode) {
             IMP.init(portoneCode);
-            IMP.request_pay({
-              pg: selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-              pay_method: "card",
-              merchant_uid: paymentCreateData.paymentGatewayInfoRequest.merchantUid,
-              amount: selectedAmount,
-              name: "마음 나누기",
-              buyer_name: "후원자",
-              m_redirect_url: `${window.location.origin}/payment/result`,
-            }, async (response) => {
-              if (response.success) {
-                console.log("결제 성공:", response);
-                // 결제 성공 후 paymentCreateData 업데이트 및 서버에 최종 결제 완료 보고
-                const updatedPaymentCreateData = {
-                  ...paymentCreateData,
-                  transactionId: response.imp_uid,
-                  paymentGatewayInfoRequest: {
-                    ...paymentCreateData.paymentGatewayInfoRequest,
-                    importUid: response.imp_uid,
-                  },
-                  status: "PENDING",
-                };
-                await createPaymentMutation.mutateAsync(updatedPaymentCreateData);
-                if (createPaymentMutation.isSuccess) {
-                  alert("마음 나누기가 완료되었습니다. 감사합니다!");
-                  router.push('/donation/loading');
+            IMP.request_pay(
+              {
+                pg:
+                  selectedPaymentMethod === "KAKAO_PAY"
+                    ? "kakaopay"
+                    : "tosspay",
+                pay_method: "card",
+                merchant_uid: initialMerchantUid,
+                amount: selectedAmount,
+                name: "마음 나누기",
+                buyer_name: "후원자",
+                m_redirect_url: `${window.location.origin}/payment/result`,
+              },
+              async (response) => {
+                if (response.success) {
+                  console.log("결제 성공:", response);
+                  const updatedPaymentCreateData = {
+                    ...paymentCreateData,
+                    transactionId: response.imp_uid,
+                    impUid: response.imp_uid,
+                    status: "PENDING",
+                  };
+                  await createPaymentMutation.mutateAsync(
+                    updatedPaymentCreateData
+                  );
+                  if (createPaymentMutation.isSuccess) {
+                    alert("마음 나누기가 완료되었습니다. 감사합니다!");
+                    router.push("/donation/loading");
+                  } else {
+                    console.error(
+                      "결제 완료 보고 실패:",
+                      createPaymentMutation.error
+                    );
+                    alert("결제 처리 중 오류가 발생했습니다.");
+                  }
                 } else {
-                  console.error("결제 완료 보고 실패:", createPaymentMutation.error);
-                  alert("결제 처리 중 오류가 발생했습니다.");
+                  console.error("결제 실패:", response);
+                  alert(`결제 실패: ${response.error_msg}`);
                 }
-              } else {
-                console.error("결제 실패:", response);
-                alert(`결제 실패: ${response.error_msg}`);
               }
-            });
+            );
           } else {
             console.error("아임포트 가맹점 코드를 찾을 수 없습니다.");
             alert("결제 처리 중 오류가 발생했습니다.");
@@ -130,9 +146,14 @@ const PaymentPage = () => {
             size="xl"
             className="text-secondary text-lg text-white font-semibold"
             onClick={handleDonateClick}
-            disabled={createDonationMutation.isPending || createPaymentMutation.isPending}
+            disabled={
+              createDonationMutation.isPending ||
+              createPaymentMutation.isPending
+            }
           >
-            {createDonationMutation.isPending || createPaymentMutation.isPending ? "처리 중..." : "마음 나누기"}
+            {createDonationMutation.isPending || createPaymentMutation.isPending
+              ? "처리 중..."
+              : "마음 나누기"}
           </Button>
         </div>
       </div>

@@ -6,11 +6,7 @@ export interface PaymentCreateData {
   transactionId: string;
   paymentMethod: string;
   status: string;
-  paymentGatewayInfoRequest?: PaymentGatewayInfoRequest;
-}
-
-interface PaymentGatewayInfoRequest {
-  importUid?: string;
+  impUid?: string;
   merchantUid: string;
   gatewayProvider?: string;
   failReason?: string;
