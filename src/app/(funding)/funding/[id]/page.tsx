@@ -12,6 +12,8 @@ import BackButton from "@/components/BackButton";
 import { useFunding } from "@/hooks/useFunding";
 import { userStore } from "@/store/userStore";
 import { getRemainingDays } from "@/utils/dateUtils";
+import { useRouter } from "next/navigation";
+import { usePaymentStore } from "@/store/paymentStore";
 
 export default function FundingDetailCard() {
   const { id } = useParams();
@@ -19,6 +21,13 @@ export default function FundingDetailCard() {
   const { fundingQuery } = useFunding(fundingId);
   const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
   const userData = userStore((state) => state.userData);
+  const router = useRouter();
+    const setSelectedFundingId = usePaymentStore((state) => state.setSelectedFundingId);
+
+  const handlePaymentButtonClick = () => {
+    setSelectedFundingId(fundingId);
+    router.push('/funding/payment');
+  };
 
   const remainingDaysText = fundingDetail?.endDate
     ? getRemainingDays(fundingDetail.endDate)
@@ -142,7 +151,10 @@ export default function FundingDetailCard() {
           </div>
 
           <div className="flex items-center justify-center">
-            <Button className="w-80 py-6 text-lg rounded-xl">
+            <Button
+              className="w-80 py-6 text-lg rounded-xl"
+              onClick={handlePaymentButtonClick}
+            >
               마음 나누기
             </Button>
           </div>
