@@ -1,30 +1,24 @@
-// store/fundingStore.ts
 import { create } from 'zustand';
-import { persist, PersistOptions } from 'zustand/middleware';
 
 interface PaymentState {
-  selectedFundingId: number | null;
-  setSelectedFundingId: (id: number | null) => void;
   selectedAmount: number | null;
-  setSelectedAmount: (amount: number | null) => void;
+  selectedFundingId: number | null;
   selectedPaymentMethod: string | null;
+  selectedFundingIdForPayment: number | null; // 새로운 상태 추가
+  setSelectedAmount: (amount: number | null) => void;
+  setSelectedFundingId: (fundingId: number | null) => void;
   setSelectedPaymentMethod: (method: string | null) => void;
+  setSelectedFundingIdForPayment: (fundingId: number | null) => void; // 새로운 액션 추가
 }
 
-type PaymentStorePersist = PersistOptions<PaymentState>;
+export const usePaymentStore = create<PaymentState>((set) => ({
+  selectedAmount: null,
+  selectedFundingId: null,
+  selectedPaymentMethod: null,
+  selectedFundingIdForPayment: null, // 초기값 설정
 
-export const usePaymentStore = create<PaymentState>()(
-  persist<PaymentState, [], [], PaymentStorePersist>(
-    (set) => ({
-      selectedFundingId: null,
-      setSelectedFundingId: (id) => set({ selectedFundingId: id }),
-      selectedAmount: null,
-      setSelectedAmount: (amount) => set({ selectedAmount: amount }),
-      selectedPaymentMethod: null,
-      setSelectedPaymentMethod: (method) => set({ selectedPaymentMethod: method }),
-    }),
-    {
-      name: "chaeum-payment-storage",
-    }
-  )
-);
+  setSelectedAmount: (amount) => set({ selectedAmount: amount }),
+  setSelectedFundingId: (fundingId) => set({ selectedFundingId: fundingId }),
+  setSelectedPaymentMethod: (method) => set({ selectedPaymentMethod: method }),
+  setSelectedFundingIdForPayment: (fundingId) => set({ selectedFundingIdForPayment: fundingId }), // 액션 함수 구현
+}));

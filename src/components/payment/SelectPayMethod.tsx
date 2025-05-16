@@ -5,7 +5,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { usePayment } from "@/hooks/usePayment";
-import { useDonation } from "@/hooks/useDonation";
 
 const SelectPayMethod = () => {
   const [activePayMethod, setActivePayMethod] = useState<number>(0);
@@ -14,12 +13,12 @@ const SelectPayMethod = () => {
   const selectedPaymentMethod = usePaymentStore(
     (state) => state.selectedPaymentMethod
   );
-  const { createPaymentMutation } = usePayment();
-  const { createDonationMutation } = useDonation();
 
   const setSelectedPaymentMethod = usePaymentStore(
     (state) => state.setSelectedPaymentMethod
   );
+
+    const { createPaymentMutation } = usePayment();
 
   const handlePayMethodClick = (id: number, method: string) => {
     setActivePayMethod(id);
@@ -27,18 +26,13 @@ const SelectPayMethod = () => {
   };
 
   const handlePaymentButtonClick = async () => {
-    if (!selectedFundingId || selectedAmount === null) {
-      alert("기부 금액을 먼저 선택해주세요.");
+    if (!selectedFundingId || selectedAmount === null || !selectedPaymentMethod) {
+      alert("결제 정보를 먼저 선택해주세요.");
       return;
     }
 
     if (!window.IMP) {
       console.error("아임포트 SDK 로드 실패");
-      return;
-    }
-
-    if (!selectedPaymentMethod) {
-      alert("결제 수단을 먼저 선택해주세요.");
       return;
     }
 
@@ -65,50 +59,7 @@ const SelectPayMethod = () => {
       async (response) => {
         if (response.success) {
           console.log("결제 성공:", response);
-
-          const donationData = {
-            fundingId: selectedFundingId,
-            amount: selectedAmount,
-            point: 0, // 포인트 사용 로직이 있다면 해당 값으로 변경
-          };
-
-          await createDonationMutation.mutateAsync(donationData); // 결제 성공 후 기부 내역 생성
-
-          if (createDonationMutation.isSuccess && createDonationMutation.data?.data?.id) {
-            const generatedDonationId = createDonationMutation.data.data.id;
-
-            const paymentCreateData = {
-              donationId: generatedDonationId,
-              amount: selectedAmount as number,
-              transactionId: response.imp_uid, // 아임포트 결제 고유 ID
-              paymentMethod: selectedPaymentMethod,
-              status: "PAID", // 결제 완료 상태로 변경
-              paymentGatewayInfoRequest: {
-                importUid: response.imp_uid,
-                merchantUid: response.merchant_uid,
-                gatewayProvider: response.pg_provider, // PG사 정보
-                // failReason: "잔액 부족",
-              },
-            };
-
-            console.log("서버에 보낼 결제 데이터:", paymentCreateData);
-
-            createPaymentMutation.mutate(paymentCreateData); // 결제 완료 정보 서버에 저장
-
-            if (createPaymentMutation.isSuccess) {
-              alert("마음 나누기가 완료되었습니다. 감사합니다!");
-              // 성공 후 페이지 이동 등 추가적인 액션
-            } else if (createPaymentMutation.isError) {
-              console.error(
-                "결제 완료 데이터 전송 실패:",
-                createPaymentMutation.error
-              );
-              alert("결제 처리 중 오류가 발생했습니다.");
-            }
-          } else if (createDonationMutation.isError) {
-            console.error("기부 내역 생성 실패:", createDonationMutation.error);
-            alert("기부 처리 중 오류가 발생했습니다.");
-          }
+          // 결제 성공 후 필요한 로직 (예: 상태 업데이트)
         } else {
           console.error("결제 실패:", response);
           alert(`결제 실패: ${response.error_msg}`);
@@ -155,8 +106,8 @@ const SelectPayMethod = () => {
             height={40}
           />
         </div>
-        <Button onClick={handlePaymentButtonClick} disabled={createDonationMutation.isPending || createPaymentMutation.isPending}>
-          {createDonationMutation.isPending || createPaymentMutation.isPending ? "처리 중..." : "결제하기"}
+        <Button onClick={handlePaymentButtonClick} disabled={createPaymentMutation.isPending}>
+          {createPaymentMutation.isPending ? "처리 중..." : "결제하기"}
         </Button>
       </div>
     </div>
