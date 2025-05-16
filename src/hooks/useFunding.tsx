@@ -34,7 +34,7 @@ interface UseFundingResult {
 
 export const useFunding = (
   fundingId?: number,
-  listOptions: UseFundingListOptions = {}
+  listOptions: UseFundingListOptions = {},
 ): UseFundingResult => {
   const fundingQuery: UseQueryResult<FundingData | null, Error> = useQuery({
     queryKey: ["funding", fundingId],

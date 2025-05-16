@@ -3,13 +3,36 @@
 import FilterButtons from "@/components/funding/FilterButton";
 import CampaignCard from "@/components/funding/CampaignCard";
 import NavigateToWriteButton from "@/components/funding/NavigateToWriteButton";
-// import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useFunding } from "@/hooks/useFunding";
 import { FundingData } from "@/lib/api/funding";
 
 export default function FundingListPage() {
-  // const [statusFilter, setStatusFilter] = useState<"ONGOING" | "COMPLETED" | "FAILED" | undefined>(undefined);
-  const { fundingListQuery } = useFunding(undefined, { limit: 8 });
+  const [statusFilter, setStatusFilter] = useState<
+    "ONGOING" | "COMPLETED" | "FAILED" | undefined
+  >(undefined);
+  const [sortCondition, setSortCondition] = useState<"최신순" | "진행중">(
+    "최신순"
+  );
+
+  const handleSortConditionChange = useCallback(
+    (newCondition: "최신순" | "진행중") => {
+      setSortCondition(newCondition);
+      if (newCondition === "진행중") {
+        setStatusFilter("ONGOING");
+      } else {
+        setStatusFilter(undefined);
+      }
+    },
+    [setStatusFilter, setSortCondition]
+  );
+
+  const { fundingListQuery } = useFunding(undefined, {
+    status: statusFilter,
+    limit: 8,
+    cursor: undefined,
+    title: undefined,
+  });
   const { data: FundingByConditionData, isLoading, isError } = fundingListQuery;
 
   const campaigns: FundingData[] | undefined =
@@ -22,7 +45,10 @@ export default function FundingListPage() {
     <div className="flex min-h-screen flex-col px-8 py-8 relative">
       <div className="flex w-full justify-between">
         <div>
-          <FilterButtons />
+          <FilterButtons
+            onSortConditionChange={handleSortConditionChange}
+            currentSortCondition={sortCondition}
+          />
         </div>
         <div className="absolute top-[2.8vh] right-8">
           <NavigateToWriteButton />
