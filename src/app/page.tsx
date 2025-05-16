@@ -3,7 +3,6 @@
 import BottomMenu from "@/components/main/BottomMenu";
 import ProgressBar from "@/components/main/ProgressBar";
 import TopMenu from "@/components/main/TopMenu";
-import NavigationBar from "@/components/ui/NavigationBar";
 import axiosInstance from "@/lib/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -62,7 +61,6 @@ export default function Home() {
 
         <BottomMenu />
       </div>
-      <NavigationBar />
     </div>
   );
 }
