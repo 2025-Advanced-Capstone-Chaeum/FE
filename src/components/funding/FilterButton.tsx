@@ -1,19 +1,21 @@
-import { ChevronDown } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import Dropdown from "../ui/Dropdown";
 
 const FilterButtons = () => {
+  const [conditionType, setConditionType] = useState("최신순");
+  const conditionOptions = ["최신순", "진행중"];
+
+  const handleConditionTypeSelect = (value: string) => {
+    setConditionType(value);
+  };
+
   return (
     <div className="absolute top-[3vh] flex gap-2">
-      <button className={StButton}>
-        최신순 <ChevronDown className="h-4 w-4" />
-      </button>
-      <button className={StButton}>
-        추천순 <ChevronDown className="h-4 w-4" />
-      </button>
+      <Dropdown options={conditionOptions} onSelect={handleConditionTypeSelect}>
+        {conditionType}
+      </Dropdown>
     </div>
   );
 };
-const StButton =
-  "flex items-center gap-1 bg-white text-sm rounded-lg px-2 py-1.5 shadow-sm";
 
 export default FilterButtons;
