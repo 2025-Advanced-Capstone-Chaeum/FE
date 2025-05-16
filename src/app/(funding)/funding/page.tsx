@@ -11,18 +11,14 @@ export default function FundingListPage() {
   const [statusFilter, setStatusFilter] = useState<
     "ONGOING" | "COMPLETED" | "FAILED" | undefined
   >(undefined);
-  const [sortCondition, setSortCondition] = useState<"최신순" | "진행중">(
+  const [sortCondition, setSortCondition] = useState<"최신순" | "추천순">(
     "최신순"
   );
 
   const handleSortConditionChange = useCallback(
-    (newCondition: "최신순" | "진행중") => {
+    (newCondition: "최신순" | "추천순") => {
       setSortCondition(newCondition);
-      if (newCondition === "진행중") {
-        setStatusFilter("ONGOING");
-      } else {
-        setStatusFilter(undefined);
-      }
+      setStatusFilter(undefined);
     },
     [setStatusFilter, setSortCondition]
   );
