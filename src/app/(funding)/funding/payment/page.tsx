@@ -134,14 +134,16 @@ const PaymentPage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col gap-11">
-        <span className="flex justify-center items-center text-2xl font-semibold">
-          마음 나누기
-        </span>
-        <SelectAmount />
-        <PointContainer />
-        <SelectPayMethod />
-        <div className="flex justify-center items-center">
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-9">
+          <span className="flex justify-center items-center text-2xl font-semibold">
+            마음 나누기
+          </span>
+          <SelectAmount />
+          <PointContainer />
+          <SelectPayMethod />
+        </div>
+        <div className="flex justify-center items-center py-5">
           <Button
             size="xl"
             className="text-secondary text-lg text-white font-semibold"

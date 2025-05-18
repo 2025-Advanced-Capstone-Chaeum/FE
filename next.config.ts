@@ -1,14 +1,16 @@
-import withPWAInit from "next-pwa";
-
-const withPWA = withPWAInit({
-  dest: "public",
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-    domains: ['chaeum-bucket.s3.ap-northeast-2.amazonaws.com'],
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/item/**',
+      },
+    ],
   },
 };
 
-export default withPWA(nextConfig);
+module.exports = nextConfig;
