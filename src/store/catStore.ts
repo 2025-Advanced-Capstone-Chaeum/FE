@@ -8,11 +8,11 @@ type CatDataProps = {
 };
 
 type CatStore = {
-  catData: CatDataProps | null;
+  catData: CatDataProps
   setCatData: (catData: CatDataProps) => void;
 };
 
-export const userStore = create<CatStore>()((set) => ({
+export const catStore = create<CatStore>()((set) => ({
   catData: {
     id: 0,
     level: 0,
