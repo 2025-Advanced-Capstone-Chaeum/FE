@@ -1,3 +1,5 @@
+"use client"
+
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { useFunding } from "@/hooks/useFunding";
