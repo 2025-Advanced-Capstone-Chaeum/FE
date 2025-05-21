@@ -88,7 +88,7 @@ const PaymentPage = () => {
           router.push("/funding");
           return;
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
         alert("결제는 완료되었으나 기부 내역 생성 중 오류가 발생했습니다. 관리자에게 문의해주세요.");
         router.push("/funding");
@@ -119,11 +119,11 @@ const PaymentPage = () => {
           console.error("결제 내역 저장 실패: 응답 문제", finalPaymentResponse);
           router.push("/funding");
         }
-      } catch (updateError: any) {
+      } catch (updateError: unknown) {
         console.error("결제 내역 저장 중 에러 발생:", updateError);
         router.push("/funding");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("아임포트 결제 실패 또는 에러 발생:", error);
       router.push("/funding");
     } finally {

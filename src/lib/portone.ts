@@ -15,9 +15,17 @@ interface PortoneResponse {
   paid_amount?: number;
 }
 
+interface IMP {
+  init: (code: string) => void;
+  request_pay: (
+    data: PortoneRequestData,
+    callback: (response: PortoneResponse) => void
+  ) => void;
+}
+
 declare global {
   interface Window {
-    IMP: any;
+    IMP?: IMP;
   }
 }
 
