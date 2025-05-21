@@ -1,24 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { decorationItems, interiorItems } from "@/lib/inventoryItems";
 import ItemBoxButton from "./ItemBoxButton";
 import Image from "next/image";
-import { fetchInventoryByCategory } from "@/lib/api/inventory";
-import { useQuery } from "@tanstack/react-query";
+import { useDecorationSearch, useInteriorSearch } from "@/hooks/useInventory";
 
 const ItemContainer = () => {
-  const { data: decorationId, isPending: isDecorationPending } = useQuery({
-    queryKey: ["decoration"],
-    queryFn: () => fetchInventoryByCategory("DECORATION"),
-  });
+  const { data: decorationId, isPending: isDecorationPending } =
+    useDecorationSearch();
 
-  const { data: interiorId, isPending: isInteriorPending } = useQuery({
-    queryKey: ["interior"],
-    queryFn: () => fetchInventoryByCategory("INTERIOR"),
-  });
+  const { data: interiorId, isPending: isInteriorPending } =
+    useInteriorSearch();
 
   if (isDecorationPending || isInteriorPending) {
+    // 로딩 상태 일때 회색 박스 3개 출력
     return (
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         <div className="flex flex-col">
@@ -27,7 +22,7 @@ const ItemContainer = () => {
             {[1, 2, 3].map((item) => {
               return (
                 <div key={item}>
-                  <ItemBoxButton></ItemBoxButton>
+                  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
                 </div>
               );
             })}
@@ -39,7 +34,7 @@ const ItemContainer = () => {
             {[1, 2, 3].map((item) => {
               return (
                 <div key={item}>
-                  <ItemBoxButton></ItemBoxButton>
+                  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
                 </div>
               );
             })}
@@ -55,12 +50,15 @@ const ItemContainer = () => {
         <div className="flex py-3 gap-4 overflow-hidden overflow-x-auto touch-manipulation">
           {decorationItems.map((item) => {
             if (!decorationId || decorationId.length === 0) {
+              // decorationId가 없을때 회색 박스 3개 출력
               return (
                 <div key={item.id}>
                   <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
                 </div>
               );
             } else {
+              // decorationId가 있을때 프론트에서 만들어놓은 decorationItems와 비교
+              // decorationId의 itemId와 decorationItems의 id가 같을때 아이템 박스 출력
               for (const i of decorationId) {
                 if (i.itemId === item.id) {
                   return (
@@ -86,6 +84,7 @@ const ItemContainer = () => {
         <div className="flex py-3 gap-4 overflow-hidden overflow-x-auto touch-manipulation">
           {interiorItems.map((item) => {
             if (!interiorId || interiorId.length === 0) {
+              // interiorId가 없을때 회색 박스 3개 출력
               return (
                 <div key={item.id}>
                   <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
@@ -93,6 +92,8 @@ const ItemContainer = () => {
               );
             } else {
               for (const i of interiorId) {
+                // interiorId가 있을때 프론트에서 만들어놓은 interiorItems와 비교
+                // interiorId의 itemId와 interiorItems의 id가 같을때 아이템 박스 출력
                 if (i.itemId === item.id) {
                   return (
                     <div key={item.id}>

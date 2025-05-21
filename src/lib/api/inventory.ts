@@ -22,11 +22,11 @@ export const fetchInventoryByCategory = async (
       },
     });
 
-    const values = response?.data?.values;
+    const values = response?.data?.values; // 응답 데이터에서 values 속성 추출
 
-    if (Array.isArray(values) && values.length > 0) {
+    if (Array.isArray(values) && values.length > 0) { // values가 배열이고 비어있지 않은 경우
       return values;
-    } else {
+    } else { // values가 배열이 아니거나 비어있는 경우
       console.warn("유효하지 않은 응답 데이터:", response.data);
       return [];
     }
