@@ -10,6 +10,7 @@ import { usePaymentStore } from "@/store/paymentStore";
 import React, { useState } from "react";
 import { usePayment } from "@/hooks/usePayment";
 import { useRouter } from "next/navigation";
+import { initializePortone, requestPortonePayment } from "@/lib/portone";
 
 const PaymentPage = () => {
   const selectedAmount = usePaymentStore((state) => state.selectedAmount);
@@ -70,14 +71,6 @@ const PaymentPage = () => {
       return;
     }
 
-    if (!window.IMP) {
-      console.error("아임포트 SDK 로드 실패");
-      setIsProcessing(false);
-      setButtonMessage("마음 나누기");
-      return;
-    }
-
-    const { IMP } = window as any;
     const portoneCode = process.env.NEXT_PUBLIC_PORTONE_CODE;
     if (!portoneCode) {
       console.error("아임포트 가맹점 코드를 찾을 수 없습니다.");
@@ -85,12 +78,13 @@ const PaymentPage = () => {
       setButtonMessage("마음 나누기");
       return;
     }
-    IMP.init(portoneCode);
+
+    initializePortone(portoneCode);
 
     const merchantUidForPortone = `donation_${new Date().getTime()}_${selectedFundingId}`;
 
-    IMP.request_pay(
-      {
+    try {
+      const impResponse = await requestPortonePayment({
         pg: selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
         pay_method: "card",
         merchant_uid: merchantUidForPortone,
@@ -98,56 +92,46 @@ const PaymentPage = () => {
         name: "마음 나누기",
         buyer_name: "후원자",
         m_redirect_url: `${window.location.origin}/payment/result`,
-      },
-      async (response) => {
-        // 이 콜백 함수는 아임포트 결제가 완료(성공/실패)되면 호출
-        setIsProcessing(true);
-        setButtonMessage("결제 처리 중...");
+      });
 
-        if (response.success) {
-          console.log("아임포트 결제 성공:", response);
+      setButtonMessage("결제 처리 중...");
+      console.log("아임포트 결제 성공:", impResponse);
 
-          const paymentCreateData = {
-            donationId: generatedDonationId as number,
-            amount: response.paid_amount as number,
-            points: 0,
-            transactionId: response.imp_uid,
-            paymentMethod: selectedPaymentMethod,
-            status: "COMPLETED",
-            merchantUid: response.merchant_uid,
-            gatewayProvider:
-              selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-            impUid: response.imp_uid,
-          };
+      const paymentCreateData = {
+        donationId: generatedDonationId as number,
+        amount: impResponse.paid_amount as number,
+        points: 0,
+        transactionId: impResponse.imp_uid,
+        paymentMethod: selectedPaymentMethod,
+        status: "COMPLETED",
+        merchantUid: impResponse.merchant_uid,
+        gatewayProvider:
+          selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
+        impUid: impResponse.imp_uid,
+      };
 
-          try {
-            const finalPaymentResponse =
-              await createPaymentMutation.mutateAsync(paymentCreateData);
+      try {
+        const finalPaymentResponse = await createPaymentMutation.mutateAsync(
+          paymentCreateData
+        );
 
-            if (finalPaymentResponse) {
-              router.push("/donation/loading");
-            } else {
-              console.error(
-                "결제 내역 저장 실패: 응답 문제",
-                finalPaymentResponse
-              );
-              router.push("/funding");
-            }
-          } catch (updateError: any) {
-            console.error(
-              "결제 내역 저장 중 에러 발생:",
-              updateError
-            );
-            router.push("/funding");
-          }
+        if (finalPaymentResponse) {
+          router.push("/donation/loading");
         } else {
-          console.error("아임포트 결제 실패:", response);
+          console.error("결제 내역 저장 실패: 응답 문제", finalPaymentResponse);
           router.push("/funding");
         }
-        setIsProcessing(false);
-        setButtonMessage("마음 나누기");
+      } catch (updateError: any) {
+        console.error("결제 내역 저장 중 에러 발생:", updateError);
+        router.push("/funding");
       }
-    );
+    } catch (error: any) {
+      console.error("아임포트 결제 실패 또는 에러 발생:", error);
+      router.push("/funding");
+    } finally {
+      setIsProcessing(false);
+      setButtonMessage("마음 나누기");
+    }
   };
 
   return (
