@@ -24,10 +24,6 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("마음 나누기");
 
-  console.log("선택된 펀딩 ID:", selectedFundingId);
-  console.log("선택된 기부 금액:", selectedAmount);
-  console.log("선택된 결제 수단:", selectedPaymentMethod);
-
   const handleFullPaymentProcess = async () => {
     if (
       !selectedFundingId ||
@@ -50,22 +46,18 @@ const PaymentPage = () => {
     let generatedDonationId: number | undefined;
 
     try {
-      // 1. 기부 내역 생성
+      // 기부 내역 생성
       const donationResponse = await createDonationMutation.mutateAsync(
         donationData
       );
 
       if (donationResponse && donationResponse.data?.id) {
         generatedDonationId = donationResponse.data.id;
-        console.log("기부 내역 생성 성공. Donation ID:", generatedDonationId);
         setButtonMessage("결제 준비 중...");
       } else {
         console.error(
           "기부 내역 생성 실패: 응답 데이터 문제 또는 에러",
           donationResponse
-        );
-        alert(
-          "기부 내역 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
         );
         setIsProcessing(false);
         setButtonMessage("마음 나누기");
@@ -73,11 +65,6 @@ const PaymentPage = () => {
       }
     } catch (error: any) {
       console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
-      alert(
-        `기부 내역 생성 중 오류가 발생했습니다: ${
-          error.message || "알 수 없는 오류"
-        }.`
-      );
       setIsProcessing(false);
       setButtonMessage("마음 나누기");
       return;
@@ -85,7 +72,6 @@ const PaymentPage = () => {
 
     if (!window.IMP) {
       console.error("아임포트 SDK 로드 실패");
-      alert("결제 시스템 로드 실패: 새로고침 후 다시 시도해주세요.");
       setIsProcessing(false);
       setButtonMessage("마음 나누기");
       return;
@@ -95,14 +81,11 @@ const PaymentPage = () => {
     const portoneCode = process.env.NEXT_PUBLIC_PORTONE_CODE;
     if (!portoneCode) {
       console.error("아임포트 가맹점 코드를 찾을 수 없습니다.");
-      alert("결제 설정 오류가 발생했습니다: 관리자에게 문의해주세요.");
       setIsProcessing(false);
       setButtonMessage("마음 나누기");
       return;
     }
     IMP.init(portoneCode);
-
-    setButtonMessage("아임포트 결제창 호출 중...");
 
     const merchantUidForPortone = `donation_${new Date().getTime()}_${selectedFundingId}`;
 
@@ -119,7 +102,7 @@ const PaymentPage = () => {
       async (response) => {
         // 이 콜백 함수는 아임포트 결제가 완료(성공/실패)되면 호출
         setIsProcessing(true);
-        setButtonMessage("결제 결과 처리 중...");
+        setButtonMessage("결제 처리 중...");
 
         if (response.success) {
           console.log("아임포트 결제 성공:", response);
@@ -142,35 +125,23 @@ const PaymentPage = () => {
               await createPaymentMutation.mutateAsync(paymentCreateData);
 
             if (finalPaymentResponse) {
-              console.log("결제 내역 백엔드 저장 성공:", finalPaymentResponse);
-              alert("마음 나누기가 완료되었습니다. 감사합니다!");
               router.push("/donation/loading");
             } else {
               console.error(
-                "결제 내역 백엔드 저장 실패: 응답 문제",
+                "결제 내역 저장 실패: 응답 문제",
                 finalPaymentResponse
-              );
-              alert(
-                "결제는 성공했으나, 정보 처리 중 오류가 발생했습니다. 관리자가 결제를 취소합니다."
               );
               router.push("/funding");
             }
           } catch (updateError: any) {
             console.error(
-              "결제 내역 백엔드 저장 중 예상치 못한 에러 발생:",
+              "결제 내역 저장 중 에러 발생:",
               updateError
-            );
-            alert(
-              `결제는 성공했으나, 정보 처리 중 오류가 발생했습니다: ${
-                updateError.message || "알 수 없는 오류"
-              }. 관리자가 결제를 취소합니다.`
             );
             router.push("/funding");
           }
         } else {
-          // 아임포트 결제 실패
           console.error("아임포트 결제 실패:", response);
-          alert(`결제 실패: ${response.error_msg}`);
           router.push("/funding");
         }
         setIsProcessing(false);
@@ -183,7 +154,7 @@ const PaymentPage = () => {
     <>
       <BackButton />
       <div className="flex flex-col">
-        <div className="flex flex-col gap-9">
+        <div className="flex flex-col gap-12">
           <span className="flex justify-center items-center text-2xl font-semibold">
             마음 나누기
           </span>
@@ -191,7 +162,7 @@ const PaymentPage = () => {
           <PointContainer />
           <SelectPayMethod />
         </div>
-        <div className="flex justify-center items-center py-5">
+        <div className="flex justify-center items-center py-9">
           <Button
             size="xl"
             className="text-secondary text-lg text-white font-semibold"
