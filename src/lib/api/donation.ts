@@ -18,8 +18,6 @@ export interface DonationCreateData {
 export const createDonation = async (
     donationData: DonationCreateData
 ) : Promise<DonationCreateResponse> => {
-  await new Promise(resolve => setTimeout(resolve, 2000)); 
-
   const response = await axiosInstance.post("/api/v1/donation", donationData);
   return response.data;
 };
