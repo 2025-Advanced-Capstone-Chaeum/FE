@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useFunding } from "@/hooks/useFunding";
 import { usePaymentStore } from "@/store/paymentStore";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const DonationCompletePage = () => {
@@ -13,6 +14,7 @@ const DonationCompletePage = () => {
     selectedFundingId !== null ? selectedFundingId : undefined
   );
   const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
+  const router = useRouter();
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -29,7 +31,7 @@ const DonationCompletePage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col h-[80vh] justify-center items-center text-secondary gap-8">
+      <div className="flex flex-col h-[78vh] justify-center items-center text-secondary gap-8">
         <Image
           src="/assets/images/heart.png"
           alt="Heart"
@@ -56,7 +58,8 @@ const DonationCompletePage = () => {
         </div>
         <Button
           variant="soft"
-          className="w-[77%] text-md p-6.5 mt-3.5 rounded-xl"
+          className="w-[77%] text-md p-6.5 mt-5 rounded-xl"
+          onClick={() => router.push('/')}
         >
           확인
         </Button>
