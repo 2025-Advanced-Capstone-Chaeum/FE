@@ -2,7 +2,7 @@
 
 import { usePaymentStore } from "@/store/paymentStore";
 import Image from "next/image";
-import React from "react"; // React import 추가
+import React, { useEffect } from "react"; // React import 추가
 
 const SelectPayMethod = () => {
   const selectedPaymentMethod = usePaymentStore( // 현재 선택된 값도 가져와야 합니다.
@@ -11,6 +11,10 @@ const SelectPayMethod = () => {
   const setSelectedPaymentMethod = usePaymentStore(
     (state) => state.setSelectedPaymentMethod
   );
+
+  useEffect(() => {
+    setSelectedPaymentMethod(null);
+  }, [setSelectedPaymentMethod]);
 
   const handlePayMethodClick = (method: string) => { // id는 필요 없으므로 제거
     setSelectedPaymentMethod(method);
