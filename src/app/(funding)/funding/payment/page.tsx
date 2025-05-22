@@ -97,17 +97,11 @@ const PaymentPage = () => {
             "기부 내역 생성 실패: 응답 데이터 문제 또는 에러",
             donationResponse
           );
-          alert(
-            "결제는 완료되었으나 기부 내역 생성에 실패했습니다. 관리자에게 문의해주세요."
-          );
           router.push("/funding");
           return;
         }
       } catch (error: unknown) {
         console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
-        alert(
-          "결제는 완료되었으나 기부 내역 생성 중 오류가 발생했습니다. 관리자에게 문의해주세요."
-        );
         router.push("/funding");
         return;
       }
@@ -133,7 +127,7 @@ const PaymentPage = () => {
         if (finalPaymentResponse) {
           router.push("/donation/loading");
         } else {
-          console.error("결제 내역 저장 실패: 응답 문제", finalPaymentResponse);
+          console.error("결제 내역 저장 실패:", finalPaymentResponse);
           router.push("/funding");
         }
       } catch (updateError: unknown) {
