@@ -1,12 +1,14 @@
 import axiosInstance from "./axios";
 
+export interface InteractionRewardItem {
+  interactionType: string;
+  quantity: number;
+}
+
 export interface DonationRewardData {
   success: boolean;
   data: {
-    interactionRewards: {
-      interactionType: string;
-      quantity: number;
-    }[];
+    interactionRewards: InteractionRewardItem[];
     pointReward: number;
     nonInteractionRewardItemId: number;
   } | null;
