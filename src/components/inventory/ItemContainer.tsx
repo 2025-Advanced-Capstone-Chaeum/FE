@@ -18,11 +18,11 @@ const ItemContainer = () => {
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         <div className="flex flex-col">
           <span className="text-secondary font-semibold text-lg">장식</span>
-          <div className="flex py-3 gap-4 ">로딩중</div>
+          <div className="flex py-10 gap-4 text-xl text-gray-400">로딩중</div>
         </div>
         <div className="flex flex-col">
           <span className="text-secondary font-semibold text-lg">인테리어</span>
-          <div className="flex py-3 gap-4 ">로딩중</div>
+          <div className="flex py-10 gap-4 text-xl text-gray-400">로딩중</div>
         </div>
       </div>
     );
