@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { rewardList } from "@/lib/donationReward";
 import ConfirmButton from "@/components/ConfirmButton";
 import useToast from "@/hooks/useToast";
 import { useDonation } from "@/hooks/useDonation";
 import { InteractionRewardItem } from "@/lib/api/donation";
+import { interactionIcons } from "@/lib/interactionIcons";
 
 export default function NotifyPage() {
   const [showBomb, setShowBomb] = useState(true); // 1초 후 숨길 상태
@@ -15,7 +15,7 @@ export default function NotifyPage() {
   const { showToast } = useToast();
   const { donationRewardQuery } = useDonation();
 
-  const { data: apiResponseData, isLoading, isError, error } = donationRewardQuery;
+  const { data: apiResponseData, isPending, isError, error } = donationRewardQuery;
 
   const handleNotifyClick = () => {
     router.push("/");
@@ -50,7 +50,7 @@ export default function NotifyPage() {
     return () => clearTimeout(timer); // 컴포넌트가 언마운트되면 타이머 제거
   }, []);
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>기부 보상 정보를 불러오는 중...</p>
@@ -66,16 +66,14 @@ export default function NotifyPage() {
     );
   }
 
-  // 실제 보상 데이터 (DonationRewardData 인터페이스의 'data' 필드에 해당)
-  // apiResponseData가 존재하고, success가 true이며, data 필드도 null이 아닐 때만 실제 보상 데이터를 사용
   const actualDonationRewardData = apiResponseData?.success && apiResponseData.data
-    ? apiResponseData.data // <-- 이 부분이 { interactionRewards: ..., ... } 객체입니다.
+    ? apiResponseData.data
     : null;
 
   if (!actualDonationRewardData) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center">
-        <div className="relative top-30 text-xl text-primary">기부 혜택</div>
+        <div className="relative top-30 text-2xl text-primary">기부 혜택</div>
         <p className="mt-4 text-secondary">
           받으실 기부 혜택이 없습니다.
         </p>
@@ -86,28 +84,27 @@ export default function NotifyPage() {
     );
   }
 
-  const { interactionRewards, pointReward, nonInteractionRewardItemId } =
+  const { interactionRewards, pointReward, /*nonInteractionRewardItemId*/ } =
     actualDonationRewardData;
 
-  const nonInteractionRewardInfo = rewardList.find(
-    (item) => item.id === nonInteractionRewardItemId
-  );
+  // const nonInteractionRewardInfo = rewardList.find(
+  //   (item) => item.id === nonInteractionRewardItemId
+  // );
 
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-start"
       onClick={handleNotifyClick}>
-      <div className="relative top-30 text-xl text-primary">기부 혜택</div>
+      <div className="relative top-30 text-2xl text-primary">기부 혜택</div>
       {interactionRewards && interactionRewards.length > 0 && (
         <div className="relative top-50">
           {interactionRewards.map((reward: InteractionRewardItem, index: number) => (
             <div key={index} className="grid grid-cols-3 gap-10 py-5">
-              {/* 상호작용 아이콘 또는 이미지 (필요시 추가) */}
               <div className="flex items-center justify-center">
                 <Image
                   height={50}
                   width={50}
-                  src="/assets/icons/heart.svg"
+                  src={interactionIcons[reward.interactionType]}
                   alt={reward.interactionType}
                 />
               </div>
@@ -125,15 +122,8 @@ export default function NotifyPage() {
       {/* 포인트 보상 표시 */}
       {pointReward > 0 && (
         <div className="relative top-50">
-          <div className="grid grid-cols-3 gap-10 py-5">
-            <div className="flex items-center justify-center">
-              <Image
-                height={50}
-                width={50}
-                src="/assets/icons/point.svg"
-                alt="포인트"
-              />
-            </div>
+          <div className="grid grid-cols-3 gap-11 py-5">
+              <span className="text-[#FC6677] font-semibold text-5xl">P</span>
             <h1 className="flex items-center text-secondary">포인트</h1>
             <h1 className="flex items-center text-secondary">
               {pointReward}점
@@ -143,7 +133,7 @@ export default function NotifyPage() {
       )}
 
       {/* 비상호작용 보상 아이템 표시 */}
-      {nonInteractionRewardInfo && (
+      {/* {nonInteractionRewardInfo && (
         <div className="relative top-50">
           <div className="grid grid-cols-3 gap-10 py-5">
             <Image
@@ -156,14 +146,13 @@ export default function NotifyPage() {
               {nonInteractionRewardInfo.label}
             </h1>
             <h1 className="flex items-center text-secondary">
-              {/* 비상호작용 보상은 times가 없다고 가정, 필요시 추가 */}
             </h1>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* 보상이 하나도 없는 경우 */}
-      {interactionRewards.length === 0 && pointReward === 0 && !nonInteractionRewardInfo && (
+      {interactionRewards.length === 0 && pointReward === 0 && (
           <p className="mt-4 text-secondary">받으실 기부 혜택이 없습니다.</p>
       )}
 
