@@ -1,5 +1,5 @@
 interface PortoneRequestData {
-  pg: string;
+  channelKey: string;
   pay_method: string;
   merchant_uid: string;
   amount: number;
@@ -45,6 +45,8 @@ export const requestPortonePayment = (
       console.error("아임포트 SDK가 초기화되지 않았거나 window 객체를 사용할 수 없습니다.");
       return reject(new Error("아임포트 SDK를 사용할 수 없습니다."));
     }
+
+    console.log("IMP.request_pay에 전달될 데이터:", data);
 
     window.IMP.request_pay(data, (response: PortoneResponse) => {
       if (response.success) {

@@ -25,6 +25,9 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("마음 나누기");
 
+  const tossPayChannelKey = process.env.NEXT_PUBLIC_TOSSPAY_CHANNEL_KEY;
+  const kakaoPayChannelKey = process.env.NEXT_PUBLIC_KAKAOPAY_CHANNEL_KEY;
+
   const handleFullPaymentProcess = async () => {
     if (
       !selectedFundingId ||
@@ -34,6 +37,14 @@ const PaymentPage = () => {
       alert("결제 정보를 먼저 선택해주세요.");
       return;
     }
+
+    const getPayMethod = (method: string): string => {
+
+    if (method === "TOSS_PAY") {
+        return "tosspay";
+    }
+    return "card";
+};
 
     setIsProcessing(true);
     setButtonMessage("결제 준비 중...");
@@ -52,8 +63,11 @@ const PaymentPage = () => {
 
     try {
       const impResponse = await requestPortonePayment({
-        pg: selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-        pay_method: "card",
+        channelKey:
+          selectedPaymentMethod === "KAKAO_PAY"
+            ? kakaoPayChannelKey!
+            : tossPayChannelKey!,
+        pay_method: getPayMethod(selectedPaymentMethod),
         merchant_uid: merchantUidForPortone,
         amount: selectedAmount,
         name: "마음 나누기",
@@ -64,10 +78,9 @@ const PaymentPage = () => {
       setButtonMessage("결제 처리 중...");
       console.log("아임포트 결제 성공:", impResponse);
 
-      // 2. **아임포트 결제 성공 후 기부 내역 생성**
       const donationData = {
         fundingId: selectedFundingId,
-        amount: impResponse.paid_amount as number, // 실제 결제된 금액 사용 (매우 중요!)
+        amount: impResponse.paid_amount as number, 
         point: 0,
       };
 
@@ -84,13 +97,17 @@ const PaymentPage = () => {
             "기부 내역 생성 실패: 응답 데이터 문제 또는 에러",
             donationResponse
           );
-          alert("결제는 완료되었으나 기부 내역 생성에 실패했습니다. 관리자에게 문의해주세요.");
+          alert(
+            "결제는 완료되었으나 기부 내역 생성에 실패했습니다. 관리자에게 문의해주세요."
+          );
           router.push("/funding");
           return;
         }
       } catch (error: unknown) {
         console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
-        alert("결제는 완료되었으나 기부 내역 생성 중 오류가 발생했습니다. 관리자에게 문의해주세요.");
+        alert(
+          "결제는 완료되었으나 기부 내역 생성 중 오류가 발생했습니다. 관리자에게 문의해주세요."
+        );
         router.push("/funding");
         return;
       }
