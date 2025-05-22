@@ -35,3 +35,14 @@ export const fetchInventoryByCategory = async (
     return [];
   }
 };
+
+export const toggleInventory = async () => {
+  try{
+    const response = await axiosInstance.post("/api/v1/inventory/1/toggle");
+
+    return response.data;
+  }catch (error) {
+    console.error("인벤토리 아이템 토글 실패:", error);
+    return null;
+  } 
+}
