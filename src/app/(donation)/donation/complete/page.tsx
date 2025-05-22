@@ -13,10 +13,10 @@ const DonationCompletePage = () => {
   const { fundingQuery } = useFunding(
     selectedFundingId !== null ? selectedFundingId : undefined
   );
-  const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
+  const { data: fundingDetail, isPending, isError, error } = fundingQuery;
   const router = useRouter();
 
-  if (isLoading) {
+  if (isPending) {
     return <div>로딩 중...</div>;
   }
 

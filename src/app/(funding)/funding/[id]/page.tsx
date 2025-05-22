@@ -19,7 +19,7 @@ export default function FundingDetailCard() {
   const { id } = useParams();
   const fundingId = Number(id);
   const { fundingQuery } = useFunding(fundingId);
-  const { data: fundingDetail, isLoading, isError, error } = fundingQuery;
+  const { data: fundingDetail, isPending, isError, error } = fundingQuery;
   const userData = userStore((state) => state.userData);
   const router = useRouter();
     const setSelectedFundingId = usePaymentStore((state) => state.setSelectedFundingId);
@@ -35,7 +35,7 @@ export default function FundingDetailCard() {
   const isClosingSoon =
     remainingDaysText === "오늘 마감" || remainingDaysText === "마감 임박";
 
-  if (isLoading) {
+  if (isPending) {
     return <div>Loading funding details...</div>;
   }
 
