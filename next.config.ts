@@ -1,16 +1,22 @@
+import withPWAInit from "next-pwa";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   images: {
-    remotePatterns: [
+    domains: ["chaeum-bucket.s3.ap-northeast-2.amazonaws.com"],
+  },
+  async rewrites() {
+    return [
       {
-        protocol: 'https',
-        hostname: 's3.ap-northeast-2.amazonaws.com',
-        port: '',
-        pathname: '/item/**',
+        source: "/api/ocr", // 프론트에서 사용할 경로
+        destination: "http://211.188.50.163:8080/ocr", // 실제 외부 서버
       },
-    ],
+    ];
   },
 };
 
-module.exports = nextConfig;
+const withPWA = withPWAInit({
+  dest: "public",
+});
+
+export default withPWA(nextConfig);
