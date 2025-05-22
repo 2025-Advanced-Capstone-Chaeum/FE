@@ -18,27 +18,11 @@ const ItemContainer = () => {
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         <div className="flex flex-col">
           <span className="text-secondary font-semibold text-lg">장식</span>
-          <div className="flex py-3 gap-4 overflow-hidden overflow-x-auto touch-manipulation">
-            {[1, 2, 3].map((item) => {
-              return (
-                <div key={item}>
-                  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
-                </div>
-              );
-            })}
-          </div>
+          <div className="flex py-3 gap-4 ">로딩중</div>
         </div>
         <div className="flex flex-col">
           <span className="text-secondary font-semibold text-lg">인테리어</span>
-          <div className="flex py-3 gap-4 overflow-hidden overflow-x-auto touch-manipulation">
-            {[1, 2, 3].map((item) => {
-              return (
-                <div key={item}>
-                  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl "></div>
-                </div>
-              );
-            })}
-          </div>
+          <div className="flex py-3 gap-4 ">로딩중</div>
         </div>
       </div>
     );
