@@ -76,7 +76,6 @@ const PaymentPage = () => {
       });
 
       setButtonMessage("결제 처리 중...");
-      console.log("아임포트 결제 성공:", impResponse);
 
       const donationData = {
         fundingId: selectedFundingId,

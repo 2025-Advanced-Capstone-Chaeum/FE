@@ -21,7 +21,7 @@ const DonationCompletePage = () => {
   }
 
   if (isError) {
-    return <div>오류 발생: {error?.message}</div>;
+    return console.log(`오류 발생: ${error?.message}`);
   }
 
   if (!fundingDetail) {

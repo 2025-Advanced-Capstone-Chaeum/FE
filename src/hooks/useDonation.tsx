@@ -19,9 +19,9 @@ export const useDonation = (): UseDonationResult => {
         mutationFn: (donationData: DonationCreateData) => createDonation(donationData),
             onSuccess: (data: DonationCreateResponse) => {
       if (data?.data?.id) {
-        console.log("후원 생성 성공", data);
+        console.log("기부 생성 성공", data);
       } else {
-        console.warn("후원 생성 성공했지만 ID가 없습니다.", data);
+        console.warn("기부 생성 성공했지만 ID가 없습니다.", data);
       }
     },
             onError: (error: Error) => {

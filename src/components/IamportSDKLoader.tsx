@@ -11,7 +11,7 @@ const IamportSDKLoader = () => {
     document.head.appendChild(iamportScript);
 
     iamportScript.onerror = () => {
-      console.error('아임포트 SDK 로드 실패: https://cdn.iamport.kr/v1/iamport.js');
+      console.error('아임포트 SDK 로드 실패');
     };
 
     return () => {
