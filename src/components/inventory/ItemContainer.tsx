@@ -18,17 +18,17 @@ const ItemContainer = () => {
     data: decorationId,
     isPending: isDecorationPending,
     isError: isDecorationError,
-  } = useDecorationSearch();
+  } = useDecorationSearch(); // 장식 아이템 조회
 
   const {
     data: interiorId,
     isPending: isInteriorPending,
     isError: isInteriorError,
-  } = useInteriorSearch();
+  } = useInteriorSearch();  // 인테리어 아이템 조회
 
-  const { mutate: toggleInventory } = usetoggleInventory();
+  const { mutate: toggleInventory } = usetoggleInventory(); // 인벤토리 아이템 토글
 
-  if (isDecorationPending || isInteriorPending) {
+  if (isDecorationPending || isInteriorPending) { // 로딩 처리
     return (
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         {["장식", "인테리어"].map((label) => (
@@ -47,7 +47,7 @@ const ItemContainer = () => {
     );
   }
 
-  if (isDecorationError || isInteriorError) {
+  if (isDecorationError || isInteriorError) {   // 에러 처리
     return (
       <div className="p-8 text-center text-red-500">
         아이템을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
@@ -56,7 +56,7 @@ const ItemContainer = () => {
   }
 
   const isItemInList = (id: number, list: { itemId: number }[] = []) =>
-    list.some((i) => i.itemId === id);
+    list.some((i) => i.itemId === id); // 아이템이 리스트에 있는지 확인
 
   return (
     <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">

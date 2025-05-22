@@ -1,4 +1,4 @@
-export const decorationItems = [
+export const decorationItems = [ // 4~9 inventoryId
   {
     id: 4,
     src: "/assets/inventory/sunglasses.svg",

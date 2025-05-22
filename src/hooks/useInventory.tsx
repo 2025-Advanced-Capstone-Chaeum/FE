@@ -26,6 +26,7 @@ export const usetoggleInventory = () => {
     },
     onError: (error) => {
       <div> 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요</div>;
-      console.error("인벤토리 아이템 토글 실패:", error);},
+      console.error("인벤토리 아이템 토글 실패:", error);
+    },
   });
 };
