@@ -8,6 +8,7 @@ import useToast from "@/hooks/useToast";
 import { useDonation } from "@/hooks/useDonation";
 import { InteractionRewardItem } from "@/lib/api/donation";
 import { interactionIcons } from "@/lib/interactionIcons";
+import { rewardList } from "@/lib/donationReward";
 
 export default function NotifyPage() {
   const [showBomb, setShowBomb] = useState(true); // 1초 후 숨길 상태
@@ -84,12 +85,12 @@ export default function NotifyPage() {
     );
   }
 
-  const { interactionRewards, pointReward, /*nonInteractionRewardItemId*/ } =
+  const { interactionRewards, pointReward, nonInteractionRewardItemId } =
     actualDonationRewardData;
 
-  // const nonInteractionRewardInfo = rewardList.find(
-  //   (item) => item.id === nonInteractionRewardItemId
-  // );
+  const nonInteractionRewardInfo = rewardList.find(
+    (item) => item.id === nonInteractionRewardItemId
+  );
 
   return (
     <div
@@ -133,12 +134,12 @@ export default function NotifyPage() {
       )}
 
       {/* 비상호작용 보상 아이템 표시 */}
-      {/* {nonInteractionRewardInfo && (
-        <div className="relative top-50">
+      {nonInteractionRewardInfo && (
+        <div className="relative top-50 items-center justify-center">
           <div className="grid grid-cols-3 gap-10 py-5">
             <Image
-              height={nonInteractionRewardInfo.height || 100}
-              width={nonInteractionRewardInfo.width || 100}
+              height={nonInteractionRewardInfo.height || 50}
+              width={nonInteractionRewardInfo.width || 50}
               src={nonInteractionRewardInfo.src}
               alt={nonInteractionRewardInfo.alt}
             />
@@ -149,7 +150,7 @@ export default function NotifyPage() {
             </h1>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* 보상이 하나도 없는 경우 */}
       {interactionRewards.length === 0 && pointReward === 0 && (
