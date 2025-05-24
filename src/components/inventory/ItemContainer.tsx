@@ -6,7 +6,7 @@ import Image from "next/image";
 import {
   useDecorationSearch,
   useInteriorSearch,
-  usetoggleInventory,
+  useToggleInventory,
 } from "@/hooks/useInventory";
 
 const SkeletonBox = () => (
@@ -24,11 +24,12 @@ const ItemContainer = () => {
     data: interiorId,
     isPending: isInteriorPending,
     isError: isInteriorError,
-  } = useInteriorSearch();  // 인테리어 아이템 조회
+  } = useInteriorSearch(); // 인테리어 아이템 조회
 
-  const { mutate: toggleInventory } = usetoggleInventory(); // 인벤토리 아이템 토글
+  const { mutate: toggleInventory } = useToggleInventory(); // 인벤토리 아이템 토글
 
-  if (isDecorationPending || isInteriorPending) { // 로딩 처리
+  if (isDecorationPending || isInteriorPending) {
+    // 로딩 처리
     return (
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         {["장식", "인테리어"].map((label) => (
@@ -47,7 +48,8 @@ const ItemContainer = () => {
     );
   }
 
-  if (isDecorationError || isInteriorError) {   // 에러 처리
+  if (isDecorationError || isInteriorError) {
+    // 에러 처리
     return (
       <div className="p-8 text-center text-red-500">
         아이템을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
@@ -79,7 +81,7 @@ const ItemContainer = () => {
                 </ItemBoxButton>
               </div>
             ) : (
-                <SkeletonBox key={item.id} />
+              <SkeletonBox key={item.id} />
             )
           )}
         </div>

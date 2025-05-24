@@ -2,6 +2,7 @@
 
 import ClientWelcome from "@/components/welcome/ClientWelcome";
 import { useCat } from "@/hooks/useCat";
+import { useWearingInventory } from "@/hooks/useInventory";
 import axiosInstance from "@/lib/api/axios";
 import { catStore } from "@/store/catStore";
 import { userStore } from "@/store/userStore";
@@ -15,20 +16,21 @@ export default function WelcomePage() {
     const response = await axiosInstance.get("/api/v1/member");
     return response.data;
   };
+  const { data: InventoryData } = useWearingInventory();
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const { data } = await fetchMemberInfo();
         setUserData(data);
-        setCatData(catInfo);
+        setCatData({ ...catInfo, inventory: InventoryData });
       } catch (err) {
         console.error("회원 정보 요청 실패:", err);
       }
     };
 
     getUser();
-  }, [setUserData, catInfo]);
+  }, [setUserData, catInfo, setCatData]);
 
   return <ClientWelcome />;
 }

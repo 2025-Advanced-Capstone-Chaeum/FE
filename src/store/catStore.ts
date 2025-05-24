@@ -5,10 +5,11 @@ type CatDataProps = {
   level: number;
   experiencePoint: number;
   levelUpPercentage: number;
+  inventory: number[];
 };
 
 type CatStore = {
-  catData: CatDataProps
+  catData: CatDataProps;
   setCatData: (catData: CatDataProps) => void;
 };
 
@@ -18,6 +19,7 @@ export const catStore = create<CatStore>()((set) => ({
     level: 0,
     experiencePoint: 0,
     levelUpPercentage: 0,
+    inventory: [],
   },
   setCatData: (catData) => set({ catData }),
 }));

@@ -48,3 +48,14 @@ export const toggleInventory = async (id: number) => {
     return null;
   }
 };
+
+export const wearingInventory = async () => {
+  try {
+    const response = await axiosInstance.get("/api/v1/inventory/wearing");
+    console.log("인벤토리 착용 아이템 조회 성공:", response);
+    return response.data;
+  } catch (error) {
+    console.error("인벤토리 착용 아이템 조회 실패:", error);
+    return null;
+  }
+};
