@@ -22,6 +22,7 @@ async function reissueTokensViaBackend(): Promise<NextResponse | null> {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
     });
 
     if (response.ok) {
