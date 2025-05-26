@@ -1,9 +1,11 @@
-// components/Cat.tsx
+
 "use client";
 
+import { useWearingInventory } from "@/hooks/useInventory";
 import { catStore } from "@/store/catStore";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+
 type ItemType = {
   id: number;
   itemId?: number;
@@ -15,14 +17,38 @@ type ItemType = {
 };
 
 const Cat = () => {
-  // getCombinedInventoryList 함수를 호출하여 결과를 가져옵니다.
-  // 스토어 내부의 메모이제이션 로직에 의존합니다.
   const inventoryList = catStore((state) => state.combinedInventoryList);
+  const setInventory = catStore((state) => state.setInventory); // 독립적인 setInventory 액션 가져오기
+  const currentStoreInventory = catStore((state) => state.inventory); // 현재 스토어의 독립적인 inventory 상태
 
+  const {
+    data: InventoryData,
+    isPending: isInventoryPending,
+    isError: inventoryError,
+  } = useWearingInventory();
+
+  // 데이터가 성공적으로 로드되어 스토어에 설정되었는지 추적
   useEffect(() => {
-    // 이 로그는 이제 리렌더링될 때마다 올바른 inventoryList를 보여줄 것입니다.
-    console.log("Combined Inventory List (from direct state):", inventoryList);
-  }, [inventoryList]);
+    if (
+      !isInventoryPending &&
+      Array.isArray(InventoryData) && // InventoryData가 배열인지 확인
+      !inventoryError &&
+      // 현재 스토어의 인벤토리와 API에서 가져온 인벤토리가 다를 때만 업데이트
+      (InventoryData.length !== currentStoreInventory.length ||
+        !InventoryData.every((item) => currentStoreInventory.includes(item)))
+    ) {
+      setInventory(InventoryData); // catStore의 독립적인 inventory 상태를 업데이트
+    }
+
+  }, [
+    InventoryData, // API 데이터가 변경되면 useEffect 재실행
+    isInventoryPending, 
+    inventoryError, 
+    setInventory,
+    currentStoreInventory, // 스토어의 inventory가 변경되면 useEffect 재실행
+    inventoryList, // combinedInventoryList 변경 시 (로그용)
+  ]);
+
   return (
     <div className="relative w-[180px] h-[180px]">
       <Image
@@ -33,7 +59,6 @@ const Cat = () => {
         className="relative z-10"
       />
 
-      {/* inventoryList는 이제 ItemType 배열이므로 map을 사용할 수 있습니다. */}
       {inventoryList.map((item: ItemType) => (
         <Image
           key={item.id}

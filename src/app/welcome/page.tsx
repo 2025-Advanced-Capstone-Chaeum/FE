@@ -1,13 +1,9 @@
-// WelcomePage.tsx (수정)
-
 "use client";
 
 import ClientWelcome from "@/components/welcome/ClientWelcome";
 import { useCat } from "@/hooks/useCat";
 import { useWearingInventory } from "@/hooks/useInventory";
 import axiosInstance from "@/lib/api/axios";
-// decorationItems, interiorItems는 이제 이 파일에서 직접 변환에 사용되지 않으므로 제거해도 됩니다.
-// import { decorationItems, interiorItems } from "@/lib/inventoryItems"; // 이 라인 제거 가능
 import { catStore } from "@/store/catStore";
 import { userStore } from "@/store/userStore";
 import { useEffect } from "react";
@@ -16,7 +12,6 @@ export default function WelcomePage() {
   const setUserData = userStore((state) => state.setUserData);
   const setCatData = catStore((state) => state.setCatData);
   const setInventory = catStore((state) => state.setInventory);
-  // const allInventoryItems = [...decorationItems, ...interiorItems]; // 이 라인 제거 가능
 
   const {
     data: catInfo,
@@ -25,7 +20,7 @@ export default function WelcomePage() {
   } = useCat();
 
   const {
-    data: InventoryData, // 이 InventoryData는 이제 직접 itemId 배열입니다. (예: [9])
+    data: InventoryData, // itemId 배열 (예: [9])
     isPending: isInventoryPending,
     isError: inventoryError,
   } = useWearingInventory();
@@ -50,12 +45,8 @@ export default function WelcomePage() {
             ...catInfo,
           });
 
-          // ******************************************************************
-          // InventoryData가 이미 itemId 배열이므로, 그대로 setInventory에 전달합니다.
           setInventory(InventoryData);
-          console.log("WelcomePage - Initial Inventory (already itemId):", InventoryData);
-          console.log("WelcomePage - Cat data updated with catInfo:", catInfo);
-          // ******************************************************************
+
         } else {
             console.log("WelcomePage - Conditions not met for data initialization. Skipping update.");
         }

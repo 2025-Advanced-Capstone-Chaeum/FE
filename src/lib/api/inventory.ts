@@ -24,8 +24,6 @@ export const fetchInventoryByCategory = async (
 
     const values = response?.data?.data.values; // 응답 데이터에서 values 속성 추출
 
-    console.log("필요해 => ", response);
-
     if (Array.isArray(values) && values.length > 0) {
       // values가 배열이고 비어있지 않은 경우
       return values;
@@ -43,7 +41,6 @@ export const fetchInventoryByCategory = async (
 export const toggleInventory = async (id: number) => {
   try {
     const response = await axiosInstance.post(`/api/v1/inventory/${id}/toggle`);
-
     return response.data;
   } catch (error) {
     console.error("인벤토리 아이템 토글 실패:", error);
@@ -54,7 +51,6 @@ export const toggleInventory = async (id: number) => {
 export const wearingInventory = async () => {
   try {
     const response = await axiosInstance.get("/api/v1/inventory/wearing");
-    console.log("인벤토리 착용 아이템 조회 성공:", response);
     return response.data.data;
   } catch (error) {
     console.error("인벤토리 착용 아이템 조회 실패:", error);

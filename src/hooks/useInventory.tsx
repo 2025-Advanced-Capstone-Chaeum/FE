@@ -3,8 +3,7 @@ import {
   toggleInventory,
   wearingInventory,
 } from "@/lib/api/inventory";
-import { queryClient } from "@/lib/queryClient";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useDecorationSearch = () => {
   return useQuery({
@@ -21,10 +20,10 @@ export const useInteriorSearch = () => {
 };
 
 export const useToggleInventory = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => toggleInventory(id),
-    onSuccess: (data) => {
-      console.log("인벤토리 아이템 토글 성공:", data);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["decoration"] });
       queryClient.invalidateQueries({ queryKey: ["interior"] });
       queryClient.invalidateQueries({ queryKey: ["wearing"] });
