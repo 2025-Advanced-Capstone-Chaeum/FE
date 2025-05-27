@@ -27,7 +27,7 @@ const MyFundItem: React.FC<MyFundItemProps> = ({type, fundingItem}) => {
   return (
     <>
         {type === "ongoing" &&
-            <div className='flex justify-between items-center text-xs text-secondary gap-3'>
+            <div className='flex justify-between items-center text-xs text-secondary gap-3 cursor-pointer' onClick={() => router.push(`/funding/${fundingItem.id}`)}>
                 <Image src={fundingItem.fundingImages?.[0]?.fileUrl || "/assets/images/study.png"} alt={fundingItem.title} width={70} height={30} className='rounded-xl'/>
                 <div className='flex flex-col w-0 flex-1'>
                     <span className='text-ellipsis overflow-hidden whitespace-nowrap'>{fundingItem.title}</span>
