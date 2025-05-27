@@ -7,8 +7,8 @@ export interface CreateReviewData {
 }
 
 export const createReview = async (
-    fundingId: number,
     reviewData: CreateReviewData,
+    fundingId?: number,
 ) => {
     const response = await axiosInstance.post(`/api/v1/review?fundingId=${fundingId}`, reviewData);
     return response.data;

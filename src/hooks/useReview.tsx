@@ -2,7 +2,7 @@ import { createReview, CreateReviewData } from "@/lib/api/review";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 interface CreateReviewPayload {
-  id: number;
+  fundingId?: number;
   reviewData: CreateReviewData;
 }
 
@@ -18,8 +18,8 @@ interface UseReviewResult {
 export const useReview = () => { 
   const createReviewMutation: UseReviewResult['createReviewMutation'] =
     useMutation({
-      mutationFn: ({ id, reviewData }: CreateReviewPayload) =>
-        createReview(id, reviewData),
+      mutationFn: ({ fundingId, reviewData }: CreateReviewPayload) =>
+        createReview(reviewData, fundingId),
       onSuccess: (data: CreateReviewData) => {
         console.log("리뷰 생성 성공:", data);
       },

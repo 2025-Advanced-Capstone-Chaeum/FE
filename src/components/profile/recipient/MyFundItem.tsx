@@ -11,8 +11,8 @@ interface MyFundItemProps {
 const MyFundItem: React.FC<MyFundItemProps> = ({type, fundingItem}) => {
     const router = useRouter();
 
-    const handleReviewWrite = (id: number) => {
-        router.push(`/review/write/${id}`);
+    const handleReviewWrite = (fundingId: number) => {
+        router.push(`/review/write/${fundingId}`);
     }
 
     const formatDate = (dateString: string) => {

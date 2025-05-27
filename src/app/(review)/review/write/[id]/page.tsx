@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useReview } from "@/hooks/useReview";
 import { CreateReviewData } from "@/lib/api/review";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ReviewWritePage = () => {
@@ -20,6 +20,9 @@ const ReviewWritePage = () => {
   });
   const router = useRouter();
   const { createReviewMutation } = useReview();
+  const params = useParams();
+  const fundingIdString = typeof params.id === 'string' ? params.id : undefined;
+  const fundingId = fundingIdString ? parseInt(fundingIdString, 10) : undefined;
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,10 +40,11 @@ const ReviewWritePage = () => {
       return;
     }
 
-    createReviewMutation.mutate(formData, {
+    createReviewMutation.mutate({ fundingId: fundingId, reviewData: formData }, {
       onSuccess: () => {
         try {
           router.push("/profile/recipient");
+          console.log(formData)
         } catch (error) {
           console.error("리뷰 생성 데이터 갱신 중 오류 발생:", error);
         }
@@ -65,7 +69,7 @@ const ReviewWritePage = () => {
     <>
       <BackButton>후기 작성</BackButton>
       <div className="justify-center px-25 sm:px-35 md:px-55 py-1">
-        <ReviewCard reviewData={cardData} />
+        <ReviewCard reviewData={formData} fundingId={fundingId} />
       </div>
 
       <ListContainer>
