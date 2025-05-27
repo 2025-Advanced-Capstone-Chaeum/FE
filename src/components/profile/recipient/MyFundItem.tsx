@@ -34,7 +34,6 @@ const MyFundItem: React.FC<MyFundItemProps> = ({type, fundingItem}) => {
                     <span className='text-gray text-[10px]'>{formatDate(fundingItem.createdAt)}</span>
                 </div>
                 <span className=''>{fundingItem.goalAmount}</span>
-                <Button variant="soft" className='p-2.5 border-1 border-primary text-primary text-[11px]' onClick={() => handleReviewWrite(fundingItem.id)}>후기<br />작성</Button>
             </div>
         }
         {type === "completed" &&
