@@ -43,10 +43,9 @@ export const useDonation = (): UseDonationResult => {
     },
   });
 
-  const donationRewardQuery: UseQueryResult<DonationRewardData | null, Error> =
-    useQuery({
-      queryKey: ["donationReward"],
-      queryFn: fetchDonationReward,
+    const donationRewardQuery: UseQueryResult<DonationRewardData | null, Error> = useQuery({
+        queryKey: ["donationReward"],
+        queryFn: fetchDonationReward,
     });
 
   return {

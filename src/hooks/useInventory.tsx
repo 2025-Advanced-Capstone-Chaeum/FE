@@ -20,7 +20,6 @@ export const useInteriorSearch = () => {
 };
 
 export const useToggleInventory = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => toggleInventory(id),
     onSuccess: () => {
