@@ -3,7 +3,7 @@
 import { useWearingInventory } from "@/hooks/useInventory";
 import { catStore } from "@/store/catStore";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 type ItemType = {
   id: number;

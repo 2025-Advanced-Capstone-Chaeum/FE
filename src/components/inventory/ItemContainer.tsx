@@ -15,7 +15,6 @@ const SkeletonBox = () => (
 );
 
 const ItemContainer = () => {
-  const inventoryList = catStore((state) => state.combinedInventoryList);
   const toggleItemInDisplay = catStore((state) => state.toggleItemInDisplay); // 인벤토리 토글 상태
   const allInventoryItems = [...decorationItems, ...interiorItems];
 

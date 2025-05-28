@@ -1,5 +1,4 @@
 import { decorationItems, interiorItems } from "@/lib/inventoryItems";
-import { Item } from "@radix-ui/react-radio-group";
 import { create } from "zustand";
 
 type ItemType = {
