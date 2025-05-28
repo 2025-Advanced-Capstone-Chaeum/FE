@@ -27,9 +27,7 @@ const ReviewCard = ({ reviewData, fundingId }: ReviewCardProps) => {
   const displayImageUrl: string =
     (fundingDetail?.fundingImages && fundingDetail.fundingImages.length > 0)
       ? fundingDetail.fundingImages[0].fileUrl
-      : (reviewData.imageUrls && reviewData.imageUrls.length > 0
-          ? reviewData.imageUrls[0]
-          : "/assets/images/study.png");
+      : reviewData.imageUrls[0];
 
   const displayTitle = fundingDetail?.title || reviewData.title;
 
