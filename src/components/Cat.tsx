@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useWearingInventory } from "@/hooks/useInventory";
@@ -31,22 +30,22 @@ const Cat = () => {
   useEffect(() => {
     if (
       !isInventoryPending &&
-      Array.isArray(InventoryData) && // InventoryData가 배열인지 확인
+      Array.isArray(InventoryData) &&
       !inventoryError &&
-      // 현재 스토어의 인벤토리와 API에서 가져온 인벤토리가 다를 때만 업데이트
+      
       (InventoryData.length !== currentStoreInventory.length ||
         !InventoryData.every((item) => currentStoreInventory.includes(item)))
     ) {
-      setInventory(InventoryData); // catStore의 독립적인 inventory 상태를 업데이트
+      setInventory(InventoryData); 
+      console.log("착용중인 인벤토리 조회=>", InventoryData);
     }
-
   }, [
-    InventoryData, // API 데이터가 변경되면 useEffect 재실행
-    isInventoryPending, 
-    inventoryError, 
+    InventoryData, 
+    isInventoryPending,
+    inventoryError,
     setInventory,
-    currentStoreInventory, // 스토어의 inventory가 변경되면 useEffect 재실행
-    inventoryList, // combinedInventoryList 변경 시 (로그용)
+    currentStoreInventory, 
+    inventoryList, 
   ]);
 
   return (

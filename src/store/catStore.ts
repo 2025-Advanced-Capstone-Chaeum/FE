@@ -2,12 +2,12 @@ import { decorationItems, interiorItems } from "@/lib/inventoryItems";
 import { create } from "zustand";
 
 type ItemType = {
-  id: number; 
-  itemId?: number; 
-  src: string; 
+  id: number;
+  itemId?: number;
+  src: string;
   alt: string;
-  width: number; 
-  height: number; 
+  width: number;
+  height: number;
   className: string;
 };
 
@@ -73,5 +73,6 @@ export const catStore = create<CatStore>()((set, get) => ({
     );
     // 상태를 직접 업데이트하여 구독하는 컴포넌트를를 리렌더링
     set({ combinedInventoryList: newCombinedList });
+    get().toggleInventory;
   },
 }));

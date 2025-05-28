@@ -38,17 +38,23 @@ export default function WelcomePage() {
 
         // catInfo와 InventoryData가 모두 로드되었고 에러가 없을 때만 스토어 업데이트
         if (
-          !isCatPending && catInfo && !catError &&
-          !isInventoryPending && InventoryData && !inventoryError
+          !isCatPending &&
+          catInfo &&
+          !catError &&
+          !isInventoryPending &&
+          InventoryData &&
+          !inventoryError
         ) {
           setCatData({
             ...catInfo,
           });
 
           setInventory(InventoryData);
-
+          console.log("착용중인 Inventory", InventoryData);
         } else {
-            console.log("WelcomePage - Conditions not met for data initialization. Skipping update.");
+          console.log(
+            "WelcomePage - Conditions not met for data initialization. Skipping update."
+          );
         }
       } catch (err) {
         console.error("회원 정보 요청 실패:", err);

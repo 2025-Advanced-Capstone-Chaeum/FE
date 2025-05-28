@@ -34,7 +34,6 @@ const ItemContainer = () => {
   const { mutate: toggleInventoryMutate } = useToggleInventory(); // 인벤토리 아이템 토글
 
   const handleToggleInventory = (uiId: number) => {
-
     toggleInventoryMutate(uiId);
 
     const itemToToggle = allInventoryItems.find((item) => item.id === uiId);
@@ -49,11 +48,10 @@ const ItemContainer = () => {
     let newTempInventory;
     // 스토어의 toggleInventory는 itemId로 관리
     if (tempInventory.includes(actualItemId)) {
-
-      // 아이템이 이미 인벤토리에 있다면 제거 
+      // 아이템이 이미 인벤토리에 있다면 제거
       newTempInventory = tempInventory.filter((id) => id !== actualItemId);
     } else {
-      // 아이템이 인벤토리에 없다면 추가 
+      // 아이템이 인벤토리에 없다면 추가
       newTempInventory = [...tempInventory, actualItemId];
     }
 
@@ -61,7 +59,6 @@ const ItemContainer = () => {
   };
 
   if (isDecorationPending || isInteriorPending) {
-
     return (
       <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
         {["장식", "인테리어"].map((label) => (
@@ -81,7 +78,6 @@ const ItemContainer = () => {
   }
 
   if (isDecorationError || isInteriorError) {
-
     return (
       <div className="p-8 text-center text-red-500">
         아이템을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
@@ -90,7 +86,7 @@ const ItemContainer = () => {
   }
 
   const isItemInList = (uiId: number, list: { id: number }[] = []) =>
-    list.some((i) => i.id === uiId); 
+    list.some((i) => i.id === uiId);
 
   return (
     <div className="flex flex-col fixed bottom-[3rem] w-full h-110 p-8 bg-white rounded-2xl gap-4">
@@ -101,15 +97,10 @@ const ItemContainer = () => {
             isItemInList(item.id, decorationId) ? (
               <div
                 key={item.id}
-                onClick={() => handleToggleInventory(item.id)} 
+                onClick={() => handleToggleInventory(item.id)}
                 className="cursor-pointer">
                 <ItemBoxButton>
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={55}
-                    height={55}
-                  />
+                  <Image src={item.src} alt={item.alt} width={55} height={55} />
                 </ItemBoxButton>
               </div>
             ) : (
@@ -126,15 +117,10 @@ const ItemContainer = () => {
             isItemInList(item.id, interiorId) ? (
               <div
                 key={item.id}
-                onClick={() => handleToggleInventory(item.id)} 
+                onClick={() => handleToggleInventory(item.id)}
                 className="cursor-pointer">
                 <ItemBoxButton>
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={55}
-                    height={55}
-                  />
+                  <Image src={item.src} alt={item.alt} width={55} height={55} />
                 </ItemBoxButton>
               </div>
             ) : (
