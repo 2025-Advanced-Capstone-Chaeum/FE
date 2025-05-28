@@ -1,4 +1,5 @@
 import { decorationItems, interiorItems } from "@/lib/inventoryItems";
+import { Item } from "@radix-ui/react-radio-group";
 import { create } from "zustand";
 
 type ItemType = {
@@ -25,12 +26,8 @@ type CatStore = {
   inventory: number[]; // 아이템 ID 배열
   setInventory: (inventory: number[]) => void;
 
-  toggleInventory: number[];
-  setToggleInventory: (toggle: number[]) => void;
-  clearToggleInventory: () => void;
-
   combinedInventoryList: ItemType[];
-  _updateCombinedInventoryList: () => void;
+  toggleItemInDisplay: (id: number) => void;
 };
 
 export const catStore = create<CatStore>()((set, get) => ({
@@ -41,38 +38,48 @@ export const catStore = create<CatStore>()((set, get) => ({
     levelUpPercentage: 0,
   },
   inventory: [],
-  toggleInventory: [],
   combinedInventoryList: [],
 
   setCatData: (newCatData) => {
     set({ catData: newCatData });
   },
 
-  setInventory: (newInventory: number[]) => {
-    set({ inventory: newInventory });
-    get()._updateCombinedInventoryList(); // toggleInventory도 변경되었으니 무효화
+  setInventory: (newBackendInventory: number[]) => {
+    set({ inventory: newBackendInventory });
+    // 백엔드 데이터 기준으로 combinedInventoryList를 올바르게 설정
+    const newCombinedListFromBackend = [
+      ...decorationItems,
+      ...interiorItems,
+    ].filter((item) => newBackendInventory.includes(item.itemId!));
+    set({ combinedInventoryList: newCombinedListFromBackend });
   },
+  toggleItemInDisplay: (itemIdToToggle: number) => {
+    const currentCombinedList = get().combinedInventoryList;
+    const itemIdsInCurrentList = currentCombinedList.map((item) => item.itemId);
 
-  setToggleInventory: (newToggleInventory) => {
-    set({ toggleInventory: newToggleInventory });
-    get()._updateCombinedInventoryList(); // toggleInventory도 변경되었으니 무효화
-  },
-  clearToggleInventory: () => {
-    set({ toggleInventory: [] });
-    get()._updateCombinedInventoryList();
-  },
+    let newCombinedList;
 
-  _updateCombinedInventoryList: () => {
-    const { inventory } = get(); // itemId 배열
-    const { toggleInventory } = get(); // itemId 배열
+    if (itemIdsInCurrentList.includes(itemIdToToggle)) {
+      // 아이템이 이미 리스트에 있으면 제거 (착용 해제)
+      newCombinedList = currentCombinedList.filter(
+        (item) => item.itemId !== itemIdToToggle
+      );
+    } else {
+      // 아이템이 리스트에 없으면 추가 (착용)
+      const itemObjectToAdd = [...decorationItems, ...interiorItems].find(
+        (item) => item.itemId === itemIdToToggle
+      );
 
-    const newCombinedList = [...decorationItems, ...interiorItems].filter(
-      (item) =>
-        inventory.includes(item.itemId!) ||
-        toggleInventory.includes(item.itemId!)
-    );
-    // 상태를 직접 업데이트하여 구독하는 컴포넌트를를 리렌더링
+      if (itemObjectToAdd) {
+        newCombinedList = [...currentCombinedList, itemObjectToAdd];
+      } else {
+        // decorationItems나 interiorItems에 해당 itemId를 가진 아이템이 없는 경우
+        console.warn(
+          `_updateCombinedInventoryList: Item with itemId ${itemIdToToggle} not found in master lists.`
+        );
+        newCombinedList = currentCombinedList; // 변경 없음
+      }
+    }
     set({ combinedInventoryList: newCombinedList });
-    get().toggleInventory;
   },
 }));

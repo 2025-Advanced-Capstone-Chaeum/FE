@@ -30,22 +30,22 @@ const Cat = () => {
   useEffect(() => {
     if (
       !isInventoryPending &&
-      Array.isArray(InventoryData) &&
+      Array.isArray(InventoryData) && // InventoryData가 배열인지 확인
       !inventoryError &&
-      
+      // 현재 스토어의 인벤토리와 API에서 가져온 인벤토리가 다를 때만 업데이트
       (InventoryData.length !== currentStoreInventory.length ||
         !InventoryData.every((item) => currentStoreInventory.includes(item)))
     ) {
-      setInventory(InventoryData); 
+      setInventory(InventoryData); // catStore의 독립적인 inventory 상태를 업데이트
       console.log("착용중인 인벤토리 조회=>", InventoryData);
     }
   }, [
-    InventoryData, 
+    InventoryData,
     isInventoryPending,
     inventoryError,
     setInventory,
-    currentStoreInventory, 
-    inventoryList, 
+    currentStoreInventory,
+    inventoryList,
   ]);
 
   return (
@@ -58,16 +58,17 @@ const Cat = () => {
         className="relative z-10"
       />
 
-      {inventoryList.map((item: ItemType) => (
-        <Image
-          key={item.id}
-          src={item.src}
-          alt={item.alt}
-          width={item.width}
-          height={item.height}
-          className={item.className}
-        />
-      ))}
+      {inventoryList &&
+        inventoryList.map((item: ItemType) => (
+          <Image
+            key={item.id}
+            src={item.src}
+            alt={item.alt}
+            width={item.width}
+            height={item.height}
+            className={item.className}
+          />
+        ))}
     </div>
   );
 };

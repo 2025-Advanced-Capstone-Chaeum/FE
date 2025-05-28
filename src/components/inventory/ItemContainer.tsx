@@ -15,8 +15,8 @@ const SkeletonBox = () => (
 );
 
 const ItemContainer = () => {
-  const setToggleInventory = catStore((state) => state.setToggleInventory); // 인벤토리 토글 상태 설정
-  const tempInventory = catStore((state) => state.toggleInventory); // 인벤토리 토글 상태
+  const inventoryList = catStore((state) => state.combinedInventoryList);
+  const toggleItemInDisplay = catStore((state) => state.toggleItemInDisplay); // 인벤토리 토글 상태
   const allInventoryItems = [...decorationItems, ...interiorItems];
 
   const {
@@ -34,8 +34,6 @@ const ItemContainer = () => {
   const { mutate: toggleInventoryMutate } = useToggleInventory(); // 인벤토리 아이템 토글
 
   const handleToggleInventory = (uiId: number) => {
-    toggleInventoryMutate(uiId);
-
     const itemToToggle = allInventoryItems.find((item) => item.id === uiId);
 
     if (!itemToToggle || itemToToggle.itemId === undefined) {
@@ -44,18 +42,8 @@ const ItemContainer = () => {
     }
 
     const actualItemId = itemToToggle.itemId; // 찾은 itemId
-
-    let newTempInventory;
-    // 스토어의 toggleInventory는 itemId로 관리
-    if (tempInventory.includes(actualItemId)) {
-      // 아이템이 이미 인벤토리에 있다면 제거
-      newTempInventory = tempInventory.filter((id) => id !== actualItemId);
-    } else {
-      // 아이템이 인벤토리에 없다면 추가
-      newTempInventory = [...tempInventory, actualItemId];
-    }
-
-    setToggleInventory(newTempInventory);
+    toggleItemInDisplay(actualItemId);
+    toggleInventoryMutate(uiId);
   };
 
   if (isDecorationPending || isInteriorPending) {
