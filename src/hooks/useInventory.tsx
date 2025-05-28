@@ -3,7 +3,8 @@ import {
   toggleInventory,
   wearingInventory,
 } from "@/lib/api/inventory";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryClient } from "@/lib/queryClient";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useDecorationSearch = () => {
   return useQuery({
