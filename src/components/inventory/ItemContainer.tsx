@@ -11,7 +11,11 @@ import {
 import { catStore } from "@/store/catStore";
 
 const SkeletonBox = () => (
-  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl" />
+  <div className="bg-gray-200 shadow-xs flex justify-center w-25 h-25 rounded-2xl">
+    <span className="flex text-center items-center text-gray-400 font-bold">
+      Comming <br /> Soon
+    </span>
+  </div>
 );
 
 const ItemContainer = () => {
