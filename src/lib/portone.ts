@@ -6,9 +6,6 @@ interface PortoneRequestData {
   name: string;
   buyer_name: string;
   m_redirect_url: string;
-  custom_data?: {
-    fundingId: number;
-  };
 }
 
 interface PortoneResponse {

@@ -39,6 +39,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               compressed.size / 1024 / 1024,
               "MB"
             );
+            const fileNameParts = compressed.name.split('.');
+      const fileExtension = fileNameParts[fileNameParts.length - 1];
+            console.log("압축된 파일 확장자:", fileExtension);
             return compressed; // 압축된 파일 반환
           } else {
             return file; // 압축 불필요 시 원본 파일 반환

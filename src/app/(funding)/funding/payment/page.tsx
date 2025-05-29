@@ -18,8 +18,8 @@ const PaymentPage = () => {
   const selectedPaymentMethod = usePaymentStore(
     (state) => state.selectedPaymentMethod
   );
-  // const { createDonationMutation } = useDonation();
-  // const { createPaymentMutation } = usePayment();
+  const { createDonationMutation } = useDonation();
+  const { createPaymentMutation } = usePayment();
   const router = useRouter();
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -73,70 +73,67 @@ const PaymentPage = () => {
         buyer_name: "후원자",
         m_redirect_url:
           process.env.NEXT_PUBLIC_PORTONE_REDIRECT_URL ??
-          "https://chaeum.site/payment/result",
-        custom_data: {
-          fundingId: selectedFundingId,
-        },
+          "https://chaeum.site/donation/loading",
       });
 
       setButtonMessage("결제 처리 중...");
 
-      //   const donationData = {
-      //     fundingId: selectedFundingId,
-      //     amount: impResponse.paid_amount as number,
-      //     point: 0,
-      //   };
+      const donationData = {
+        fundingId: selectedFundingId,
+        amount: impResponse.paid_amount as number,
+        point: 0,
+      };
 
-      //   let generatedDonationId: number | undefined;
-      //   try {
-      //     const donationResponse = await createDonationMutation.mutateAsync(
-      //       donationData
-      //     );
+      let generatedDonationId: number | undefined;
+      try {
+        const donationResponse = await createDonationMutation.mutateAsync(
+          donationData
+        );
 
-      //     if (donationResponse && donationResponse.data?.id) {
-      //       generatedDonationId = donationResponse.data.id;
-      //     } else {
-      //       console.error(
-      //         "기부 내역 생성 실패: 응답 데이터 문제 또는 에러",
-      //         donationResponse
-      //       );
-      //       router.push("/funding");
-      //       return;
-      //     }
-      //   } catch (error: unknown) {
-      //     console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
-      //     router.push("/funding");
-      //     return;
-      //   }
+        if (donationResponse && donationResponse.data?.id) {
+          generatedDonationId = donationResponse.data.id;
+        } else {
+          console.error(
+            "기부 내역 생성 실패: 응답 데이터 문제 또는 에러",
+            donationResponse
+          );
+          router.push("/funding");
+          return;
+        }
+      } catch (error: unknown) {
+        console.error("기부 내역 생성 중 예상치 못한 에러 발생:", error);
+        router.push("/funding");
+        return;
+      }
 
-      //   const paymentCreateData = {
-      //     donationId: generatedDonationId as number,
-      //     amount: impResponse.paid_amount as number,
-      //     points: 0,
-      //     transactionId: impResponse.imp_uid,
-      //     paymentMethod: selectedPaymentMethod,
-      //     status: "COMPLETED",
-      //     merchantUid: impResponse.merchant_uid,
-      //     gatewayProvider:
-      //       selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-      //     impUid: impResponse.imp_uid,
-      //   };
+      const paymentCreateData = {
+        donationId: generatedDonationId as number,
+        amount: impResponse.paid_amount as number,
+        points: 0,
+        transactionId: impResponse.imp_uid,
+        paymentMethod: selectedPaymentMethod,
+        status: "COMPLETED",
+        merchantUid: impResponse.merchant_uid,
+        gatewayProvider:
+          selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
+        impUid: impResponse.imp_uid,
+      };
 
-      //   try {
-      //     const finalPaymentResponse = await createPaymentMutation.mutateAsync(
-      //       paymentCreateData
-      //     );
+      try {
+        const finalPaymentResponse = await createPaymentMutation.mutateAsync(
+          paymentCreateData
+        );
 
-      //     if (finalPaymentResponse) {
-      //       router.push("/donation/loading");
-      //     } else {
-      //       console.error("결제 내역 저장 실패:", finalPaymentResponse);
-      //       router.push("/funding");
-      //     }
-      //   } catch (updateError: unknown) {
-      //     console.error("결제 내역 저장 중 에러 발생:", updateError);
-      //     router.push("/funding");
-      //   }
+        if (finalPaymentResponse) {
+          router.push("/donation/loading");
+        } else {
+          console.error("결제 내역 저장 실패:", finalPaymentResponse);
+          router.push("/funding");
+        }
+      } catch (updateError: unknown) {
+        console.error("결제 내역 저장 중 에러 발생:", updateError);
+        router.push("/funding");
+      }
     } catch (error: unknown) {
       console.error("아임포트 결제 실패 또는 에러 발생:", error);
       router.push("/funding");
