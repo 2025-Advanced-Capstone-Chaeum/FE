@@ -3,7 +3,7 @@
 import ClientWelcome from "@/components/welcome/ClientWelcome";
 import { useCat } from "@/hooks/useCat";
 import { useWearingInventory } from "@/hooks/useInventory";
-import { userData } from "@/lib/userData";
+import { useMemberData } from "@/lib/userData";
 import { catStore } from "@/store/catStore";
 import { userStore } from "@/store/userStore";
 import { useEffect } from "react";
@@ -17,7 +17,7 @@ export default function WelcomePage() {
     data: userInfo,
     isPending: isUserDataPending,
     isError: isUserDataError,
-  } = userData();
+  } = useMemberData();
 
   const {
     data: catInfo,

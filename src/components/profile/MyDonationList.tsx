@@ -15,9 +15,9 @@ export interface Donation {
   image: ImageDetails;
 }
 
-type DonationProps = {
+interface DonationProps {
   donation: Donation;
-};
+}
 
 const MyDonationList = ({ donation }: DonationProps) => {
   return (

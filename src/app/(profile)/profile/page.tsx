@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { patchUserProfile, uploadProfileImage } from "@/lib/api/profile";
 import EditProfileModal from "@/components/profile/EditProfileModal";
 import { debounce } from "@/lib/debounce";
-import { userData } from "@/lib/userData";
+import { useMemberData } from "@/lib/userData";
 
 export default function DonatorProfilePage() {
   const setUserData = userStore((state) => state.setUserData);
@@ -27,7 +27,7 @@ export default function DonatorProfilePage() {
     data: userInfo,
     isPending: isUserDataPending,
     isError: isUserDataError,
-  } = userData();
+  } = useMemberData();
 
   const [profileForm, setProfileForm] = useState<{
     name: string;
