@@ -50,7 +50,6 @@ export default function WelcomePage() {
           });
 
           setInventory(InventoryData);
-          console.log("착용중인 Inventory", InventoryData);
         } else {
           console.log(
             "WelcomePage - Conditions not met for data initialization. Skipping update."

@@ -26,7 +26,6 @@ const Cat = () => {
     isError: inventoryError,
   } = useWearingInventory();
 
-  // 데이터가 성공적으로 로드되어 스토어에 설정되었는지 추적
   useEffect(() => {
     if (
       !isInventoryPending &&
@@ -36,8 +35,7 @@ const Cat = () => {
       (InventoryData.length !== currentStoreInventory.length ||
         !InventoryData.every((item) => currentStoreInventory.includes(item)))
     ) {
-      setInventory(InventoryData); // catStore의 독립적인 inventory 상태를 업데이트
-      console.log("착용중인 인벤토리 조회=>", InventoryData);
+      setInventory(InventoryData); // catStore의 inventory 업데이트
     }
   }, [
     InventoryData,
