@@ -1,13 +1,14 @@
 "use client";
 
 import BackButton from "@/components/BackButton";
-import ImageUpload from "@/components/funding/ImageUpload";
 import RecipientConfirmModal from "@/components/profile/recipient/RecipientConfirmModal";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { OcrRequestData, recipientRegister } from "@/lib/api/ocr";
+import { userStore } from "@/store/userStore";
 import { Label } from "@radix-ui/react-label";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const RecipientRegisterPage = () => {
@@ -16,6 +17,8 @@ const RecipientRegisterPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [activeModal, setActiveModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const username = userStore((state) => state.userData?.name);
+  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -24,7 +27,7 @@ const RecipientRegisterPage = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (selectedDocument && imageFile) {
       console.log(
         `선택된 서류: ${selectedDocument}, 첨부 이미지 URL: ${imageFile}`
@@ -35,35 +38,36 @@ const RecipientRegisterPage = () => {
     } else if (!imageFile) {
       alert("서류 이미지를 첨부해주세요.");
     }
-    const docType = selectedDocument === "차상위계층 확인서" ? "1" : "2"; // 예시
+
+    setIsUploading(true);
+  };
+
+  const handleConfirm = async () => {
+    const docType = selectedDocument === "차상위계층 확인서" ? "1" : "2";
 
     const ocrData: OcrRequestData = {
       multipartFile: imageFile!,
-      name: "박애리", // 실제 사용자 이름으로 변경 필요
+      name: username || "",
       doc_type: docType,
     };
-
-    setIsUploading(true);
-
     try {
       const responseData = await recipientRegister(ocrData); // 분리된 API 함수 호출
       console.log("OCR 응답:", responseData);
-      // 필요한 정보 추출해서 상태에 저장하거나 다른 로직 수행
-      // 예: setExtractedData(responseData.extractedText);
+      setIsUploading(false);
+      setActiveModal(false);
+      router.push("/profile/recipient/complete");
     } catch (error) {
-      // callOcrApi 내부에서 이미 콘솔 로깅을 하므로, 여기서는 사용자 알림만 처리
       alert(
         "OCR 서버 요청 중 오류가 발생했습니다. 개발자 콘솔을 확인해주세요."
       );
-    } finally {
       setIsUploading(false);
+      setActiveModal(false);
+    } finally {
+      setSelectedDocument("");
+      setImageFile(null);
+      setImagePreview(null);
     }
   };
-
-  const handleCloseModal = () => {
-    setActiveModal(false);
-  };
-
   return (
     <>
       <BackButton />
@@ -78,19 +82,19 @@ const RecipientRegisterPage = () => {
             value={selectedDocument}
             onValueChange={(value) => setSelectedDocument(value)}>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="차상위계층 확인서" id="certificate1" />
-              <div className="flex flex-col">
-                <Label htmlFor="차상위계층 확인서">차상위계층 확인서</Label>
-                <span>(주민센터 발급)</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="기초생활수급자 증명서" id="certificate2" />
+              <RadioGroupItem value="기초생활수급자 증명서" id="certificate1" />
               <div className="flex flex-col">
                 <Label htmlFor="기초생활수급자 증명서">
                   기초생활수급자 증명서
                 </Label>
                 <span>(주민센터 또는 정부24 발급)</span>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="차상위계층 확인서" id="certificate2" />
+              <div className="flex flex-col">
+                <Label htmlFor="차상위계층 확인서">차상위계층 확인서</Label>
+                <span>(주민센터 발급)</span>
               </div>
             </div>
           </RadioGroup>
@@ -131,7 +135,10 @@ const RecipientRegisterPage = () => {
         </Button>
       </div>
       {activeModal && (
-        <RecipientConfirmModal onClose={() => setActiveModal(false)} />
+        <RecipientConfirmModal
+          onClickFunc={handleConfirm}
+          onClose={() => setActiveModal(false)}
+        />
       )}
     </>
   );
