@@ -14,6 +14,12 @@ export default function WelcomePage() {
   const setInventory = catStore((state) => state.setInventory);
 
   const {
+    data: userInfo,
+    isPending: isUserDataPending,
+    isError: isUserDataError,
+  } = userData();
+
+  const {
     data: catInfo,
     isPending: isCatPending,
     isError: isCatError,
@@ -25,14 +31,10 @@ export default function WelcomePage() {
     isError: inventoryError,
   } = useWearingInventory();
 
-  const {
-    data: userInfo,
-    isPending: isUserDataPending,
-    isError: isUserDataError,
-  } = userData();
   useEffect(() => {
     if (!isUserDataPending && userInfo && !isUserDataError) {
       setUserData(userInfo);
+      console.log("내가 원하는 그것", userInfo);
     } else if (isUserDataError) {
       console.error("WelcomePage: Failed to load userInfo", isUserDataError);
     }
