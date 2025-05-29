@@ -34,7 +34,6 @@ export default function WelcomePage() {
   useEffect(() => {
     if (!isUserDataPending && userInfo && !isUserDataError) {
       setUserData(userInfo);
-      console.log("내가 원하는 그것", userInfo);
     } else if (isUserDataError) {
       console.error("WelcomePage: Failed to load userInfo", isUserDataError);
     }
@@ -60,15 +59,6 @@ export default function WelcomePage() {
           InventoryData
         );
         setInventory([]); // 기본값 또는 빈 배열로 설정
-      }
-      console.log("WelcomePage: All data initialized in store.");
-    } else {
-      if (isUserDataPending || isCatPending || isInventoryPending) {
-        console.log("WelcomePage: Data is still loading...");
-      } else {
-        console.log(
-          "WelcomePage - Conditions not met for full data initialization. Skipping or partial update."
-        );
       }
     }
   }, [

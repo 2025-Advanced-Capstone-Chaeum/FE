@@ -37,21 +37,20 @@ export default function DonatorProfilePage() {
     selectedFile: "",
   });
 
-  const [tempForm, setTempForm] = useState({
-    name: "",
-    preview: "",
-    file: "" as File | "",
+  const [tempForm, setTempForm] = useState<{
+    name: string;
+    preview: string;
+    file: File | "";
+  }>({
+    name: userInfo?.name || "",
+    preview:
+      userInfo?.profileImage && userInfo.profileImage !== "null"
+        ? userInfo.profileImage
+        : "/assets/icons/woman-profile.png",
+    file: "",
   });
 
   const handleOpenModal = () => {
-    setTempForm({
-      name: userInfo?.name || "",
-      preview:
-        userInfo?.profileImage && userInfo.profileImage !== "null"
-          ? userInfo.profileImage
-          : "/assets/icons/woman-profile.png",
-      file: "",
-    });
     setIsOpen(true);
   };
 
@@ -80,18 +79,19 @@ export default function DonatorProfilePage() {
     },
     onSuccess: () => {
       setErrorMessage("");
+
+      setTempForm((prev) => ({
+        ...prev,
+        name: tempForm.name,
+        file: tempForm.file,
+      }));
     },
   });
 
   const handleTempNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempForm((prev) => ({ ...prev, name: e.target.value }));
-    debounce(
-      () => {
-        console.log("Debounced input:", e.target.value);
-      },
-      2000,
-      timerIdRef
-    );
+
+    debounce(() => {}, 2000, timerIdRef);
   };
 
   const handleTempFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,11 +101,11 @@ export default function DonatorProfilePage() {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        setTempForm((prev) => ({
-          ...prev,
+        setTempForm({
+          name: tempForm.name,
           preview: reader.result as string,
           file,
-        }));
+        });
       }
     };
     reader.readAsDataURL(file);
