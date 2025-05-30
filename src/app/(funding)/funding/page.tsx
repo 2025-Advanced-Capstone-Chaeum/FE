@@ -20,19 +20,30 @@ export default function FundingListPage() {
       setSortCondition(newCondition);
       setStatusFilter(undefined);
     },
-    [setStatusFilter, setSortCondition]
+    []
   );
 
-  const { fundingListQuery } = useFunding(undefined, {
+  const { fundingListQuery, fundingRecommendListQuery } = useFunding({
+  listOptions: {
     status: statusFilter,
     limit: 8,
     cursor: undefined,
     title: undefined,
-  });
-  const { data: FundingByConditionData, isPending, isError } = fundingListQuery;
+  },
+});
 
-  const campaigns: FundingData[] | undefined =
-    FundingByConditionData?.data?.values;
+    const result =
+    sortCondition === "추천순"
+      ? fundingRecommendListQuery
+      : fundingListQuery;
+
+  const fundingData = result?.data;
+  const isPending = result?.isPending ?? false;
+  const isError = result?.isError ?? false;
+
+  const campaigns: FundingData[] | undefined = fundingData?.data?.values;
+
+  console.log(campaigns);
 
   if (isPending) return <div>Loading campaigns...</div>;
   if (isError) return <div>Error loading campaigns</div>;
