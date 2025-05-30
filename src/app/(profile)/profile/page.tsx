@@ -175,7 +175,7 @@ export default function DonatorProfilePage() {
 
   return (
     <>
-      <div className="flex pl-6">
+      <div className="flex pl-6 mb-5">
         <Link href={"/profile/recipient/register"}>
           <Button
             variant="ghost"
@@ -206,7 +206,7 @@ export default function DonatorProfilePage() {
           </h3>
           <p className="text-sm text-secondary">{userInfo.email}</p>
         </div>
-        <div className="flex justify-between m-2">
+        <div className="flex justify-between my-3">
           <Button
             className="w-34 h-7 bg-gray-100 rounded-2xl text-black ml-5"
             onClick={handleOpenModal}>
@@ -218,18 +218,18 @@ export default function DonatorProfilePage() {
             환급액 계산
           </Button>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-5 my-2">
           <PaymentCard
             text="이번 달 총 기부 금액"
-            payment={userInfo.monthlyAmount}
+            payment={userInfo.monthlyAmount }
           />
           <PaymentCard
             text="올해 총 기부 금액"
-            payment={userInfo.yearlyAmount}
+            payment={userInfo.yearlyAmount }
           />
         </div>
 
-        <div className="mx-4 ">
+        <div className="my-3 mx-5 ">
           <div className="flex justify-between items-center pb-6">
             <h1 className="text-lg font-semibold opacity-80">전체 기부내역</h1>
             <Link href={"/profile/donationhistory"}>
@@ -238,13 +238,14 @@ export default function DonatorProfilePage() {
                 width={20}
                 alt="돋보기"
                 src="/assets/icons/search.svg"
+                className="hidden" // 지금은 안보이도록 하고 나중을 위해 남겨둠
               />
             </Link>
           </div>
           <div className="space-y-3">
             {userInfo.donations.map((myDonation: Donation) => (
-              <MyDonationList donation={myDonation} key={myDonation.id} />
-            ))}
+                <MyDonationList donation={myDonation} key={myDonation.id} />
+              ))}
           </div>
         </div>
       </div>
