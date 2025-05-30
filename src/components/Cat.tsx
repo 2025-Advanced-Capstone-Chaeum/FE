@@ -35,7 +35,7 @@ const Cat = () => {
       (InventoryData.length !== currentStoreInventory.length ||
         !InventoryData.every((item) => currentStoreInventory.includes(item)))
     ) {
-      setInventory(InventoryData); // catStore의 inventory 업데이트
+      setInventory(InventoryData); // catStore의 독립적인 inventory 상태를 업데이트
     }
   }, [
     InventoryData,
