@@ -43,8 +43,6 @@ export default function FundingListPage() {
 
   const campaigns: FundingData[] | undefined = fundingData?.data?.values;
 
-  console.log(campaigns);
-
   if (isPending) return <div>Loading campaigns...</div>;
   if (isError) return <div>Error loading campaigns</div>;
 
