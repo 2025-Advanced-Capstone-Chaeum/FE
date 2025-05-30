@@ -29,12 +29,12 @@ export default function FundingListPage() {
     cursor: undefined,
     title: undefined,
   });
-  const { data: FundingByConditionData, isLoading, isError } = fundingListQuery;
+  const { data: FundingByConditionData, isPending, isError } = fundingListQuery;
 
   const campaigns: FundingData[] | undefined =
     FundingByConditionData?.data?.values;
 
-  if (isLoading) return <div>Loading campaigns...</div>;
+  if (isPending) return <div>Loading campaigns...</div>;
   if (isError) return <div>Error loading campaigns</div>;
 
   return (
