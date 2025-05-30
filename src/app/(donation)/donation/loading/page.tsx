@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import BackButton from "@/components/BackButton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDonation } from "@/hooks/useDonation";
 import { usePayment } from "@/hooks/usePayment";
 import { usePaymentStore } from "@/store/paymentStore";
@@ -20,16 +20,32 @@ const DonationLoadingPage = () => {
     (state) => state.selectedPaymentMethod
   );
   const resetPaymentStore = usePaymentStore((state) => state.resetPaymentState);
+
+  const searchParams = useSearchParams();
+  const impUidFromQuery = searchParams.get("imp_uid");
+  const merchantUidFromQuery = searchParams.get("merchant_uid");
+
   const [donationId, setDonationId] = useState<number | null>(null);
   const [hasProcessed, setHasProcessed] = useState(false);
+
+  const effectiveImpUid = impUid || impUidFromQuery;
+  const effectiveMerchantUid = merchantUid || merchantUidFromQuery;
 
   const createDonationFnRef = useRef(createDonationMutation);
   const createPaymentFnRef = useRef(createPaymentMutation);
 
   useEffect(() => {
-    if (!impUid || !merchantUid || hasProcessed || donationId) {
-      return;
+    if (!impUid && impUidFromQuery) {
+      usePaymentStore.getState().setImpUid(impUidFromQuery);
     }
+    if (!merchantUid && merchantUidFromQuery) {
+      usePaymentStore.getState().setMerchantUid(merchantUidFromQuery);
+    }
+
+    if (!effectiveImpUid || !effectiveMerchantUid || hasProcessed || donationId)
+      return;
+
+    alert(`문제가 발생: ${impUid}, ${merchantUid}, ${effectiveImpUid}, ${effectiveMerchantUid}, ${impUidFromQuery}, ${merchantUidFromQuery}, ${hasProcessed}, ${donationId}`)
 
     if (
       !selectedFundingId ||
@@ -48,6 +64,8 @@ const DonationLoadingPage = () => {
           point: 0,
         });
 
+        alert(`문제가 발생: ${donationResponse}`)
+
         if (donationResponse?.data?.id) {
           setDonationId(donationResponse.data.id);
         } else {
@@ -61,13 +79,17 @@ const DonationLoadingPage = () => {
 
     createDonation();
   }, [
-    impUid,
-    merchantUid,
+    effectiveImpUid,
+    effectiveMerchantUid,
+    hasProcessed,
+    donationId,
     selectedFundingId,
     selectedAmount,
     selectedPaymentMethod,
-    donationId,
-    hasProcessed,
+    impUid,
+    merchantUid,
+    impUidFromQuery,
+    merchantUidFromQuery
   ]);
 
   useEffect(() => {
@@ -81,25 +103,27 @@ const DonationLoadingPage = () => {
           donationId,
           amount: selectedAmount!,
           points: 0,
-          transactionId: impUid ?? "",
+          transactionId: effectiveImpUid ?? "",
           paymentMethod: selectedPaymentMethod!,
           status: "COMPLETED",
-          merchantUid: merchantUid ?? "",
+          merchantUid: effectiveMerchantUid ?? "",
           gatewayProvider:
             selectedPaymentMethod === "KAKAO_PAY" ? "kakaopay" : "tosspay",
-          impUid: impUid ?? "",
+          impUid: effectiveImpUid ?? "",
         };
 
         const paymentResponse = await createPaymentFnRef.current.mutateAsync(
           paymentCreateData
         );
 
+        alert(`문제가 발생: ${paymentResponse}`)
+
         if (paymentResponse) {
           setHasProcessed(true);
           resetPaymentStore();
-          setTimeout(() =>
-            router.push(`/donation/complete/${selectedFundingId}`)
-          );
+          setTimeout(() => {
+            router.push(`/donation/complete/${selectedFundingId}`);
+          }, 2000);
         } else {
           console.error("결제 생성 실패");
         }
@@ -113,9 +137,9 @@ const DonationLoadingPage = () => {
     donationId,
     hasProcessed,
     selectedAmount,
-    impUid,
-    merchantUid,
     selectedPaymentMethod,
+    effectiveImpUid,
+    effectiveMerchantUid,
     resetPaymentStore,
     router,
     selectedFundingId,
