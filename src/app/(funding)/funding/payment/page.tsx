@@ -75,18 +75,15 @@ const PaymentPage = () => {
 
       setButtonMessage("결제 처리 중...");
 
+      if (impResponse && impResponse.success) {
+        usePaymentStore.getState().setImpUid(impResponse.imp_uid);
+        usePaymentStore.getState().setMerchantUid(merchantUidForPortone);
 
-        if (impResponse && impResponse.success) {
-          usePaymentStore.getState().setImpUid(impResponse.imp_uid);
-          usePaymentStore.getState().setMerchantUid(merchantUidForPortone);
-
-          console.log(impResponse.imp_uid);
-
-          router.push(`/donation/loading`);
-        } else {
-          console.error("결제 실패:", impResponse);
-          router.push("/funding");
-        }
+        router.push(`/donation/loading`);
+      } else {
+        console.error("결제 실패:", impResponse);
+        router.push("/funding");
+      }
     } catch (error: unknown) {
       console.error("아임포트 결제 실패 또는 에러 발생:", error);
       router.push("/funding");
