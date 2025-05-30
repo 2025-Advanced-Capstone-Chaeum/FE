@@ -7,13 +7,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { OcrRequestData, recipientRegister } from "@/lib/api/ocr";
 import { userStore } from "@/store/userStore";
 import { Label } from "@radix-ui/react-label";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const RecipientRegisterPage = () => {
+  const setWaiting = userStore((state) => state.setWaiting);
   const [selectedDocument, setSelectedDocument] = useState("");
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [activeModal, setActiveModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -24,7 +23,6 @@ const RecipientRegisterPage = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = () => {
@@ -55,6 +53,7 @@ const RecipientRegisterPage = () => {
       console.log("OCR 응답:", responseData);
       setIsUploading(false);
       setActiveModal(false);
+      setWaiting(true); // 수혜자 허가 기다리는 중인 상태 전송
       router.push("/profile/recipient/complete");
     } catch (error) {
       alert(
@@ -62,10 +61,10 @@ const RecipientRegisterPage = () => {
       );
       setIsUploading(false);
       setActiveModal(false);
+      throw error;
     } finally {
       setSelectedDocument("");
       setImageFile(null);
-      setImagePreview(null);
     }
   };
   return (
