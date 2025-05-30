@@ -66,6 +66,8 @@ const DonationLoadingPage = () => {
 
         alert(`문제가 발생: ${donationResponse}`)
 
+        alert(`문제가 발생: ${donationResponse}`)
+
         if (donationResponse?.data?.id) {
           setDonationId(donationResponse.data.id);
         } else {
@@ -118,9 +120,14 @@ const DonationLoadingPage = () => {
 
         alert(`문제가 발생: ${paymentResponse}`)
 
+        alert(`문제가 발생: ${paymentResponse}`)
+
         if (paymentResponse) {
           setHasProcessed(true);
           resetPaymentStore();
+          setTimeout(() => {
+            router.push(`/donation/complete/${selectedFundingId}`);
+          }, 2000);
           setTimeout(() => {
             router.push(`/donation/complete/${selectedFundingId}`);
           }, 2000);
