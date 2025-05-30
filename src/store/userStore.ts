@@ -1,20 +1,15 @@
-import { Donation } from "@/components/profile/MyDonationList";
+import { DonatorProps, RecipientProps } from "@/types/userTypes";
 import { create } from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 
-export type UserDataProps = {
-  name: string;
-  email: string;
-  profileImage: string | null;
-  monthlyAmount: number;
-  yearlyAmount: number;
-  donations: Donation[];
-};
-
 type UserStore = {
-  userData: UserDataProps | null;
-  setUserData: (userData: UserDataProps) => void;
+  userData: DonatorProps | null;
+  setUserData: (data: DonatorProps) => void;
   clearUserData: () => void;
+  recipientData: RecipientProps | null;
+  setRecipientData: (data: RecipientProps) => void;
+  waiting: boolean | null;
+  setWaiting: (condition: boolean) => void;
 };
 
 type UserStorePersist = PersistOptions<UserStore>;
@@ -23,8 +18,12 @@ export const userStore = create<UserStore>()(
   persist<UserStore, [], [], UserStorePersist>(
     (set) => ({
       userData: null,
-      setUserData: (userData) => set({ userData }),
+      setUserData: (data) => set({ userData: data }),
       clearUserData: () => set({ userData: null }),
+      recipientData: null,
+      setRecipientData: (data) => set({ recipientData: data }),
+      waiting: null,
+      setWaiting: (condition) => set({ waiting: condition }),
     }),
     {
       name: "chaeum-user-storage",

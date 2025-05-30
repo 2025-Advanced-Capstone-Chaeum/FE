@@ -1,27 +1,19 @@
 import axios from "axios";
 
 export interface OcrRequestData {
-  multipartFile: File;
+  image: File; // multipartFile에서 image로 변경
   name: string;
   doc_type: string;
 }
-const OCR_API_URL = "http://211.188.50.163:8080/ocr";
 
 export const recipientRegister = async (data: OcrRequestData) => {
   const formData = new FormData();
-  formData.append("multipartFile", data.multipartFile);
+  formData.append("image", data.image);
   formData.append("name", data.name);
   formData.append("doc_type", data.doc_type);
 
   try {
-    const response = await axios.post(OCR_API_URL, formData, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiZG9mbDg1NDlAbmF2ZXIuY29tIiwibWVtYmVySWQiOjgsInJvbGUiOiJET05PUiIsImlhdCI6MTc0ODQ4NjU1NCwiZXhwIjoxNzQ4NDkwMTU0fQ.yCJ8ALdiUDNWKc6xmvSNKue8ptYP6k5SVyCTXULwMUkbo7qG6-aOqTtFo1zagJ3y22RK-25kJMRgPZQeY1XxvQ", // ⚠️ 실제로는 안전하게 관리 필요
-      },
-    });
+    const response = await axiosOcr.post("/ocr", formData);
 
     console.log("OCR 응답:", response.data);
     // 필요한 정보 추출해서 저장할 수 있음
@@ -35,3 +27,12 @@ export const recipientRegister = async (data: OcrRequestData) => {
     throw error;
   }
 };
+
+const axiosOcr = axios.create({
+  baseURL: "http://211.188.50.163:8080",
+  withCredentials: true,
+  headers: {
+    Authorization:
+      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiZG9mbDg1NDlAbmF2ZXIuY29tIiwibWVtYmVySWQiOjgsInJvbGUiOiJET05PUiIsImlhdCI6MTc0ODU3MjExMCwiZXhwIjoxNzQ4NTc1NzEwfQ.sDAlwou7gTFCYUxrhoF3RIu_9QV4A5x8Xx-28glATw5Ro3FeUqSNVRihTFKRzSOME5NTvlVf3gp-Dl65XZ92qQ",
+  },
+});

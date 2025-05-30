@@ -221,11 +221,11 @@ export default function DonatorProfilePage() {
         <div className="space-y-5 my-2">
           <PaymentCard
             text="이번 달 총 기부 금액"
-            payment={userInfo.monthlyAmount }
+            payment={userInfo.monthlyAmount || 0}
           />
           <PaymentCard
             text="올해 총 기부 금액"
-            payment={userInfo.yearlyAmount }
+            payment={userInfo.yearlyAmount || 0}
           />
         </div>
 
@@ -243,7 +243,8 @@ export default function DonatorProfilePage() {
             </Link>
           </div>
           <div className="space-y-3">
-            {userInfo.donations.map((myDonation: Donation) => (
+            {userInfo.donations &&
+              userInfo.donations.map((myDonation: Donation) => (
                 <MyDonationList donation={myDonation} key={myDonation.id} />
               ))}
           </div>

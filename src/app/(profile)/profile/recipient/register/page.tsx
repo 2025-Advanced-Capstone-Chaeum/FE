@@ -46,7 +46,7 @@ const RecipientRegisterPage = () => {
     const docType = selectedDocument === "차상위계층 확인서" ? "1" : "2";
 
     const ocrData: OcrRequestData = {
-      multipartFile: imageFile!,
+      image: imageFile!,
       name: username || "",
       doc_type: docType,
     };
@@ -99,30 +99,25 @@ const RecipientRegisterPage = () => {
             </div>
           </RadioGroup>
           <div className="flex justify-center items-center py-1">
-            <label
-              htmlFor="file"
-              className="w-45 h-30 cursor-pointer bg-white border-2 border-primary/70 rounded-2xl flex items-center justify-center">
-              <span className="text-primary">서류 이미지 선택</span>
-            </label>
-            <input
-              id="file"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
+            <div>
+              <label
+                htmlFor="file"
+                className="w-45 h-30 cursor-pointer bg-white border-2 border-primary/70 rounded-2xl flex items-center justify-center">
+                <span className="text-primary">
+                  {imageFile ? "첨부완료" : "서류 이미지 선택"}
+                </span>
+              </label>
+              <input
+                id="file"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </div>
+
             {isUploading && (
               <span className="text-sm text-muted">서버로 전송 중...</span>
-            )}
-            {imagePreview && (
-              <div className="mt-2 w-[180px] h-[120px] relative">
-                <Image
-                  src={imagePreview}
-                  alt="preview"
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
             )}
           </div>
         </div>
