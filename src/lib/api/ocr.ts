@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export interface OcrRequestData {
-  image: File; // multipartFile에서 image로 변경
+  image: File; 
   name: string;
   doc_type: string;
 }
@@ -14,14 +14,10 @@ export const recipientRegister = async (data: OcrRequestData) => {
 
   try {
     const response = await axiosOcr.post("/ocr", formData);
-
-    console.log("OCR 응답:", response.data);
-    // 필요한 정보 추출해서 저장할 수 있음
     return response.data;
   } catch (error) {
     console.error("OCR 요청 실패:", error);
     if (axios.isAxiosError(error)) {
-      // Axios 에러인 경우 좀 더 자세한 정보 로깅
       console.error("Axios error details:", error.response?.data);
     }
     throw error;

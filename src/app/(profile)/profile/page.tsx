@@ -153,7 +153,7 @@ export default function DonatorProfilePage() {
   }, []);
 
   const handleToRecipientButton = () => {// 수혜자 권한 허가를 기다리는 중인지 체크
-    if (!waiting) {  // 아니라면 원래대로 수혜자 등록하는 페이지로 이동동
+    if (!waiting) {  // 아니라면 원래대로 수혜자 등록하는 페이지로 이동
       router.push("/profile/recipient/register");
     } else { // 기다리는 중이라면 수혜자 등록 완료 페이지로 이동하도록 
       router.push("/profile/recipient/complete");

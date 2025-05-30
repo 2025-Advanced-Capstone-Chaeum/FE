@@ -50,7 +50,6 @@ const RecipientRegisterPage = () => {
     };
     try {
       const responseData = await recipientRegister(ocrData); // 분리된 API 함수 호출
-      console.log("OCR 응답:", responseData);
       setIsUploading(false);
       setActiveModal(false);
       setWaiting(true); // 수혜자 허가 기다리는 중인 상태 전송
