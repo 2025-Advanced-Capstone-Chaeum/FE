@@ -1,32 +1,27 @@
 "use client";
 
+import React from "react";
+import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
+import { useFunding } from "@/hooks/useFunding";
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
-import { useFunding } from "@/hooks/useFunding";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
 
 const DonationCompletePage = () => {
-  const searchParams = useSearchParams();
-  const fundingIdFromQuery = searchParams.get("fundingId");
+  const params = useParams();
+  const fundingIdFromQuery = params.id;
 
   const fundingParams = fundingIdFromQuery
     ? { fundingId: Number(fundingIdFromQuery) }
     : undefined;
+
   const { fundingQuery } = useFunding(fundingParams);
   const { data: fundingDetail, isPending, isError, error } = fundingQuery;
   const router = useRouter();
 
-  if (isPending) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (isError) {
-    return console.log(`오류 발생: ${error?.message}`);
-  }
-
-  if (!fundingDetail) {
+  if (isPending) return <div>로딩 중...</div>;
+  if (isError || !fundingDetail) {
+    console.error(`오류 발생: ${error?.message}`);
     return <div>펀딩 정보를 찾을 수 없습니다.</div>;
   }
 

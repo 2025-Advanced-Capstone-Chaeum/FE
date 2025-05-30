@@ -9,7 +9,7 @@ interface PaymentState {
   merchantUid: string | null;
   setSelectedFundingId: (id: number) => void;
   setSelectedAmount: (amount: number) => void;
-  setSelectedPaymentMethod: (method: string) => void;
+  setSelectedPaymentMethod: (method: string | null) => void;
   setImpUid: (uid: string) => void; 
   setMerchantUid: (uid: string) => void;
   resetPaymentState: () => void; 
