@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { useFunding } from "@/hooks/useFunding";
-import { usePaymentStore } from "@/store/paymentStore";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const DonationCompletePage = () => {
-  const selectedFundingId = usePaymentStore((state) => state.selectedFundingId);
-  const fundingParams = selectedFundingId !== null ? { fundingId: selectedFundingId } : undefined;
+  const searchParams = useSearchParams();
+  const fundingIdFromQuery = searchParams.get("fundingId");
 
+  const fundingParams = fundingIdFromQuery
+    ? { fundingId: Number(fundingIdFromQuery) }
+    : undefined;
   const { fundingQuery } = useFunding(fundingParams);
   const { data: fundingDetail, isPending, isError, error } = fundingQuery;
   const router = useRouter();
@@ -59,7 +61,7 @@ const DonationCompletePage = () => {
         <Button
           variant="soft"
           className="w-[77%] text-md p-6.5 mt-5 rounded-xl"
-          onClick={() => router.push('/donation/reward')}
+          onClick={() => router.push("/donation/reward")}
         >
           확인
         </Button>
