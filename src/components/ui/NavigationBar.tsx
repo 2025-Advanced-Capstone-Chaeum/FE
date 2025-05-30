@@ -3,8 +3,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { userStore } from "@/store/userStore";
 
 const NavigationBar = () => {
+  const userData = userStore((state) => state.recipientData);
+  const profileAddress = userData ? "/profile/recipient" : "/profile";
   const [isActiveMenu, setIsActiveMenu] = useState<number>(0);
   const router = useRouter();
   const pathname = usePathname();
@@ -44,7 +47,7 @@ const NavigationBar = () => {
         label: "내 계정",
         width: 25,
         height: 25,
-        address: "/profile",
+        address: `${profileAddress}`,
       },
     ],
     []
