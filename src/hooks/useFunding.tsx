@@ -30,7 +30,10 @@ interface UseFundingResult {
     unknown
   >;
   fundingListQuery: UseQueryResult<FundingByConditionData | undefined, Error>;
-  fundingRecommendListQuery?: UseQueryResult<FundingByConditionData | undefined, Error>;
+  fundingRecommendListQuery?: UseQueryResult<
+    FundingByConditionData | undefined,
+    Error
+  >;
   refetchFunding: () => void;
 }
 
@@ -86,10 +89,7 @@ export const useFunding = (params: UseFundingParams = {}): UseFundingResult => {
   > = useQuery({
     queryKey: ["fundingRecommendList", listOptions],
     queryFn: () =>
-      fetchFundingByRecommend(
-        listOptions.cursor,
-        listOptions.limit
-      ),
+      fetchFundingByRecommend(listOptions.cursor, listOptions.limit),
     enabled: true,
   });
 

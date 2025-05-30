@@ -24,18 +24,16 @@ export default function FundingListPage() {
   );
 
   const { fundingListQuery, fundingRecommendListQuery } = useFunding({
-  listOptions: {
-    status: statusFilter,
-    limit: 8,
-    cursor: undefined,
-    title: undefined,
-  },
-});
+    listOptions: {
+      status: statusFilter,
+      limit: 8,
+      cursor: undefined,
+      title: undefined,
+    },
+  });
 
-    const result =
-    sortCondition === "추천순"
-      ? fundingRecommendListQuery
-      : fundingListQuery;
+  const result =
+    sortCondition === "추천순" ? fundingRecommendListQuery : fundingListQuery;
 
   const fundingData = result?.data;
   const isPending = result?.isPending ?? false;
