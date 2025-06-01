@@ -7,7 +7,7 @@ import ListContainer from "@/components/profile/ListContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useReview } from "@/hooks/useReview";
+import { useCreateReview } from "@/hooks/useReview";
 import { CreateReviewData } from "@/lib/api/review";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ const ReviewWritePage = () => {
     content: "",
   });
   const router = useRouter();
-  const { createReviewMutation } = useReview();
+  const { mutate: createReview } = useCreateReview();
   const params = useParams();
   const fundingIdString = typeof params.id === 'string' ? params.id : undefined;
   const fundingId = fundingIdString ? parseInt(fundingIdString, 10) : undefined;
@@ -40,7 +40,7 @@ const ReviewWritePage = () => {
       return;
     }
 
-    createReviewMutation.mutate({ fundingId: fundingId, reviewData: formData }, {
+    createReview({ fundingId: fundingId, reviewData: formData }, {
       onSuccess: () => {
         try {
           router.push("/profile/recipient");
