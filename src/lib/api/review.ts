@@ -9,6 +9,19 @@ export interface ReviewListData {
   };
 }
 
+export interface ReviewDetailData {
+  success: boolean;
+  data: ReviewDetailItem;
+}
+
+export interface ReviewDetailItem {
+  id: number;
+  title: string;
+  content: string;
+  reviewImages: ReviewImage[];
+  createdAt: string;
+}
+
 export interface ReviewItem {
   id: number;
   title: string;
@@ -49,4 +62,24 @@ export const fetchReviewList = async (
 
   const response = await axiosInstance.get(`/api/v1/review/list`);
   return response.data;
+};
+
+export const fetchReview = async (
+  fundingId: number
+): Promise<ReviewDetailData | null> => {
+  try {
+    const response = await axiosInstance.get<{
+      success: boolean;
+      data: ReviewDetailData;
+    }>(`/api/v1/review/details?fundingId=${fundingId}`);
+    if (response.data.success && response.data.data) {
+      return response.data.data;
+    } else {
+      console.error("펀딩 데이터 로딩 실패:", response.data);
+      return null;
+    }
+  } catch (error) {
+    console.error("펀딩 데이터 요청 에러:", error);
+    return null;
+  }
 };

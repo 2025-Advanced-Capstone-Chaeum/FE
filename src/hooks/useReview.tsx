@@ -1,54 +1,65 @@
-import axiosInstance from "@/lib/api/axios";
+import {
+  createReview,
+  CreateReviewData,
+  fetchReview,
+  fetchReviewList,
+  ReviewDetailData,
+  ReviewListData,
+} from "@/lib/api/review";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "@tanstack/react-query";
 
-export interface ReviewListData {
-  success: boolean;
-  data: {
-    values: ReviewItem[];
-    hasPrevious: boolean;
-    hasNext: boolean;
-  };
-}
-
-export interface ReviewItem {
-  id: number;
-  title: string;
-  reviewImage?: ReviewImage;
-  createdAt: string;
-}
-
-export interface ReviewImage {
-  fileUrl: string;
-  fileSize: number;
-  contentType: string;
-}
-
-export interface CreateReviewData {
-  title: string;
-  content: string;
-  imageUrls: string[];
-}
-
-export const createReview = async (
-  reviewData: CreateReviewData,
-  fundingId?: number
-) => {
-  const url = fundingId
-    ? `/api/v1/review?fundingId=${fundingId}`
-    : "/api/v1/review";
-  const response = await axiosInstance.post(url, reviewData);
-  return response.data;
+type CreateReviewParams = {
+  fundingId?: number;
+  reviewData: CreateReviewData;
 };
 
-export const fetchReviewList = async (
-  cursor?: string,
-  limit: number = 8
-): Promise<ReviewListData> => {
-  const params = new URLSearchParams();
-  if (cursor) {
-    params.append("cursor", cursor); 
-  }
-  params.append("limit", String(limit));
+interface UseReviewListOptions {
+  cursor?: number;
+  limit?: number;
+}
 
-  const response = await axiosInstance.get(`/api/v1/review/list`, { params });
-  return response.data;
+export const useCreateReview = (): UseMutationResult<
+  void,
+  Error,
+  CreateReviewParams,
+  unknown
+> => {
+  return useMutation({
+    mutationFn: ({ fundingId, reviewData }: CreateReviewParams) =>
+      createReview(reviewData, fundingId),
+    onSuccess: () => {
+      console.log("후기 생성 성공:");
+    },
+    onError: (error: Error) => {
+      console.error("후기 생성 실패:", error);
+    },
+  });
+};
+
+export const useReviewList = (
+  options: UseReviewListOptions = {}
+): UseQueryResult<ReviewListData | undefined, Error> => {
+  return useQuery({
+    queryKey: ["reviewList", options],
+    queryFn: () => fetchReviewList(options.cursor, options.limit),
+    enabled: true,
+  });
+};
+
+export const useReviewDetail = (
+  fundingId?: number
+): UseQueryResult<ReviewDetailData | null, Error> => {
+  return useQuery({
+    queryKey: ["reviewDetatil", fundingId],
+    queryFn: async () => {
+      if (!fundingId) return null;
+      return await fetchReview(fundingId);
+    },
+    enabled: !!fundingId,
+  });
 };
