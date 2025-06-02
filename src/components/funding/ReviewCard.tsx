@@ -2,54 +2,64 @@
 
 import React from "react";
 import Image from "next/image";
-import { useFundingDetail } from "@/hooks/useFunding";
+import { useReviewDetail } from "@/hooks/useReview";
 
 type ReviewCardProps = {
-  fundingId?: number;
+  reviewId?: number;
 };
 
-const ReviewCard = ({ fundingId }: ReviewCardProps) => {
+const ReviewCard = ({ reviewId }: ReviewCardProps) => {
 
   const {
-  data: fundingDetail,
+  data: ReviewDetail,
   isPending,
   isError,
   error,
-} = useFundingDetail(fundingId);
+} = useReviewDetail(reviewId);
 
   const displayImageUrl: string | null =
-    fundingDetail?.fundingImages && fundingDetail.fundingImages.length > 0
-      ? fundingDetail.fundingImages[0].fileUrl
+    ReviewDetail?.data.reviewImages && ReviewDetail.data.reviewImages.length > 0
+      ? ReviewDetail.data.reviewImages[0].fileUrl
       : null;
 
-  const displayTitle = fundingDetail?.title;
+  const displayTitle = ReviewDetail?.data.title;
 
   if (isPending) {
     return (
       <div className="flex flex-col pt-6 animate-pulse">
         <div className="w-full h-[100px] bg-gray-200 rounded-lg object-cover" />
+        로딩중입니다.
         <div className="h-4 bg-gray-200 w-3/4 mt-4 rounded"></div>
       </div>
     );
   }
 
-  if (isError) {
-    console.error("펀딩 상세 정보 로딩 오류:", error);
-  }
+  if (isError || !ReviewDetail?.data) {
+  console.error("펀딩 상세 정보 로딩 오류:", error);
+  return (
+    <div className="flex flex-col pt-6">
+      <div className="w-full h-[100px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+        리뷰 데이터를 불러올 수 없습니다.
+      </div>
+      <p className="text-sm text-secondary mt-4 text-left">제목 없음</p>
+    </div>
+  );
+}
+
 
   return (
     <div className="flex flex-col pt-6">
       {displayImageUrl ? (
         <Image
           src={displayImageUrl}
-          alt={displayTitle || "펀딩 프로젝트"}
+          alt={displayTitle || "리뷰 프로젝트"}
           width={150}
           height={100}
           className="w-full h-auto rounded-lg object-cover"
         />
       ) : (
         <div className="w-full h-[100px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-          펀딩 이미지가 없습니다.
+          리뷰 이미지가 없습니다.
         </div>
       )}
       <p className="text-sm text-secondary mt-4 text-left">
