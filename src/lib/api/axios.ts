@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: "https://api.chaeum.site",
   withCredentials: true, // <- HttpOnly 쿠키 전송
 });

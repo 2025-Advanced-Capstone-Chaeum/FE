@@ -34,7 +34,7 @@ export default function WelcomePage() {
 
   useEffect(() => {
     if (!isUserDataPending && userInfo && !isUserDataError) {
-      if (userInfo.donations) {
+      if ("donations" in userInfo) {
         setUserData(userInfo);
       } else if (userInfo.fundings) {
         setRecipientData(userInfo);
