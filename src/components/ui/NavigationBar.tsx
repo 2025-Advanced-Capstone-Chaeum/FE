@@ -50,7 +50,7 @@ const NavigationBar = () => {
         address: `${profileAddress}`,
       },
     ],
-    []
+    [profileAddress]
   ); // 의존성 배열이 비어있으므로 컴포넌트 마운트 시 한 번만 생성
 
   useEffect(() => {
