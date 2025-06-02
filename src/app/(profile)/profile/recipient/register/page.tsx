@@ -27,9 +27,9 @@ const RecipientRegisterPage = () => {
 
   const handleSubmit = () => {
     if (selectedDocument && imageFile) {
-      console.log(
-        `선택된 서류: ${selectedDocument}, 첨부 이미지 URL: ${imageFile}`
-      );
+      // console.log(
+      //   `선택된 서류: ${selectedDocument}, 첨부 이미지 URL: ${imageFile}`
+      // );
       setActiveModal(true);
     } else if (!selectedDocument) {
       alert("서류를 선택해주세요.");
@@ -52,8 +52,16 @@ const RecipientRegisterPage = () => {
       const responseData = await recipientRegister(ocrData); // 분리된 API 함수 호출
       setIsUploading(false);
       setActiveModal(false);
-      setWaiting(true); // 수혜자 허가 기다리는 중인 상태 전송
-      router.push("/profile/recipient/complete");
+      if (responseData.success) {
+        setWaiting(true); // 수혜자 허가 기다리는 중인 상태 전송
+        router.push("/profile/recipient/complete");
+      } else {
+        alert(
+          "OCR 서버 요청 중 오류가 발생했습니다. 개발자 콘솔을 확인해주세요."
+        );
+        setIsUploading(false);
+        setActiveModal(false);
+      }
     } catch (error) {
       alert(
         "OCR 서버 요청 중 오류가 발생했습니다. 개발자 콘솔을 확인해주세요."
