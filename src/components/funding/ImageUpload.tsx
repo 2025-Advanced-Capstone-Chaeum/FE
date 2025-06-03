@@ -60,14 +60,25 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       const response = await axiosInstance.post(endpoint, formData);
 
       if (response.status === 200) {
-        if (
-          response.data &&
-          response.data.data &&
-          Array.isArray(response.data.data) &&
-          response.data.data.length > 0
-        ) {
-          return response.data.data[0].fileUrl;
-        } else {
+       if (
+  response.data &&
+  response.data.data &&
+  Array.isArray(response.data.data) &&
+  response.data.data.length > 0
+) {
+  const fileUrlFromServer = response.data.data[0].fileUrl;
+
+  // review일 때만 도메인 변경
+  const finalUrl =
+    module === "review"
+      ? fileUrlFromServer.replace(
+          "https://chaeum-bucket.s3.ap-northeast-2.amazonaws.com",
+          "https://s3.ap-northeast-2.amazonaws.com"
+        )
+      : fileUrlFromServer;
+
+  return finalUrl;
+} else {
           console.error("데이터 형식이 다릅니다:", response.data);
           return null;
         }
