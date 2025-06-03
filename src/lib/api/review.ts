@@ -71,18 +71,20 @@ export const fetchReview = async (
   fundingId: number
 ): Promise<ReviewDetailData | null> => {
   try {
-    const response = await axiosInstance.get<{
-      success: boolean;
-      data: ReviewDetailData;
-    }>(`/api/v1/review/details?fundingId=${fundingId}`);
+    const response = await axiosInstance.get<ReviewDetailData>(
+      `/api/v1/review/details?fundingId=${fundingId}`
+    );
+    console.log("API 응답:", response);
+console.log("response.data:", response.data);
+
     if (response.data.success && response.data.data) {
-      return response.data.data;
+      return response.data;
     } else {
-      console.error("펀딩 데이터 로딩 실패:", response.data);
+      console.error("리뷰 데이터 로딩 실패:", response.data);
       return null;
     }
   } catch (error) {
-    console.error("펀딩 데이터 요청 에러:", error);
+    console.error("리뷰 데이터 요청 에러:", error);
     return null;
   }
 };

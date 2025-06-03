@@ -38,12 +38,18 @@ export const ReviewCardWithId = ({ type, fundingId }: ReviewCardWithIdProps) => 
 };
 
 export const ReviewCardWithData = ({ type, data }: ReviewCardWithDataProps) => {
+  const fundingId =
+    data && "fundingId" in data && typeof data.fundingId === "number"
+      ? data.fundingId
+      : undefined;
+
   return (
     <ReviewCardBase
       type={type}
       isPending={false}
       isError={!data}
       data={data}
+      fundingId={fundingId}
     />
   );
 };
@@ -53,9 +59,10 @@ type ReviewCardBaseProps = {
   isPending: boolean;
   isError: boolean;
   data?: ReviewDetailItem | FundingData | null;
+  fundingId?: number;
 };
 
-const ReviewCardBase = ({ type, isPending, isError, data }: ReviewCardBaseProps) => {
+const ReviewCardBase = ({ type, isPending, isError, data, fundingId }: ReviewCardBaseProps) => {
   const title = data?.title ?? "제목 없음";
   const imageUrl =
     type === "review"
@@ -84,7 +91,7 @@ const ReviewCardBase = ({ type, isPending, isError, data }: ReviewCardBaseProps)
   }
 
   return (
-    <Link href={`/review/${data.id}`}>
+    <Link href={`/review/${data.id}?fundingId=${fundingId}`}>
     <div className="flex flex-col pt-6">
       {imageUrl ? (
         <Image
