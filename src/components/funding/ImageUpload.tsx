@@ -39,8 +39,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               compressed.size / 1024 / 1024,
               "MB"
             );
-            const fileNameParts = compressed.name.split('.');
-      const fileExtension = fileNameParts[fileNameParts.length - 1];
+            const fileNameParts = compressed.name.split(".");
+            const fileExtension = fileNameParts[fileNameParts.length - 1];
             console.log("압축된 파일 확장자:", fileExtension);
             return compressed; // 압축된 파일 반환
           } else {
@@ -60,25 +60,25 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       const response = await axiosInstance.post(endpoint, formData);
 
       if (response.status === 200) {
-       if (
-  response.data &&
-  response.data.data &&
-  Array.isArray(response.data.data) &&
-  response.data.data.length > 0
-) {
-  const fileUrlFromServer = response.data.data[0].fileUrl;
+        if (
+          response.data &&
+          response.data.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          const fileUrlFromServer = response.data.data[0].fileUrl;
 
-  // review일 때만 도메인 변경
-  const finalUrl =
-    module === "review"
-      ? fileUrlFromServer.replace(
-          "https://chaeum-bucket.s3.ap-northeast-2.amazonaws.com",
-          "https://s3.ap-northeast-2.amazonaws.com"
-        )
-      : fileUrlFromServer;
+          // review일 때만 도메인 변경
+          const finalUrl =
+            module === "review"
+              ? fileUrlFromServer.replace(
+                  "https://chaeum-bucket.s3.ap-northeast-2.amazonaws.com",
+                  "https://s3.ap-northeast-2.amazonaws.com"
+                )
+              : fileUrlFromServer;
 
-  return finalUrl;
-} else {
+          return finalUrl;
+        } else {
           console.error("데이터 형식이 다릅니다:", response.data);
           return null;
         }

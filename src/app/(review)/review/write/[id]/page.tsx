@@ -3,7 +3,6 @@
 import BackButton from "@/components/BackButton";
 import ImageUpload from "@/components/funding/ImageUpload";
 import { ReviewCardWithId } from "@/components/funding/ReviewCard";
-// import ReviewCard from "@/components/funding/ReviewCard";
 import ListContainer from "@/components/profile/ListContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

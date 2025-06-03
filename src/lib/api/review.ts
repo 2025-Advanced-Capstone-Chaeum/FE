@@ -51,7 +51,6 @@ export const createReview = async (
     reviewData
   );
 
-  console.log(reviewData, fundingId);
   return response.data;
 };
 
@@ -74,8 +73,6 @@ export const fetchReview = async (
     const response = await axiosInstance.get<ReviewDetailData>(
       `/api/v1/review/details?fundingId=${fundingId}`
     );
-    console.log("API 응답:", response);
-console.log("response.data:", response.data);
 
     if (response.data.success && response.data.data) {
       return response.data;
