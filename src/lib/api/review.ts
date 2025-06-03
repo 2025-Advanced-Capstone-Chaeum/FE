@@ -24,6 +24,7 @@ export interface ReviewDetailItem {
 
 export interface ReviewItem {
   id: number;
+  fundingId: number;
   title: string;
   reviewImage?: ReviewImage;
   createdAt: string;
@@ -49,6 +50,8 @@ export const createReview = async (
     `/api/v1/review?fundingId=${fundingId}`,
     reviewData
   );
+
+  console.log(reviewData, fundingId);
   return response.data;
 };
 

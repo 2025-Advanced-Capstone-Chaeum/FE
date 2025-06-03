@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronDown } from "lucide-react";
-import ReviewCard from "@/components/funding/ReviewCard";
+import { ReviewCardWithData } from "@/components/funding/ReviewCard";
 import { useReviewList } from "@/hooks/useReview";
 
 export default function ReviewListPage() {
@@ -29,7 +29,7 @@ export default function ReviewListPage() {
       {/* Projects grid */}
       <div className="relative top-[2vh] mt-[6px] grid grid-cols-2 gap-5 max-h-[calc(100vh-8vh-4rem)] overflow-y-scroll scrollbar-none">
         {reviewListData?.data?.values.map((review) => (
-          <ReviewCard key={review.id} reviewId={review.id} />
+          <ReviewCardWithData key={review.id} data={review} type={"review"} />
         ))}
       </div>
     </div>

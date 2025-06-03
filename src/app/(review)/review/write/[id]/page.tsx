@@ -2,7 +2,8 @@
 
 import BackButton from "@/components/BackButton";
 import ImageUpload from "@/components/funding/ImageUpload";
-import ReviewCard from "@/components/funding/ReviewCard";
+import { ReviewCardWithId } from "@/components/funding/ReviewCard";
+// import ReviewCard from "@/components/funding/ReviewCard";
 import ListContainer from "@/components/profile/ListContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,7 +70,7 @@ const ReviewWritePage = () => {
     <>
       <BackButton>후기 작성</BackButton>
       <div className="justify-center px-25 sm:px-35 md:px-55 py-1">
-        <ReviewCard fundingId={fundingId} />
+        <ReviewCardWithId type={"review"} fundingId={fundingId} />
       </div>
 
       <ListContainer>
