@@ -23,7 +23,7 @@ export default function ReviewDetailPage() {
     isError: isFundingDetailError,
   } = useFundingDetail(fundingId);
 
-  if (isReviewDetailPending) {
+  if (isReviewDetailPending || isFundingDetailPending) {
     return (
       <>
         <BackButton />
@@ -34,12 +34,18 @@ export default function ReviewDetailPage() {
     );
   }
 
-  if (isReviewDetailError || !reviewDetailData) {
+  if (
+    isReviewDetailError ||
+    !reviewDetailData ||
+    isFundingDetailError ||
+    !fundingDetailData
+  ) {
     return (
       <>
         <BackButton />
-        <div className="flex flex-col items-center justify-center h-64">
-          리뷰 데이터를 불러올 수 없습니다.
+        <div className="flex flex-col items-center justify-center h-64 text-red-500 text-center">
+          데이터를 불러올 수 없습니다. <br />
+          잠시 후 다시 시도해주세요.
         </div>
       </>
     );
@@ -55,18 +61,18 @@ export default function ReviewDetailPage() {
             이 게시글에 대한 리뷰입니다.
           </p>
           {fundingDetailData?.fundingImages?.[0]?.fileUrl ? (
-  <Image
-    src={fundingDetailData.fundingImages[0].fileUrl}
-    alt="펀딩 이미지"
-    width={150}
-    height={100}
-    className="rounded-lg mb-2"
-  />
-) : (
-  <div className="w-[150px] h-[100px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 mb-2">
-    이미지 없음
-  </div>
-)}
+            <Image
+              src={fundingDetailData.fundingImages[0].fileUrl}
+              alt="펀딩 이미지"
+              width={150}
+              height={100}
+              className="rounded-lg mb-2"
+            />
+          ) : (
+            <div className="w-[150px] h-[100px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 mb-2">
+              이미지 없음
+            </div>
+          )}
           <p className="text-sm text-center">{fundingDetailData?.title}</p>
         </div>
 

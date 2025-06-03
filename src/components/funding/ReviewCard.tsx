@@ -58,7 +58,7 @@ type ReviewCardBaseProps = {
   type: "review" | "funding";
   isPending: boolean;
   isError: boolean;
-  data?: ReviewDetailItem | FundingData | null;
+  data?: ReviewDetailItem | FundingData | ReviewItem | null;
   fundingId?: number;
 };
 
