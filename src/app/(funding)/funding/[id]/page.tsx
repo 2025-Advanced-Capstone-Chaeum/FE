@@ -58,7 +58,7 @@ export default function FundingDetailCard() {
         <div className="p-6 space-y-2">
           {/* Header */}
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center w-90 h-10 bg-white-50 rounded-2xl">
+            <div className="flex justify-center items-center w-90 h-10 bg-white-50 border-white border rounded-2xl">
               <h2
                 className={`font-medium text-secondary truncate ${
                   fundingDetail.title.length > 16 ? "text-md" : "text-lg"
@@ -124,7 +124,7 @@ export default function FundingDetailCard() {
 
           {/* Funding Goal */}
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center w-90 h-23 bg-white-50 rounded-3xl">
+            <div className="flex justify-center items-center w-90 h-23 bg-white-50 border-white border rounded-3xl">
               <div className="space-y-2">
                 <div className="flex items-center justify-center">
                   <span className="text-secondary font-semibold mr-2 text-xl">

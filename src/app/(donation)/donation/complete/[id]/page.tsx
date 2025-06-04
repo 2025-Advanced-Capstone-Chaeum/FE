@@ -30,7 +30,7 @@ const DonationCompletePage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col h-[78vh] justify-center items-center text-secondary gap-8">
+      <div className="flex flex-col justify-center items-center text-secondary gap-8 pt-12">
         <Image
           src="/assets/images/heart.png"
           alt="Heart"
