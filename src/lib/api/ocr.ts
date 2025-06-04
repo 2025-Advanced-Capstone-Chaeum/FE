@@ -29,6 +29,6 @@ const axiosOcr = axios.create({
   withCredentials: true,
   headers: {
     Authorization:
-      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiZG9mbDg1NDlAbmF2ZXIuY29tIiwibWVtYmVySWQiOjYsInJvbGUiOiJET05PUiIsImlhdCI6MTc0OTAyNzE1NiwiZXhwIjoxNzQ5MDMwNzU2fQ.xaoXVTDwSUcOp8MD88f8G5jX-qL_YNmjDk_imXtPViJOAQmz96QxvPinlgSVKdixhE5bNIh_lC5eSUF0EB8Dlw",
+      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiZG9mbDg1NDlAbmF2ZXIuY29tIiwibWVtYmVySWQiOjYsInJvbGUiOiJET05PUiIsImlhdCI6MTc0OTA0MDUyMSwiZXhwIjoxNzQ5MDQ0MTIxfQ.vEsISppGiNzQh8IcsYp2XrtnIvitN0MyzxCUJPPBat2ppJ4RBAaZUNiASbHU0lHnhxlG1VVz4qEbdeqg4MP3OA",
   },
 });
