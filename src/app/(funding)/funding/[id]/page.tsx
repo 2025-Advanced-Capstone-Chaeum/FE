@@ -147,12 +147,15 @@ export default function FundingDetailCard() {
           {/* Image */}
           <div className="flex justify-center items-center rounded-xl overflow-hidden py-2">
             <div className="relative w-full h-[180px] rounded-lg overflow-hidden mx-1.5">
-            <Image
-              src={fundingDetail?.fundingImages?.[0]?.fileUrl || `/public/assets/images/chaeum.svg`}
-              alt={fundingDetail?.title}
-              fill
-            className="object-cover"
-            />
+              <Image
+                src={
+                  fundingDetail?.fundingImages?.[0]?.fileUrl ||
+                  `/public/assets/images/chaeum.svg`
+                }
+                alt={fundingDetail?.title}
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
 
