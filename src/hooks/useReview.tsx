@@ -55,7 +55,7 @@ export const useReviewDetail = (
   fundingId?: number
 ): UseQueryResult<ReviewDetailData | null, Error> => {
   return useQuery({
-    queryKey: ["reviewDetatil", fundingId],
+    queryKey: ["reviewDetail", fundingId],
     queryFn: async () => {
       if (!fundingId) return null;
       return await fetchReview(fundingId);
