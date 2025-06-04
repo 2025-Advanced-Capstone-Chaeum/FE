@@ -36,6 +36,7 @@ export default function WelcomePage() {
     if (!isUserDataPending && userInfo && !isUserDataError) {
       if ("donations" in userInfo) {
         setUserData(userInfo);
+        console.log("회원정보: ", userInfo);
       } else if (userInfo.fundings) {
         setRecipientData(userInfo);
       }
