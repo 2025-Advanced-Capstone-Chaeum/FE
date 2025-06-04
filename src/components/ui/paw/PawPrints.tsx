@@ -37,7 +37,7 @@ export default function PawPrints() {
     }
 
     // 발자국 나타나는 간격 (밀리초)
-    const appearInterval = 200;
+    const appearInterval = 130;
 
     // 다음 발자국을 나타나게 하는 타이머
     const timer = setTimeout(() => {
