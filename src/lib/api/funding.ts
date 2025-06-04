@@ -8,6 +8,7 @@ export interface FundingImage {
 
 export interface FundingData {
   id: number;
+  memberId: number,
   title: string;
   content: string;
   fundingImages?: FundingImage[];
