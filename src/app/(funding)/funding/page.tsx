@@ -5,10 +5,8 @@ import CampaignCard from "@/components/funding/CampaignCard";
 import NavigateToWriteButton from "@/components/funding/NavigateToWriteButton";
 import { useState, useCallback } from "react";
 import { FundingData } from "@/lib/api/funding";
-import {
-  useFundingList,
-  useFundingRecommendList,
-} from "@/hooks/useFunding";
+import { useFundingList, useFundingRecommendList } from "@/hooks/useFunding";
+import { chunk } from "lodash";
 
 export default function FundingListPage() {
   const [statusFilter, setStatusFilter] = useState<
@@ -45,9 +43,7 @@ export default function FundingListPage() {
       ? isFundingRecommendPending
       : isFundingListPending;
   const areCampaignsError =
-    sortCondition === "추천순"
-      ? isFundingRecommendError
-      : isFundingListError;
+    sortCondition === "추천순" ? isFundingRecommendError : isFundingListError;
 
   const campaigns: FundingData[] | undefined = currentFundingData?.data?.values;
 
@@ -60,7 +56,7 @@ export default function FundingListPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col px-8 py-8 relative">
+    <div className="flex min-h-screen flex-col px-6 py-8 relative">
       <div className="flex w-full justify-between">
         <div>
           <FilterButtons
@@ -73,14 +69,23 @@ export default function FundingListPage() {
         </div>
       </div>
 
-      <div className="relative top-[6vh] mt-[10px] grid grid-cols-2 gap-5 max-h-[78vh] overflow-y-scroll scrollbar-none">
+      <div className="relative top-[6vh] mt-[10px] max-h-[78vh] overflow-y-scroll scrollbar-none flex flex-col gap-5">
         {!campaigns || campaigns.length === 0 ? (
-          <div className="col-span-2 text-center text-gray-500">
+          <div className="text-center text-gray-500">
             표시할 캠페인이 없습니다.
           </div>
         ) : (
-          campaigns.map((campaign) => (
-            <CampaignCard key={campaign.id} campaign={campaign} />
+          chunk(campaigns, 2).map((pair: FundingData[], idx: number) => (
+            <div key={idx} className="grid grid-cols-2 gap-2">
+              {pair.map((campaign) => (
+                <div
+                  key={campaign.id}
+                  className="border-2 border-white-50 rounded-lg py-2 px-4"
+                >
+                  <CampaignCard campaign={campaign} />
+                </div>
+              ))}
+            </div>
           ))
         )}
       </div>
