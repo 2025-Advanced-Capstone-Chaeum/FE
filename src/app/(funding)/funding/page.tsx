@@ -46,7 +46,6 @@ export default function FundingListPage() {
       : isFundingListPending;
   const areCampaignsError =
     sortCondition === "추천순" ? isFundingRecommendError : isFundingListError;
-    sortCondition === "추천순" ? isFundingRecommendError : isFundingListError;
 
   const campaigns: FundingData[] | undefined = currentFundingData?.data?.values;
 

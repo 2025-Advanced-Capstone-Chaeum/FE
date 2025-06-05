@@ -93,7 +93,7 @@ export default function FundingDetailCard() {
                 </div>
               </Avatar>
               <span className="font-medium text-secondary">
-                {fundingDetail.memberId}
+                {fundingDetail.name}
               </span>
             </div>
             <div
