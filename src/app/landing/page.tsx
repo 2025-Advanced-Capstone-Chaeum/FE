@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Metadata } from "next";
 import LoginButtons from "./loginButton";
 import Paw from "@/components/ui/paw/Paw";
-import { centerImageStyles, mainStyles } from "@/styles/styles";
 
 export const metadata: Metadata = {
   title: "landing - Chaeum",
@@ -11,31 +10,34 @@ export const metadata: Metadata = {
 
 export default function Randing() {
   return (
-    <main className={mainStyles}>
-      {/* 발자국 이미지 */}
-      <div className="absolute top-0 left-[-150] transform -rotate-30">
-        <Paw />
-      </div>
+    <>
+      <div className="flex min-h-screen flex-col items-center justify-center relative">
+        {/* 발자국 이미지 */}
+        <div className="absolute top-0 left-[-150] transform -rotate-30">
+          <Paw />
+        </div>
 
-      {/* Chaeum Logo */}
-      <div className={centerImageStyles}>
-        <Image
-          src={"/assets/images/chaeum.svg"}
-          alt="Chaeum logo"
-          width={250}
-          height={300}
-        />
+        {/* Chaeum Logo */}
+        <div className="flex flex-col items-center gap-4 ">
+          <Image
+            src={"/assets/images/chaeum.svg"}
+            alt="Chaeum logo"
+            width={250}
+            height={300}
+            className="absolute transform translate-y-[-100%] "
+          />
+        </div>
       </div>
-
       {/* Copyright */}
-      <div style={{ fontWeight: 600 }} className={textStyle}>
-        © Copyright Chaeum Team
+      <div className="flex flex-col items-center justify-center  ">
+        <div
+          className="absolute bottom-20 inset-x-0 text-center text-gray-500 text-base font-bold "
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+          © Copyright Chaeum Team
+          {/* kakao-logo&네이버 로그인버튼 */}
+        </div>
+        <LoginButtons />
       </div>
-
-      {/* kakao-logo&네이버 로그인버튼 */}
-      <LoginButtons />
-    </main>
+    </>
   );
 }
-const textStyle =
-  "absolute bottom-8 inset-x-0 text-center text-gray-500 text-base";

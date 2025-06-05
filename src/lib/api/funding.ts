@@ -8,6 +8,8 @@ export interface FundingImage {
 
 export interface FundingData {
   id: number;
+  memberName: string,
+  memberProfileImageUrl: string,
   title: string;
   content: string;
   fundingImages?: FundingImage[];
@@ -61,6 +63,20 @@ export const fetchFundingByCondition = async (
 
   const response = await axiosInstance.get(
     `/api/v1/funding/condition?${params.toString()}`
+  );
+  return response.data;
+};
+
+export const fetchFundingByRecommend = async (
+  cursor?: number,
+  limit: number = 3
+): Promise<FundingByConditionData> => {
+  const params = new URLSearchParams();
+  if (cursor) params.append("cursor", String(cursor));
+  params.append("limit", String(limit));
+
+  const response = await axiosInstance.get(
+    `/api/v1/funding/recommend?${params.toString()}`
   );
   return response.data;
 };

@@ -33,8 +33,8 @@ const BottomMenu = () => {
     }
   }, [InteractionData, isInteractionPending, InteractionError]);
   return (
-    <div className="flex bottom-10 py-4 px-8 sm:p-13 md:py-15 md:px-22 justify-between">
-      {InteractionMenu.map((item) => (
+    <div className="fixed bottom-30 w-full flex py-4 px-8 sm:p-13 md:py-15 md:px-22 justify-between">
+      {menuItems.map((item) => (
         <Button
           variant="soft"
           size="lg"

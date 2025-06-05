@@ -5,22 +5,27 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Providers from "@/components/Providers";
 import IamportSDKLoader from "@/components/IamportSDKLoader";
+import BodyBackgroundHandler from "@/components/BodyBackgroundHandler";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="ko">
       <body>
-        <Providers>
-          <IamportSDKLoader />
-          {children}
-          <ToastContainer position="top-right" autoClose={3000} />
-          <NavigationBarWrapper />
-        </Providers>
+        <BodyBackgroundHandler />
+        <div
+          className="mx-auto min-h-dvh max-w-[400px] sm:max-w-[480px] md:max-w-[640px] relative"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+          <Providers>
+            <IamportSDKLoader />
+            {children}
+            <ToastContainer position="top-right" autoClose={3000} />
+            <NavigationBarWrapper />
+          </Providers>
+        </div>
       </body>
     </html>
   );
