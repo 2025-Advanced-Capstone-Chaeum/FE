@@ -1,17 +1,11 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useInteractionSearch } from "@/hooks/useInteraction";
 import { InteractionMenu } from "@/lib/InteractionMenu";
 import { InteractionStore } from "@/store/interactionStore";
-
-// interface interactionProps {
-//   id: number;
-//   itemId: number;
-//   isWearing: boolean;
-//   quantity: number;
-//   createdAt: string;
-// }
 
 const BottomMenu = () => {
   const { feed, play, touch, setInteraction } = InteractionStore(
@@ -34,7 +28,7 @@ const BottomMenu = () => {
   }, [InteractionData, isInteractionPending, InteractionError]);
   return (
     <div className="fixed bottom-30 w-full flex py-4 px-8 sm:p-13 md:py-15 md:px-22 justify-between">
-      {menuItems.map((item) => (
+      {InteractionMenu.map((item) => (
         <Button
           variant="soft"
           size="lg"
