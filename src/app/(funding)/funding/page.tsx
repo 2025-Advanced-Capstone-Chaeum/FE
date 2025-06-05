@@ -58,7 +58,7 @@ export default function FundingListPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col px-6 py-6 relative">
+    <div className="flex min-h-screen flex-col px-6 py-4 relative">
       <div className="flex w-full justify-between">
         <div>
           <FilterButtons
