@@ -6,9 +6,11 @@ import NavigateToWriteButton from "@/components/funding/NavigateToWriteButton";
 import { useState, useCallback } from "react";
 import { FundingData } from "@/lib/api/funding";
 import { useFundingList, useFundingRecommendList } from "@/hooks/useFunding";
+import { userStore } from "@/store/userStore";
 import { chunk } from "lodash";
 
 export default function FundingListPage() {
+  const triggerRegistration = userStore((state) => state.recipientData);
   const [statusFilter, setStatusFilter] = useState<
     "ONGOING" | "COMPLETED" | "FAILED" | undefined
   >(undefined);
@@ -44,6 +46,7 @@ export default function FundingListPage() {
       : isFundingListPending;
   const areCampaignsError =
     sortCondition === "추천순" ? isFundingRecommendError : isFundingListError;
+    sortCondition === "추천순" ? isFundingRecommendError : isFundingListError;
 
   const campaigns: FundingData[] | undefined = currentFundingData?.data?.values;
 
@@ -65,7 +68,7 @@ export default function FundingListPage() {
           />
         </div>
         <div className="absolute top-[2.8vh] right-8">
-          <NavigateToWriteButton />
+          {triggerRegistration && <NavigateToWriteButton />}
         </div>
       </div>
 
@@ -92,3 +95,4 @@ export default function FundingListPage() {
     </div>
   );
 }
+

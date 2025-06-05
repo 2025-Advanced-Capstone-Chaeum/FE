@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateFundingData } from "@/lib/api/funding";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react"; // useRef 훅 추가
+import { MdDateRange } from "react-icons/md";
 
 const FundingWritePage = () => {
   const [formData, setFormData] = useState<CreateFundingData>({
@@ -20,6 +21,8 @@ const FundingWritePage = () => {
     endDate: new Date().toISOString().slice(0, 10),
   });
   const [isRegister, setIsRegister] = useState(false);
+
+  const endDateInputRef = useRef<HTMLInputElement>(null);
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -119,14 +122,20 @@ const FundingWritePage = () => {
         <div className="flex justify-center items-center gap-2 text-xs text-secondary opacity-80">
           <div className="flex flex-col gap-1 w-40">
             <span className="flex px-1">펀딩 마감일</span>
-            <div className="flex justify-center items-center">
+            <div className="relative flex items-center">
               <Input
                 type="date"
                 id="endDate"
                 name="endDate"
                 value={formData.endDate}
                 onChange={handleFormChange}
-                className="h-10"
+                className="h-10 pr-8" 
+                ref={endDateInputRef} 
+              />
+              <MdDateRange
+                className="absolute right-2 cursor-pointer text-gray-500" 
+                size={25} // 아이콘 크기
+                onClick={() => endDateInputRef.current?.showPicker()} 
               />
             </div>
           </div>
