@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import { useFundingDetail } from "@/hooks/useFunding";
@@ -21,6 +21,15 @@ const DonationCompletePage = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+  document.body.style.overflowY = "auto";
+
+  return () => {
+    document.body.style.overflowY = "hidden";
+  };
+}, []);
+
+
   if (isPending) return <div>로딩 중...</div>;
   if (isError || !fundingDetail) {
     console.error(`오류 발생: ${error?.message}`);
@@ -30,7 +39,7 @@ const DonationCompletePage = () => {
   return (
     <>
       <BackButton />
-      <div className="flex flex-col justify-center items-center min-h-[100dvh] bg-white text-secondary gap-8 pt-12">
+      <div className="flex flex-col justify-center items-center text-secondary gap-8 pt-12">
         <Image
           src="/assets/images/heart.png"
           alt="Heart"
