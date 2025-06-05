@@ -39,8 +39,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               compressed.size / 1024 / 1024,
               "MB"
             );
-            const fileNameParts = compressed.name.split('.');
-      const fileExtension = fileNameParts[fileNameParts.length - 1];
+            const fileNameParts = compressed.name.split(".");
+            const fileExtension = fileNameParts[fileNameParts.length - 1];
             console.log("압축된 파일 확장자:", fileExtension);
             return compressed; // 압축된 파일 반환
           } else {
@@ -66,7 +66,18 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           Array.isArray(response.data.data) &&
           response.data.data.length > 0
         ) {
-          return response.data.data[0].fileUrl;
+          const fileUrlFromServer = response.data.data[0].fileUrl;
+
+          // review일 때만 도메인 변경
+          const finalUrl =
+            module === "review"
+              ? fileUrlFromServer.replace(
+                  "https://chaeum-bucket.s3.ap-northeast-2.amazonaws.com",
+                  "https://s3.ap-northeast-2.amazonaws.com"
+                )
+              : fileUrlFromServer;
+
+          return finalUrl;
         } else {
           console.error("데이터 형식이 다릅니다:", response.data);
           return null;
@@ -103,20 +114,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <span className="text-sm text-secondary opacity-80">{text}</span>
       )}
       {localImageUrl ? (
-        <div className="w-45 h-30 overflow-hidden relative">
-          <Image
-            src={localImageUrl}
-            alt="Uploaded Image"
-            width={180}
-            height={120}
-            objectFit="contain"
-          />
-          {isUploading && (
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
-              <span className="text-white animate-spin">⏳</span>{" "}
-            </div>
-          )}
+        <div className="flex justify-center items-center rounded-xl overflow-hidden py-2 w-[180px] h-[120px]">
+    <div className="relative w-full h-full rounded-lg overflow-hidden">
+      <Image
+        src={localImageUrl}
+        alt="Uploaded Image"
+        fill
+        className="object-contain"
+      />
+      {isUploading && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
+          <span className="text-white animate-spin">⏳</span>
         </div>
+      )}
+    </div>
+  </div>
       ) : (
         <label
           htmlFor="picture"
