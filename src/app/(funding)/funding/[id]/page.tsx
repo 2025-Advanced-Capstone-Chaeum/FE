@@ -58,7 +58,7 @@ export default function FundingDetailCard() {
         <div className="p-6 space-y-2">
           {/* Header */}
           <div className="flex justify-center items-center">
-            <div className="flex justify-center items-center w-90 h-10 bg-white-50 border-white border rounded-2xl">
+            <div className="flex justify-center items-center w-90 h-10 bg-white opacity-80 rounded-2xl">
               <h2
                 className={`font-medium text-secondary truncate ${
                   fundingDetail.title.length > 16 ? "text-md" : "text-lg"
