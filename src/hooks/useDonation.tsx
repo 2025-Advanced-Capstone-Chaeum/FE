@@ -10,7 +10,7 @@ import {
   UseMutationResult,
   useQuery,
   UseQueryResult,
-  useQueryClient, // useQueryClient 훅을 임포트합니다.
+  useQueryClient, 
 } from "@tanstack/react-query";
 
 interface UseDonationResult {
@@ -25,7 +25,7 @@ interface UseDonationResult {
 }
 
 export const useDonation = (): UseDonationResult => {
-  const queryClient = useQueryClient(); // QueryClient 인스턴스를 가져옵니다.
+  const queryClient = useQueryClient(); 
 
   const createDonationMutation = useMutation<
     DonationCreateResponse,

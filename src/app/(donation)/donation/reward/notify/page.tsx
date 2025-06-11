@@ -1,5 +1,3 @@
-// @/app/donation/notify/page.tsx (또는 해당 NotifyPage 컴포넌트 파일)
-
 "use client";
 
 import { useEffect, useState } from "react";
