@@ -58,7 +58,6 @@ const MyFundList = () => {
   const allOngoing = ongoingFundsData?.data?.values || [];
   const allCompleted = completedFundsData?.data?.values || [];
 
-  // ✅ userFundingIds가 세팅된 후에 필터링
   const userOngoing = allOngoing.filter((item) =>
     userFundingIds.includes(item.id)
   );
