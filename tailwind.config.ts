@@ -18,7 +18,7 @@ const config = {
             boxShadow: "0 0 0px 10px rgba(0, 0, 0, 0.5)",
           },
           "50%": {
-            transform: "scale(1.4)",
+            transform: "scale(5.0)",
             opacity: "0",
             boxShadow: "0 0 40px 30px rgba(0, 0, 0, 0)",
           },
