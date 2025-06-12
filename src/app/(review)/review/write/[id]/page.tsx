@@ -72,7 +72,7 @@ const ReviewWritePage = () => {
         <ReviewCardWithId fundingId={fundingId} />
       </div>
 
-      <ListContainer>
+      <ListContainer type="review">
         <div className="flex flex-col gap-5">
           <div>
             <Input
