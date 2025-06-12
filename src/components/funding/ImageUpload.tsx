@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import axiosInstance from "@/lib/api/axios";
-import imageCompression from "browser-image-compression";
+// import imageCompression from "browser-image-compression";
 
 interface ImageUploadProps {
   setImageUrl: (url: string) => void;
@@ -77,7 +77,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 )
               : fileUrlFromServer;
 
-          return fileUrlFromServer;
+          return finalUrl;
         } else {
           console.error("데이터 형식이 다릅니다:", response.data);
           return null;
